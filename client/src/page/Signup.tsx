@@ -1,4 +1,5 @@
 import React from 'react'
+import SignupForm from '../component/form/SignupForm'
 
 interface Props {
     
@@ -7,7 +8,7 @@ interface Props {
 const Signup = (props: Props) => {
     return (
         <div>
-            sign up
+            <SignupForm/>
         </div>
     )
 }
