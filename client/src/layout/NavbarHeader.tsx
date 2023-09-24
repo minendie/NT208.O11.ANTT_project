@@ -16,7 +16,7 @@ const styles = {
 const NavbarHeader = () => {
   const NavigationItem = [
     { name: "Home", path: "/" },
-    { name: " AI TOOLS", path: "/tool" },
+    { name: " AI Tool", path: "/tool" },
 
     { name: "About us", path: "/about" },
   ];
