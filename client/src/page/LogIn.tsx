@@ -1,13 +1,14 @@
 import React from 'react'
+import LoginForm from '../component/form/LoginForm'
 
 interface Props {
     
 }
 
-const LogIn = (props: Props) => {
+const LogIn = () => {
     return (
         <div>
-           log in 
+           <LoginForm/>
         </div>
     )
 }

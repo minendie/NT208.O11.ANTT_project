@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <div className="text-center">
+    <div className="text-center border-2 py-8">
       <div>
         By{" "}
         
