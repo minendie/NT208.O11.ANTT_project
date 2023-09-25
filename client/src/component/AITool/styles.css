@@ -50,6 +50,10 @@ html, body, #root {
   background-color: rgba(51, 187, 197, 0.4);
 }
 
+.dropzone:hover {
+  cursor: pointer;
+}
+
 /* AI TOOL CSS */
 .AITool {
   display: flex;

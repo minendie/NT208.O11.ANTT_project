@@ -1,18 +1,18 @@
 import '../App.css';
 import '../component/AITool/styles.css';
 import { Component } from 'react';
-import DragDropFile from '../component/AITool/DragAndDrop';
+import DropZone from '../component/AITool/DropZone';
 import AIToolResultLeft from '../component/AITool/AIToolResultLeft';
 import AIToolResultRight from '../component/AITool/AIToolResultRight';
 
 
 // declare props for AITool component
-interface PropsAITool {
+interface AIToolProps {
 
 }
 
 // declare states for AITool component
-interface StateAITool {
+interface AIToolState {
   filename: string, 
   prediction: any,
   message?: string,
@@ -20,8 +20,8 @@ interface StateAITool {
   answer: string,
 }
 
-export class AITool extends Component<PropsAITool, StateAITool> {
-  constructor(props: PropsAITool) {
+export class AITool extends Component<AIToolProps, AIToolState> {
+  constructor(props: AIToolProps) {
       super(props);
 
       this.state = {
@@ -91,7 +91,7 @@ export class AITool extends Component<PropsAITool, StateAITool> {
               ) 
               : ( // display drag and drop file by default
                 <>
-                  <DragDropFile sendData={this.getPOSTData} />
+                  <DropZone sendData={this.getPOSTData} />
                   <div className='AITool-content'>
                     <div className='AITool-header'>
                       <img className='AITool-header-logo' src='https://greendots-aitool-server.onrender.com/image/AI_Tool_logo.svg' />
