@@ -7,15 +7,15 @@ export const PreviewCampaign = ({ data }) => {
     return (
         <div className="preview-campaign">
             {
-                data.avatar 
-                ? (<img src='https://greendots-aitool-server.onrender.com/image/{data.avatar}'/>)
+                data.avatar
+                ? (<img src={`https://greendots-aitool-server.onrender.com/image/${data.avatar}`}/>)
                 : (<div className="campaign-avatar" /> )
             }
             <div className="preview-campaign-component">
                 <div className="header">
                     <div className="div">
-                        <div className="text-wrapper">Campaign name</div>
-                        <div className="text-wrapper-2">⭐ 4.9 / 5.0</div>
+                        <div className="text-wrapper">{data.name ? data.name : 'Campaign name'}</div>
+                        <div className="text-wrapper-2">⭐ {data.averageRating ? data.averageRating : 'd'} / 5.0</div>
                     </div>
                     <div className="buttons">
                         <Button
