@@ -2,7 +2,6 @@ import '../App.css';
 import '../component/AITool/styles.css';
 import { Component } from 'react';
 import DropZone from '../component/AITool/DropZone';
-import AIToolResultLeft from '../component/AITool/AIToolResultLeft';
 import AIToolResultRight from '../component/AITool/AIToolResultRight';
 
 
@@ -11,87 +10,69 @@ interface AIToolProps {
 
 }
 
+
 // declare states for AITool component
 interface AIToolState {
-  filename: string, 
-  prediction: any,
+  classNames: any,
+  classIDs: any,
   message?: string,
   isInfo: boolean,
   answer: string,
 }
 
+
 export class AITool extends Component<AIToolProps, AIToolState> {
+
   constructor(props: AIToolProps) {
       super(props);
 
       this.state = {
-        filename: '',
-        prediction: '',
-        message: '',
+        classNames: null,
+        classIDs: null,
         isInfo: true,
         answer: '',
       };
   }
-  // // <Future> auto retrieve answers from the Internet
-  // fetchAnswer = async () => {
-  //   try {
-  //     const response = await axios.post('https://api.openai.com/v1/engines/poe/completions', {
-  //       prompt: `Describe ${this.state.prediction.name} in 50-100 words`,
-  //       max_tokens: 50
-  //     }, {
-  //       headers: {
-  //         'Authorization': `Bearer ${apiKey}`,
-  //         'Content-Type': 'application/json'
-  //       }
-  //     });
-
-  //     const answerText = response.data.choices[0].text.trim();
-  //     this.setState({
-  //       answer: answerText,
-  //     });
-  //     console.log(`POE Answer: ${answerText}`);
-  //   } catch (error) {
-  //     console.error('Error:', error.message);
-  //   }
-  // };
 
 
   // get the data returned by AI Tool API
   getPOSTData = (childData: any) => {
     this.setState({
-      filename: childData.filename,
-      prediction: childData.prediction, // an object 
-    });
-    // this.fetchAnswer(); // retrieve answers
-  };
+        classNames: [...childData.classNames], // an array of predicted classes
+        // classIDs: [...childData.classIDs],
+      }, () => {
+        // console.log(this.state.classNames)
+      } // end callback
+    ); // end setState for classNames
+  }; /// end POST 
+
 
   changeToSearchByTrashTag = (childData: any) => {
+
     this.setState({
       isInfo: childData.isInfo,
     })
+
   };
 
   render() {
       return  (
         <div className='AITool'>
+          <DropZone sendData={this.getPOSTData} 
+                    readState={this.changeToSearchByTrashTag}/>
           { 
-            this.state.filename  // if receive an image
+            this.state.classNames // if receive result
               ? ( // display image and result
                 <>
-                  <AIToolResultLeft 
-                    filename={this.state.filename} 
-                    label={this.state.prediction.name}
-                    readState={this.changeToSearchByTrashTag}
-                  />
                   <AIToolResultRight 
                     isInfo={this.state.isInfo} 
-                    prediction={this.state.prediction}
+                    classNames={this.state.classNames}
+                    // classIDs={this.state.classIDs}
                   />
                 </>
               ) 
               : ( // display drag and drop file by default
                 <>
-                  <DropZone sendData={this.getPOSTData} />
                   <div className='AITool-content'>
                     <div className='AITool-header'>
                       <img className='AITool-header-logo' src='https://greendots-aitool-server.onrender.com/image/AI_Tool_logo.svg' />
