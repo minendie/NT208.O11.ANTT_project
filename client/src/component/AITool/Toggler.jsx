@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { PreviewCampaign } from './PreviewCampaign';
 
 
-const API_ENDPOINT = 'link2DB'
+const API_ENDPOINT = 'https://caring-moose-plainly.ngrok-free.app'
+// const API_ENDPOINT = 'http://localhost:3002/upload';
 
 const tempItems = [
     {
@@ -61,7 +62,6 @@ function Toggler({ data, title, isInfo }) {
 
 
     function getLocations(tagID) {
-
 
         if (!trashLocations[tagID]){
             

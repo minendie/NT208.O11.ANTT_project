@@ -4,7 +4,8 @@ import axios from 'axios';
 import ImageWithRectangles from './ImageWithRectangles';
 
 // const API_ENDPOINT = 'https://greendots-aitool-server.onrender.com/upload';
-const API_ENDPOINT = 'http://localhost:3002/upload';
+// const API_ENDPOINT = 'http://localhost:3002/upload';
+const API_ENDPOINT = 'https://caring-moose-plainly.ngrok-free.app'
 
 
 const DropZone = (props) => {
@@ -18,6 +19,7 @@ const DropZone = (props) => {
     function handleUpload(event) {
 
         // read file from event
+        console.log(event)
         const file = event[0];
 
         setDisplayText(`Reading ${file.name}`)
