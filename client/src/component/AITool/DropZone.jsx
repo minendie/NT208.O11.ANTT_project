@@ -1,70 +1,162 @@
 import { useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
+import ImageWithRectangles from './ImageWithRectangles';
 
-const API_ENDPOINT = 'https://greendots-aitool-server.onrender.com/upload';
+// const API_ENDPOINT = 'https://greendots-aitool-server.onrender.com/upload';
+// const API_ENDPOINT = 'http://localhost:3002/upload';
+const API_ENDPOINT = 'https://caring-moose-plainly.ngrok-free.app'
 
-const DropZone = ({ sendData }) => {
+
+const DropZone = (props) => {
 
     let [hasFile, setHasFile] = useState(false);
-    let [filename, setFilename] = useState('');
+    let [isUploaded, setIsUploaded] = useState(false);
+    let [dataReceived, setDataReceived] = useState({});
+    let [displayText, setDisplayText] = useState('Drag and drop your image here, or click to select an image')
 
     // send files to the server
     function handleUpload(event) {
 
+        // read file from event
+        console.log(event)
         const file = event[0];
-        
-        // guard
-        if ( typeof file === 'undefined' ) {
-            alert('Invalid file. Please try again');
+
+        setDisplayText(`Reading ${file.name}`)
+        // check if the given file is an image
+        if ( typeof file === 'undefined' || file.type.split('/')[0] != "image" ) {
+            alert('Invalid file. Please only upload JPEG or PNG files');
             return;
         };
-
-        setFilename(file.name);
-        setHasFile(true);
-
-        const data = new FormData();
         
-        data.append('file', file);
+        setHasFile(true); // means that there is a file is waiting for uploading
+        setIsUploaded(false); // the file has not been uploaded 
+        
+        setDisplayText(`Uploading ${file.name}`)
+        // create form data to upload to multer 
+        const data = new FormData();
+        data.append('file', event[0]);
+        
+        // using Axios to POST 
         axios.post(API_ENDPOINT, data,)
         .then((res) => {
-            sendData({
-                filename: res.data.filename,
-                prediction: res.data.prediction,
-            })
-        })
-        .catch((err) => {
-            alert(err);
-            window.location.reload(false);
-        });
-    };
+            
+                setDataReceived({
+                    filename: res.data.filename,
+                    bboxes: res.data.bboxes,
+                })
+                // console.log(res.data.classNames)
+                
+                // send data to parent node 
+                props.sendData({
+                    classNames: [... res.data.classNames],
+                })
 
+                setIsUploaded(true);
+                
+            }) // end postprocessing
+            .catch((err) => {
+                alert(`${err}. Please try again.`);
+                // window.location.reload(false);
+            }); // end catching error
+            
+            setHasFile(false); 
+            
+            setDisplayText(`Displaying ${file.name}`);
+
+        };// end handleUpload
+
+
+    // config dropzone 
     const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({
-        accept: {
+
+        accept: { // only accept images 
             'image/png': ['.png', '.PNG'],
             'image/jpeg': ['.jpg', '.jpeg', '.JPG', '.JPEG']
         },
         onDrop: handleUpload,
         onChange: handleUpload,
         multiple: false, // not allow multiple files 
-    });
+
+    }); // end useDropzone
+
+    
+    // switch to displaying trash's information
+    function changeToInfo(event) { 
+        
+        props.readState({
+            isInfo: true
+        });
+
+    }; // end changeToInfo
+
+    // switch to displaying locations
+    function changeToRecommendations(event) { 
+
+        props.readState({
+            isInfo: false
+        });
+
+    }; // end changeToRecommendations
 
     return (
-        <div className='dropzone' {...getRootProps()}>
-        {
-            hasFile
-            ? (<h1>Processing {filename} .............</h1>) 
-            : (
+        <div className='AITool-result-left'>
+            {
+                // hide buttons 
+                isUploaded && !isDragActive ?
                 <>
-                    <input {...getInputProps()} />
-                    {
-                        isDragActive ?
-                        <p>Drop your image here ...</p> :
-                        <p>Drag and drop your image here, or click to select an image</p>
-                    }
+                    <div className='AITool-result-buttons'>
+                        <button className='AITool-result-button' 
+                                onClick={changeToInfo}
+                        >
+                            More Information
+                        </button>
+                        <button className='AITool-result-button'
+                                onClick={changeToRecommendations}
+                        >
+                            Find Campaigns
+                        </button>
+                    </div>
                 </>
-            )
-        }
+                : <></>
+            }
+            <div className='dropzone' {...getRootProps()}>
+            {
+                hasFile
+                ? (
+                    <input type='file' name='file' {...getInputProps()} />
+                )
+                : (<>
+                    {
+                        isUploaded && !isDragActive ? 
+                        (<>
+
+                            <div className='AITool-result-content'>
+                                {/* <h1 className='AITool-result-left-title'>
+                                    result: {dataReceived.prediction.name ? dataReceived.prediction.name : 'undefined'}
+                                </h1> */}
+                                <div className='AITool-result-image'>
+                                    {/* <img src={`https://greendots-aitool-server.onrender.com/image/${dataReceived.filename}`}/> */}
+                                    <ImageWithRectangles 
+                                        imgSrc={`http://localhost:3002/image/${dataReceived.filename}`} 
+                                        bboxes={dataReceived.bboxes}
+                                    />
+                                </div>
+                                <div className='AITool-result-newimg' onClick={handleUpload}>
+                                    {/* <img src='https://greendots-aitool-server.onrender.com/image/AI_Tool_refresh.svg'/> */}
+                                    <p>Click to upload another image</p>
+                                </div>
+                            </div>
+                        </>) :
+                        (<>
+                        {
+                            isDragActive ? <p>Drop your image here ...</p> : <p>{displayText}</p>
+                        }
+                        </>)
+                    }
+                </>)
+            }
+            </div>
         </div>
     )
 };

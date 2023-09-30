@@ -15,26 +15,6 @@ html, body, #root {
   font-family: 'Inter-Regular', Helvetica, sans-serif;
 }
 
-.App {
-  text-align: center;
-}
-
-.App nav {
-  display: flex;
-  justify-content: space-between;
-  background-color: #333333;
-  width: 100%;
-  color: #ffffff;
-  padding: 0.5rem 1rem;
-}
-
-.App nav a {
-  color: #ffffff;
-  text-decoration: none;
-  margin-left: 1rem;
-  margin-right: 1rem;
-}
-
   
 /* FILE UPLOAD */
 
@@ -43,8 +23,8 @@ html, body, #root {
   flex-direction: column;
   justify-content: center;
   align-items: center; 
-  height: 100%;
-  width: 50%;
+  height: 90%;
+  width: 100%;
   border: 5px dashed rgb(117, 112, 112);
   padding: 2rem;
   background-color: rgba(51, 187, 197, 0.4);
@@ -61,6 +41,7 @@ html, body, #root {
   width: 100%;
   height: 94vh;
   padding: 2 1rem;
+  color: black;
 }
 
 .AITool-content {
@@ -100,6 +81,9 @@ html, body, #root {
 
 .AITool-result-left {
   /* height: 95vh; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 50%;
   background-color: rgb(51, 187, 197);
   padding: 20px 0 50px 0;
@@ -144,6 +128,20 @@ html, body, #root {
   background-color: white;
   color: #33BBC5;
   width: max-content;
+}
+
+.AITool-result-right-toggle-item {
+  margin: 15px;
+
+}
+
+.AITool-result-toggle-title {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 5px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #333333;
 }
 
 .AITool-result-button:hover {
@@ -202,9 +200,14 @@ html, body, #root {
   font-weight: bold;
 }
 
+.AITool-result-content {
+  display: flex;
+  /* height: 100%; */
+  flex-direction: column;
+  align-items: center;
+}
 
-
-.AITool-result-refresh {
+.AITool-result-newimg {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -217,13 +220,13 @@ html, body, #root {
 }
 
 
-.AITool-result-refresh:hover {
+.AITool-result-newimg:hover {
   cursor: pointer;
   border: 1px #ffffff solid;
   border-radius: 8px;
 }
 
-.AITool-result-refresh img { 
+.AITool-result-newimg img { 
   width: 12px;
   margin: 5px 15px 5px 0;
 }
@@ -283,11 +286,11 @@ html, body, #root {
     object-fit: contain;
   }
 
-  .AITool-result-refresh {
+  .AITool-result-newimg {
     margin: 4px 20px;
   }
 
-  .AITool-result-refresh img {
+  .AITool-result-newimg img {
     margin: 5px 5px 5px 0;
   }
 
