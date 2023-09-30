@@ -1,6 +1,6 @@
 import Layout from "./layout/Layout";
 import "./App.css"
-import { Home } from "./page/Home";
+import Home  from "./page/Home";
 import  Aboutus  from "./page/Aboutus";
 import  LogIn  from "./page/LogIn";
 import  Signup from "./page/Signup";
