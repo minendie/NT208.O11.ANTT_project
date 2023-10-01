@@ -10,7 +10,7 @@ require('dotenv').config()
 // const session = require('express-session')
 // enable CORS
 const cors = require('cors')
-app.use(cors());
+app.use(cors()); 
 
 // CREATE APP
 const port = 3002;
@@ -22,7 +22,6 @@ app.use(bodyParser.urlencoded({
     extended: true,
 }));
 // for parsing multipart/form-data
- 
 
 
 // declare static files

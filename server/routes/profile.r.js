@@ -9,6 +9,5 @@ const router = app => {
     // app.put('/edit/:userID', AuthMiddleware.authenToken, ControllerUser.userUpdate);
 }   
 
-
 // export the router
 module.exports = router;

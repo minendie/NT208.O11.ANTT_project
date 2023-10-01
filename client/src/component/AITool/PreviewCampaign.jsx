@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "./Button";
 import { ElementTrashTag } from "./ElementTrashTag";
-import "./styles.css";
+// import "./styles.css";
 
 export const PreviewCampaign = ({ data }) => {
     return (
@@ -101,3 +101,6 @@ export const PreviewCampaign = ({ data }) => {
         </div>
     );
 };
+
+// import "./styles.css";
+

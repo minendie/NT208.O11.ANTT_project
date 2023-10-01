@@ -1,7 +1,5 @@
 // src/components/Form.tsx
 import React, { useState } from 'react';
-import Autocomplete from "react-google-autocomplete";
-
 
 
 interface FormProps {
@@ -58,12 +56,6 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
     }
   };
 
-  // const handleEditingAddress = () => {
-  //   if (canEdit) {
-  //     setAddress()
-  //   }
-  // }
-
   const handleSave = () => {
     setReadOnly(true)
     // PUT data to database
@@ -101,10 +93,6 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
             setValue={setDescription}
             isReadOnly={readOnly}
           />
-        { canEdit && <Autocomplete
-            apiKey={'AIzaSyAfWVFE0GMfRMDIElEooMkUttGWCt-pPS4'}
-            onPlaceSelected={(place) => place.adr_address ? setAddress(place.adr_address) : console.log()}
-          />}
         <InputForm 
             htmlFor="address"
             labelValue='Address'

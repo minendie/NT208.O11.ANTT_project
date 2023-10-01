@@ -5,6 +5,10 @@ import DropZone from '../component/AITool/DropZone';
 import AIToolResultRight from '../component/AITool/AIToolResultRight';
 
 
+// const API_ENDPOINT = 'http://localhost:3002'
+const API_ENDPOINT = 'https://caring-moose-plainly.ngrok-free.app'
+
+
 // declare props for AITool component
 interface AIToolProps {
 
@@ -75,7 +79,7 @@ export class AITool extends Component<AIToolProps, AIToolState> {
                 <>
                   <div className='AITool-content'>
                     <div className='AITool-header'>
-                      <img className='AITool-header-logo' src='https://greendots-aitool-server.onrender.com/image/AI_Tool_logo.svg' />
+                      <img className='AITool-header-logo' src={`${API_ENDPOINT}/image/AI_Tool_logo.svg`} />
                       <h1 className='AITool-header-title'>AI-powered waste sorting tool</h1>
                     </div>
                     <p className='AITool-desc'>An AI-powered waste sorting tool utilizes advanced algorithms and machine learning to automate and optimize the process of waste classification.</p>

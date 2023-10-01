@@ -38,7 +38,7 @@ const NavbarHeader = () => {
           ))}
         </div>
         <div className={styles.menuNavbarButton}>
-          <button className="rounded-2xl bg-[#FDA172] px-2">
+          <button className="rounded-2xl bg-[#FDA172] px-2 text-bold text-black">
             <Link to={"login"}>JOIN US ! </Link>
           </button>
 
@@ -46,7 +46,7 @@ const NavbarHeader = () => {
             <Avatar shape="circle" icon={<UserOutlined />}></Avatar>
           </Link>
           <div className="">
-            <BellOutlined className="text-2xl" />
+            <BellOutlined className="text-3xl" />
           </div>
         </div>
       </div>
