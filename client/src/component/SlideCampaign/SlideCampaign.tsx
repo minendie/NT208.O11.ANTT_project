@@ -30,8 +30,8 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
   };
 
   return (
-    <div className="w-1/2 border-2 h-64 overflow-hidden bg-gray-200 rounded-lg shadow-md relative">
-      <div className="flex items-center justify-items-center justify-between h-full space-x-4">
+    <div className="flex justify-center border-2 h-64 overflow-hidden bg-gray-200 rounded-lg shadow-md relative">
+  
         {slides.map((slide, index) => (
           <div
             key={index}
@@ -39,10 +39,8 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
               index === currentIndex ? "translate-x-0" : "translate-x-full"
             }`}
           >
-            <div className=" h-full border-2 p-4 bg-white rounded-lg shadow-md flex gap-x-4">
-              {/* <img src = {campaignImage} alt =  "image"/> */}
-
-              {/* cart detail */}
+            <div className=" h-full border-2 p-4 bg-white rounded-lg shadow-md flex justify-center gap-x-4">
+           
               <div className="">
                 <img src={campaignImage} alt="image" className="h-60" />
               </div>
@@ -78,7 +76,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
             </div>
           </div>
         ))}
-      </div>
+    
       <RightCircleOutlined
         onClick={prevSlide}
         className="absolute rounded-full top-1/2 left-4 transform -translate-y-1/2 px-4 py-2 bg-gray-800 text-white rounded-full focus:outline-none"
