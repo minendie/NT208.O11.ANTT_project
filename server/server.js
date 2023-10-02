@@ -4,6 +4,13 @@ const app = express();
 const multer = require('./models/ModelMulter');
 const AIToolrouter = require('./routes/ai_tools.r');
 const ProfileRouter = require('./routes/profile.r')
+const UserRouter = require('./routes/user.r')
+require('dotenv').config()
+
+// const session = require('express-session')
+// enable CORS
+const cors = require('cors')
+app.use(cors()); 
 
 // CREATE APP
 const port = 3002;
@@ -15,10 +22,7 @@ app.use(bodyParser.urlencoded({
     extended: true,
 }));
 // for parsing multipart/form-data
- 
-// enable CORS
-var cors = require('cors')
-app.use(cors());
+
 
 // declare static files
 app.use(express.static('public'))
@@ -30,6 +34,7 @@ app.set('view engine', 'ejs');
 
 AIToolrouter(app)
 ProfileRouter(app)
+UserRouter(app)
 
 // Start the server on port 3002
 const server = app.listen(port, (error) => {

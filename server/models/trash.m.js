@@ -31,7 +31,7 @@ module.exports = {
                     CampaignName,
                     StartDate,
                     EndDate,
-                    Description,
+                    C.Description,
                     CONCAT(Street, ', ', Ward, ', ', Province, ', ', Country) AS Address,
                     CONCAT(OpenHour, ' to ', CloseHour) AS WorkingHour
                 FROM 

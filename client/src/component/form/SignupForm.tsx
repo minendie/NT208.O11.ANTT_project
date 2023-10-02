@@ -1,17 +1,45 @@
 // src/components/SignupForm.tsx
 import React, { useState } from 'react';
+import axios from 'axios';
+
+
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+
 
 const SignupForm: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [isChecked, setIsChecked] = useState(false);
 
   const handleSignup = () => {
     // Add your signup logic here
-    console.log('Username:', username);
-    console.log('Password:', password);
-    console.log('Email:', email);
+    const data = { username, password, email }
+    // fetch
+    axios.post(`${API_ENDPOINT}/auth/signup`, data, 
+    )
+    .then((result) => {
+      console.log(result)
+      if (result.data.success) {
+        alert('Sign up successfully');
+      }
+      else {
+        alert('User exists')
+      }
+    })
+    .catch((err) =>{
+      console.log(err)
+    })
   };
+
+  const showPassword = () => {
+    if (isChecked) {
+      setIsChecked(false)
+    } 
+    else {
+      setIsChecked(true)
+    }
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -28,13 +56,15 @@ const SignupForm: React.FC = () => {
         </div>
         <div className="mb-4">
           <input
-            type="password"
+            type={isChecked ? "text" : "password"}
             placeholder="Password"
             className="w-full p-2 border rounded"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        <input type="checkbox" onChange={showPassword} checked={isChecked}/>
+        <label htmlFor='showPass' onClick={showPassword}>Show your password</label>
         <div className="mb-4">
           <input
             type="email"

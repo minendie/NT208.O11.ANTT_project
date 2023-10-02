@@ -51,7 +51,7 @@ interface Place {
 
 export default function Places() {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: "AIzaSyAIDQrKQhPF_BZhnoNMbcYF7T-gnbZMjPY",
+    googleMapsApiKey: "AIzaSyAfWVFE0GMfRMDIElEooMkUttGWCt-pPS4",
     libraries: ["places"],
   });
 

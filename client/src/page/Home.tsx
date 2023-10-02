@@ -109,6 +109,8 @@ export default function Home() {
           </div>
         </MapContainer>
 
+        </div>
+    )
       </div>
     </div>
   );
