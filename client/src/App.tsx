@@ -1,7 +1,7 @@
 import Layout from "./layout/Layout";
 import "./App.css"
 import Home  from "./page/Home";
-import  Aboutus  from "./page/Aboutus";
+import  Aboutus  from "./page/Aboutus/Aboutus";
 import  LogIn  from "./page/LogIn";
 import  Signup from "./page/Signup";
 import ErrorPage from "./ErrorPage";
