@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import OrganizerProfileForm from '../component/form/OrganizerProfileForm'
+import OrganizerProfileForm from '../component/form/Profile/OrganizerProfileForm'
 import { UserOutlined } from "@ant-design/icons";
+import '../component/form/Profile/css/styles.css'
 import { Avatar } from "antd";
 
 interface ProfileProps {
@@ -37,15 +38,13 @@ const DetailOrganizer = (props: ProfileProps) => {
 
     return (
         <div>
-            <div className='profile-header'>
-                <div className="profile-thumbnail"></div>
-                {
-                    !organizer 
-                    ? <Avatar className="profile-avatar" shape="circle" icon={<UserOutlined />}></Avatar>
-                    : <img alt="User's avatar" src={organizer?.avatarSrc} /> 
-                }
-                <h2>{organizer? organizer.organizerName : 'Test Username'}</h2>
-            </div>
+            <div class="bg-cyan-500 ...">
+                    <div className="profile-cover"></div>                        
+                </div>
+                <div className="avatar">
+                    <img class="w-16 h-16 rounded-full border-2 border-black " src="https://img-qn.51miz.com/preview/element/00/01/15/69/E-1156995-FB1729B5.jpg" alt="" />
+                     Username
+                </div>                
             <OrganizerProfileForm 
                 canEdit={canEdit}
                 organizer={organizer}

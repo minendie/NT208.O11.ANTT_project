@@ -1,6 +1,7 @@
 // src/components/Form.tsx
 import React, { useState } from 'react';
-
+import '../Profile/css/styles.css'
+import { Input, Button , Space, ConfigProvider, Divider} from 'antd';
 
 interface FormProps {
     htmlFor: string,
@@ -20,6 +21,7 @@ const InputForm = (props: FormProps) => {
   {
     !props.isHidden && 
     <div className="mb-4">
+      <div className="align-left" > 
       <label htmlFor={props.htmlFor}>{props.labelValue}</label>
       <input
         type={props.inputType}
@@ -29,6 +31,7 @@ const InputForm = (props: FormProps) => {
         readOnly={props.isReadOnly}
         onChange={(e) => props.setValue(e.target.value)}
       />
+      </div>
     </div>
   }
   </>
@@ -71,8 +74,9 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
 
 
   return (
+         
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded shadow-md w-96">
+    <div className="bg-white p-8 rounded shadow-md w-96"> 
         <InputForm 
             htmlFor="orgName"
             labelValue='Organization Name'
@@ -152,34 +156,11 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
             value={websiteLink}
             setValue={setWebsiteLink}
             isReadOnly={readOnly}
-          />        
-        { canEdit && (<>{
-              readOnly ?
-                <button
-                  className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-                  onClick={handleEditing}
-                >
-                  Edit Profile
-                </button>
-              : (
-                <div className='row'>
-                  <button
-                    className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-                    onClick={handleSave}
-                  >
-                    Save
-                  </button>
-                  <button
-                    className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-                    onClick={handleCancelEditing}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              )
-        } </>)}
-      </div>
-    </div>
+          /> 
+          </div>
+          </div>   
+        
+        
   );
 };
 
