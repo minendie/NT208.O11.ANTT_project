@@ -1,5 +1,7 @@
 // src/components/Form.tsx
 import React, { useState } from 'react';
+import '../Profile/css/styles.css'
+import { Input, Button , Space, ConfigProvider, Divider} from 'antd';
 
 interface FormProps {
     htmlFor: string,
@@ -17,7 +19,8 @@ const InputForm = (props: FormProps) => {
   <>
   {
     !props.isHidden && 
-    <div className="mb-4">
+    <div className="mb-4 align-left">
+     <div className="align-left" > 
       <label htmlFor={props.htmlFor}>{props.labelValue}</label>
       <input
         type={props.inputType}
@@ -27,11 +30,13 @@ const InputForm = (props: FormProps) => {
         readOnly={props.isReadOnly}
         onChange={(e) => props.setValue(e.target.value)}
       />
+      </div>
     </div>
   }
   </>
   )
 }
+
 
 
 
@@ -80,20 +85,24 @@ const ParticipantProfileForm: React.FC<{ canEdit: boolean, user: any, classNames
   }
 
   return (
-    <div className={`min-h-screen flex items-center justify-center bg-gray-100 ${classNames}`}>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-96">
-        {/* <h2 className="text-2xl font-semibold mb-4">Welcome to Greendots!</h2> */}
+        <h2 className="text-2xl font-semibold mb-4">Profile</h2>
+        
+        
         <InputForm 
           htmlFor='username'
-          labelValue='Username'
+          labelValue='UserName'
           placeholder= 'Type new username'
           isHidden={false}
           inputType='text'
           value={username}
           setValue={setUsername}
           isReadOnly={readOnly}
+          
         />
-        <div className="">
+        
+        
           <InputForm 
             htmlFor='password'
             labelValue='Password'
@@ -103,10 +112,13 @@ const ParticipantProfileForm: React.FC<{ canEdit: boolean, user: any, classNames
             value={password}
             setValue={setPassword}
             isReadOnly={readOnly}
-          />
+          />        
+         
+          <div className="align-right">
           <input type="checkbox" onChange={showPassword} checked={isChecked}/>
-          <label htmlFor='showPass' onClick={showPassword}>Show your password</label>
-        </div>
+          <label class="text-sm ..."htmlFor='showPass' onClick={showPassword}>Show your password</label>         
+          </div>
+
         <InputForm 
             htmlFor='email'
             labelValue='Email'
@@ -149,29 +161,19 @@ const ParticipantProfileForm: React.FC<{ canEdit: boolean, user: any, classNames
           />        
         { canEdit && (<>{
                 readOnly  ?
-                  <button
-                    className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-                    onClick={handleEditing}
-                  >
-                    Edit Profile
-                  </button>
+                <Button className="custom-button-color" shape='round' type="text" onClick={handleEditing}> Edit</Button>                  
                 : (
                   <div className='row'>
-                    <button
-                      className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-                      onClick={handleSave}
-                    >
-                      Save
-                    </button>
-                    <button
-                      className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-                      onClick={handleCancelEditing}
-                    >
-                      Cancel
-                    </button>
+                    <Button className="custom-button-color" shape='round' type="text" onClick={handleSave}> Save</Button>
+                    <Space> <Space ><Space></Space></Space></Space>
+                    <Button className="custom-button-color" shape='round' type="text" onClick={handleCancelEditing}> Cancle</Button>
+                    
                   </div>
                 )
         }</>)}
+
+      
+        
       </div>
     </div>
   );
