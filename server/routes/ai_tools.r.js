@@ -7,6 +7,8 @@ const router = app => {
     app.get('/trash-locations/:id', ControllerTool.trashLocationGet);
     // upload image and receive result 
     app.post('/upload', ControllerUpload.uploadSingleFile); 
+    // delete image after the client receives 
+    app.delete('/delete/:filename', ControllerUpload.deleteUploadedFile);
 }
 
 

@@ -1,6 +1,9 @@
 'use strict';
 const upload = require('../models/ModelMulter');  // middleware multer to upload images
 const ControllerAITool = require('../controllers/ai_tools.c');
+const path = require('path')
+const fs = require('fs'); // read files
+ 
 
 
 module.exports = {
@@ -27,8 +30,24 @@ module.exports = {
             });
         } catch (err) {
             console.log(err);
-            res.sendStatus(500);
+            res.status(500).send({message: err.message});
         }
     },
+
+    deleteUploadedFile: async(req, res) => {
+        try {
+            const imagePath = path.join(__dirname, '../public/images/', req.params.filename)
+            fs.unlink(imagePath, (unlinkErr) => {
+                if (unlinkErr) {
+                  console.error(unlinkErr);
+                  return;
+                }
+                console.log(`Image ${imagePath} has been sent and deleted.`);
+            });
+            res.send({success: true})
+        } catch (err) {
+             console.log(err)
+        }
+    }
 
 }

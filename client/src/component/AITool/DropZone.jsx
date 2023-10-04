@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
 import ImageWithRectangles from './ImageWithRectangles';
@@ -19,6 +19,7 @@ const DropZone = (props) => {
 
         // read file from event
         console.log(event)
+        cleanup()
         const file = event[0];
 
         setDisplayText(`Reading ${file.name}`)
@@ -51,18 +52,30 @@ const DropZone = (props) => {
                 })
 
                 setIsUploaded(true);
-                
             }) // end postprocessing
             .catch((err) => {
                 alert(`${err}. Please try again.`);
-                // window.location.reload(false);
             }); // end catching error
             
             setHasFile(false); 
-            
-            setDisplayText(`Displaying ${file.name}`);
+    };// end handleUpload
 
-        };// end handleUpload
+
+    const cleanup = () => {
+        // Perform cleanup or deletion on the server
+        if (dataReceived.filename) {
+          axios.delete(`${API_ENDPOINT}/delete/${dataReceived.filename}`)
+            .then(() => {
+              console.log(`File ${dataReceived.filename} deleted.`);
+            })
+            .catch((error) => {
+              console.error(`Error deleting file: ${error}`);
+            });
+        }
+      };
+    useEffect(() => { 
+        window.addEventListener('beforeunload', cleanup);
+    });
 
 
     // config dropzone 
