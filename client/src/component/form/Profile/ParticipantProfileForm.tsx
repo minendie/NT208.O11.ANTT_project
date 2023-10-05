@@ -166,7 +166,7 @@ const ParticipantProfileForm: React.FC<{ canEdit: boolean, user: any, classNames
                   <div className='row'>
                     <Button className="custom-button-color" shape='round' type="text" onClick={handleSave}> Save</Button>
                     <Space> <Space ><Space></Space></Space></Space>
-                    <Button className="custom-button-color" shape='round' type="text" onClick={handleCancelEditing}> Cancle</Button>
+                    <Button className="custom-button-color" shape='round' type="text" onClick={handleCancelEditing}> Cancel</Button>
                     
                   </div>
                 )
