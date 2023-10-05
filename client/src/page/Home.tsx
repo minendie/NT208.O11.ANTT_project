@@ -8,6 +8,7 @@ import { DatePicker, Input, Rate, Space } from "antd";
 import CustomButton from "../component/ui/CustomButton";
 import SlideCampaign from "../component/SlideCampaign/SlideCampaign";
 import Search from "react-leaflet-search"
+import NewCampaignForm from "../component/form/NewCampaignForm/NewCampaignForm";
 const slides = [
   {
     title: "Slide 1",
@@ -61,6 +62,10 @@ export default function Home() {
   const handleSearch = () => {
     setShowComponent(!showComponent)
     }
+    const [showForm, setShowForm] = useState(false)
+    const handleCreateForm = () => {
+      setShowForm(!showForm)
+      }
   const { RangePicker } = DatePicker;
   return (
     <div>
@@ -103,9 +108,19 @@ export default function Home() {
                 </Space>
                 <CustomButton title="Search" onClick= {handleSearch} />
 
-                <CustomButton title="Create a new campaign" onClick = {handleSearch}/>
+                <CustomButton title="Create a new campaign" onClick = {handleCreateForm}/>
               </div>
                 {showComponent&&<SlideCampaign slides={slides}/>}
+                {showForm&&
+                <NewCampaignForm startDate="2023-06-09"
+                  endDate="2023-12-11"
+                  openHour="06:30:00"
+                  closeHour="20:00:00"
+                  description="We are 4 girls."
+                  campaignName="WhatEVER"
+                  address="somewhere on Earth"
+                  receiveItems={[]}
+                  receiveGifts={[]}/>}
             </div>
           </div>
         </MapContainer>

@@ -1,4 +1,30 @@
 import React from "react";
+import image from '../../assets/image.png'
+import logo_4 from '../../assets/logo-4.png'
+import logo_5 from '../../assets/logo-5.svg'
+import pattern_dot_1 from '../../assets/pattern-dot-1.svg'
+import logo_6 from '../../assets/logo-6.svg'
+import logo_7 from '../../assets/logo-7.svg'
+import ornament_38_6 from '../../assets/ornament-38-6.svg'
+import ornament_38_7 from '../../assets/ornament-38-7.svg'
+import ornament_82_1 from '../../assets/ornament-82-1.png'
+import ornament_83_1 from '../../assets/ornament-83-1.png'
+import ornament_84_1 from '../../assets/ornament-84-1.png'
+import ornament_86_1 from '../../assets/ornament-86-1.png'
+import pattern_dot_2 from '../../assets/pattern-dot-2.svg'
+import react from '../../assets/react.svg'
+import rectangle_8 from '../../assets/rectangle-8.svg'
+import separator_1 from '../../assets/separator-1.svg'
+import separator from '../../assets/separator.svg'
+import unsplash_6vhpy27jdps from '../../assets/unsplash-6vhpy27jdps.png'
+import unsplash_4ebhbxxckru from '../../assets/unsplash-4ebhbxxckru.png'
+import unsplash_9d0ln17mdeu from '../../assets/unsplash-9d0ln17mdeu.png'
+import unsplash_eq2z9ay9wws from '../../assets/unsplash-eq2z9ay9wws.png'
+import unsplash_fhnnjk1yj7y from '../../assets/unsplash-fhnnjk1yj7y.png'
+import unsplash_jibmsms4_ka from '../../assets/unsplash-jibmsms4-ka.png'
+import unsplash_ph4skrfgyy from '../../assets/unsplash-ph4skrfgyy.png'
+
+
 
 const Aboutus = (): JSX.Element => {
   return (
@@ -9,10 +35,10 @@ const Aboutus = (): JSX.Element => {
             <img
               className="relative w-[1299px] h-[695.41px] object-cover"
               alt="Unsplash"
-              src="/img/unsplash-6vhpy27jdps.png"
+              src={unsplash_6vhpy27jdps}
             />
             <div className="absolute w-[521px] h-[483px] top-0 left-0 rotate-[180.00deg]">
-              <img className="absolute w-[370px] h-[340px] top-0 left-0 !h-[483px] !rotate-[-180.00deg] !w-[521px]" alt="Pattern dot" src="/img/pattern-dot-1.svg" />
+              <img className="absolute w-[370px] h-[340px] top-0 left-0 !h-[483px] !rotate-[-180.00deg] !w-[521px]" alt="Pattern dot" src={pattern_dot_1} />
             </div>
           </div>
           <div className="inline-flex items-start gap-[30px] p-[10px] absolute top-[105px] left-[115px]">
@@ -188,12 +214,12 @@ const Aboutus = (): JSX.Element => {
                 </p>
               </div>
               <div className="items-start inline-flex gap-[10px] relative flex-[0_0_auto]">
-                <img className="relative w-[236px] h-[241px]" alt="Unsplash" src="/img/unsplash-ph4skrfgyy.png" />
+                <img className="relative w-[236px] h-[241px]" alt="Unsplash" src={unsplash_ph4skrfgyy} />
               </div>
             </div>
             <div className="flex w-[878px] items-center gap-[20px] relative flex-[0_0_auto]">
               <div className="items-center inline-flex gap-[10px] relative flex-[0_0_auto]">
-                <img className="relative w-[239px] h-[241.22px]" alt="Unsplash" src="/img/unsplash-eq2z9ay9wws.png" />
+                <img className="relative w-[239px] h-[241.22px]" alt="Unsplash" src={unsplash_eq2z9ay9wws} />
               </div>
               <div className="p-[10px] flex-1 grow flex items-center justify-center gap-[10px] relative">
                 <p className="relative flex-1 self-stretch mt-[-1.00px] [font-family:'Inter',Helvetica] font-normal text-white text-[22px] text-justify tracking-[0] leading-[normal]">
@@ -212,7 +238,7 @@ const Aboutus = (): JSX.Element => {
                 </p>
               </div>
               <div className="items-start inline-flex gap-[10px] relative flex-[0_0_auto]">
-                <img className="relative w-[239px] h-[241.22px]" alt="Unsplash" src="/img/unsplash-4ebhbxxckru.png" />
+                <img className="relative w-[239px] h-[241.22px]" alt="Unsplash" src={unsplash_4ebhbxxckru} />
               </div>
             </div>
             <div className="flex w-[878px] items-center gap-[20px] relative flex-[0_0_auto]">
@@ -220,7 +246,7 @@ const Aboutus = (): JSX.Element => {
                 <img
                   className="relative w-[240px] h-[242.23px]"
                   alt="Unsplash ka"
-                  src="/img/unsplash-jibmsms4-ka.png"
+                  src={unsplash_jibmsms4_ka}
                 />
               </div>
               <div className="p-[10px] flex-1 grow flex items-center justify-center gap-[10px] relative">
@@ -240,7 +266,7 @@ const Aboutus = (): JSX.Element => {
                 </p>
               </div>
               <div className="items-start inline-flex gap-[10px] relative flex-[0_0_auto]">
-                <img className="relative w-[240px] h-[242.23px]" alt="Unsplash" src="/img/unsplash-fhnnjk1yj7y.png" />
+                <img className="relative w-[240px] h-[242.23px]" alt="Unsplash" src={unsplash_fhnnjk1yj7y} />
               </div>
             </div>
           </div>
@@ -283,7 +309,7 @@ const Aboutus = (): JSX.Element => {
                 </div>
               </div>
               <div className="inline-flex items-center justify-center px-[20px] py-0 relative flex-[0_0_auto]">
-                <img className="relative w-px h-[320px] mr-[-0.46px]" alt="Separator" src="/img/separator-1.svg" />
+                <img className="relative w-px h-[320px] mr-[-0.46px]" alt="Separator" src={separator_1} />
               </div>
               <div className="flex flex-col w-[292px] items-center relative">
                 <img className="relative flex-[0_0_auto]" alt="Logo" src="/img/logo-1.svg" />
@@ -341,7 +367,7 @@ const Aboutus = (): JSX.Element => {
       <div className="absolute w-[1299px] h-[961px] top-px -left-px">
         <div className="inline-flex flex-col items-start gap-[10px] absolute top-0 left-px">
           <div className="inline-flex flex-col items-start gap-[10px] relative flex-[0_0_auto]">
-            <img className="relative w-[1298px] h-[849.5px]" alt="Rectangle" src="/img/rectangle-8.svg" />
+            <img className="relative w-[1298px] h-[849.5px]" alt="Rectangle" src={rectangle_8} />
             <div className="absolute w-[332px] h-[323px] top-[395px] left-[845px] bg-[url(/img/image.png)] bg-cover bg-[50%_50%]" />
             <img className="absolute w-[370px] h-[340px] top-0 left-0 !h-[418px] !left-[846px] !w-[451px] !top-[19px]" alt="Pattern dot" src="/img/pattern-dot.svg" />
           </div>
