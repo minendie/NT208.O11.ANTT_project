@@ -23,8 +23,9 @@ const NavbarHeader = () => {
   ];
   return (
     <div className={styles.container}>
-      <div className={styles.nameApp}>Greendots</div>
-
+      <a href="/">
+      <div className={styles.nameApp} >Greendots</div>
+      </a>
       <div className={styles.navContainer}>
         <div className={styles.menuNavbarItem}>
           {NavigationItem.map((item, index) => (
