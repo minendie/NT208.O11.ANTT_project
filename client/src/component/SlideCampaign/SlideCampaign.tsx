@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import campaignImage from "../../assets/campaign.jpg";
 import CustomButton from "../ui/CustomButton";
 import WhiteButton from "../ui/WhiteButton";
+import Handle from "rc-slider/lib/Handles/Handle";
+import DetailCampaign from "../card/CampaignCard";
 interface Slide {
   title: string;
   description: string;
@@ -28,6 +30,10 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
       prevIndex === 0 ? slides.length - 1 : prevIndex - 1
     );
   };
+  const [showCampaign, setShowCampaign] = useState(false)
+  const handleClick = () =>{
+    setShowCampaign((showCampaign) === true);
+  }
 
   return (
     <div className="flex justify-center border-2 h-64 overflow-hidden bg-gray-200 rounded-lg shadow-md relative">
@@ -69,7 +75,10 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
                 </div>
                 <div className="flex justify-between flex-row align-items justify-between">
                   <CustomButton title="↳ Direction " />
+                  <a href="/campaign">
                   <WhiteButton title="⭐ Ratings" />
+                  </a>
+                  {/* {showCampaign && <DetailCampaign organizer_name={""} address={""} start_date={""} end_date={""} open_hour={""} close_hour={""} description={""} recycling_items={[]}/>} */}
                   <WhiteButton title="  ...  " />
                 </div>
               </div>

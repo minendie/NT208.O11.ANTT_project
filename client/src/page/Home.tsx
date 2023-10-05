@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
 import icon from "../constant/constants";
-import { DatePicker, Input, Space } from "antd";
+import { DatePicker, Input, Rate, Space } from "antd";
 import CustomButton from "../component/ui/CustomButton";
 import SlideCampaign from "../component/SlideCampaign/SlideCampaign";
 import Search from "react-leaflet-search"
@@ -97,6 +97,7 @@ export default function Home() {
                   type="text"
                   placeholder="Search location"
                 ></Input>
+                
                 <Space direction="vertical" size={12}>
                   <RangePicker showTime />
                 </Space>
@@ -109,8 +110,7 @@ export default function Home() {
           </div>
         </MapContainer>
 
-        </div>
-    )
+       
       </div>
   
   );

@@ -1,21 +1,20 @@
 // src/components/Login.tsx
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from 'react-router-dom'; // navigate to another page
-
-
-const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT
+import { login } from "../../services/services";
+import * as jwt_decode from "jwt-decode";
+import { useAuth } from '../../auth/AuthContext'
 
 
 function validate(username: string, password: string) {
   // Allows alphanumeric characters and underscores, 5-45 characters long
   const usernamePattern = /^[a-zA-Z0-9_]{5,45}$/;
-  // At least 8 characters, at least one uppercase letter, one lowercase letter, and one digit
-  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  // At least 3 characters, at least one uppercase letter, one lowercase letter, and one digit
+  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{3,}$/;
 
   // test username
   if (!usernamePattern.test(username)) {
-    alert('Wrong username.');
+    alert('Invalid username.');
     return false;
   }
 
@@ -32,46 +31,58 @@ const Login: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isChecked, setIsChecked] = useState(false);
-  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // validate 
+  const navigate = useNavigate(); 
+  const auth = useAuth(); // Call useAuth hook here
+
+  const handleLogin = async () => {
+    // ignore trailing and leading whitespaces
+    setUsername(username.trim());
+    setPassword(password.trim());
+    // validate input
     if (!validate(username, password)) {
       return;
     }
-    const data = { username, password }
     // fetch
-    axios.post(`${API_ENDPOINT}/auth/login`, data, 
-      )
-      .then((result) => {
-        if (result.data.success)
-        {
-          // Storing the JWT
-          localStorage.setItem('jwtToken', result.data.accessToken);
-          localStorage.setItem('loggedIn', '1');
+    try {
+        // Call the login function
+        const response = await login({ username, password });
 
-          alert('log in success')
-          navigate('/')
+        if (response.data.success) {
+          // Store the JWT token in local storage
+          const accessToken = response.data.accessToken;
+          localStorage.setItem('jwtToken', accessToken);
+          console.log(accessToken)
+          const jwtPayload = jwt_decode(accessToken)
+          console.log(jwtPayload)
+          localStorage.setItem('userID', jwtPayload['userID'])
+          localStorage.setItem('username', jwtPayload['username'])
+          localStorage.setItem('exp', jwtPayload['exp'])
+
+          auth.setLoggedIn(true);
+          navigate('/'); // Navigate back to the home page
+        } else {
+          alert(response.data.message);
         }
-        else {
-          alert(result.data.message)
+    } catch (error: any) {
+        console.log(error);
+        // Handle error cases
+        if (error.response) {
+          // Request was made and server responded with a status code outside the range of 2xx
+          alert(error.response.data.message);
+        } else if (error.request) {
+          // Request was made but no response was received
+          alert('No response from server');
+        } else {
+          // Something else happened while setting up the request
+          alert('Error occurred');
         }
-      })
-      .catch((err) =>{
-        console.log(err)
-      })
+    }
   };
 
-
   const showPassword = () => {
-    if (isChecked) {
-      setIsChecked(false)
-    } 
-    else {
-      setIsChecked(true)
-    }
+    setIsChecked(!isChecked)
   }
-
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

@@ -9,6 +9,7 @@ import  AITool  from "./page/AITool";
 import  DetailOrganizer  from "./page/DetailOrganizer";
 import  DetailProfile  from "./page/DetailProfile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import DetailCampaign from "./page/DetailCampaign";
 function App() {
   return (
     <div className="app px-2 text-base w-full">
@@ -17,8 +18,9 @@ function App() {
           <Route path="/" element={<Layout />} errorElement={<ErrorPage />}>
             <Route index element={<Home />} />
             <Route path="/about" element={<Aboutus />} />
+            <Route path="/campaign" element={<DetailCampaign />} />
             <Route path="/tool" element={<AITool />} />
-            <Route path="/profile" element={<DetailProfile />} />
+            <Route path="/profile/:targetUsername" element={<DetailProfile />} />
             <Route path="/organizer" element={<DetailOrganizer />} />
 
             <Route path="login" element={<LogIn />} />
