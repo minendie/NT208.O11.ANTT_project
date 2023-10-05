@@ -1,17 +1,14 @@
 // src/components/SignupForm.tsx
 import React, { useState } from 'react';
-import axios from 'axios'; // fetch, POST data
 import { useNavigate } from 'react-router-dom'; // navigate to another page
-
-
-const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+import { signup } from '../../services/services';
 
 
 function validate(username: string, password: string, email: string) {
   // Allows alphanumeric characters and underscores, 5-45 characters long
   const usernamePattern = /^[a-zA-Z0-9_]{5,45}$/;
-  // At least 8 characters, at least one uppercase letter, one lowercase letter, and one digit
-  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  // At least 3 characters, at least one uppercase letter, one lowercase letter, and one digit
+  const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{3,}$/;
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
   // test username
@@ -22,7 +19,7 @@ function validate(username: string, password: string, email: string) {
 
   // test password
   if (!passwordPattern.test(password)) {
-    alert('Password must be from 8-50 characters, having at least 1 digit, 1 uppercase character and 1 lowercase character.')
+    alert('Password must be from 3-50 characters, having at least 1 digit, 1 uppercase character and 1 lowercase character.')
     return false;
   }
 
@@ -43,36 +40,45 @@ const SignupForm: React.FC = () => {
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
+    // ignore leading and trailing whitespaces
+    setUsername(username.trim()); 
+    setPassword(password.trim());
+    setEmail(email.trim());
+    // validate input
     if (validate(username, password, email) === false) {
       return
     }
     // Add your signup logic here
     const data = { username, password, email }
     // fetch
-    axios.post(`${API_ENDPOINT}/auth/signup`, data,)
-    .then((result) => {
-      if (result.data.success) {
-        alert('Sign up successfully!');
-        // redirect to login page when sign up successfully
-        navigate("/login");
-      }
-      else {
-        alert(result.data.message)
-      }
-    })
-    .catch((err) =>{
-      console.log(err)
-    })
+    const response = await signup(data);
+
+    try {
+        if (response.data.success) {
+          alert('Sign up successfully!');
+          navigate("/login");
+        } else {
+          alert(response.data.message)
+        }
+    } catch (error: any) {
+        console.log(error);
+        // Handle error cases
+        if (error.response) {
+          // Request was made and server responded with a status code outside the range of 2xx
+          alert(error.response.data.message);
+        } else if (error.request) {
+          // Request was made but no response was received
+          alert('No response from server');
+        } else {
+          // Something else happened while setting up the request
+          alert('Error occurred');
+        }
+    }
   };
 
   const showPassword = () => {
-    if (isChecked) {
-      setIsChecked(false)
-    } 
-    else {
-      setIsChecked(true)
-    }
+      setIsChecked(!isChecked)
   }
 
   return (
