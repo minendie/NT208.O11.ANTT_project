@@ -195,17 +195,18 @@ const CreateCampaign = ({
     return (
         <>  
         <Modal title="New Campaign" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} centered
-        // footer={(_, { CancelBtn }) => (
-        //     <>
-        //         <Button type="primary" onClick={handleOk}>
-        //             Submit
-        //         </Button>,
-        //         <Button onClick={resetForm}>Reset</Button>,
-        //         <CancelBtn />
-        //     </>
-        //   )}
-            okText="Create"
-            cancelText="Cancle"
+        // // footer={(_, { CancelBtn }) => (
+        // //     <>
+        // //         <Button type="primary" onClick={handleOk}>
+        // //             Submit
+        // //         </Button>,
+        // //         <Button onClick={resetForm}>Reset</Button>,
+        // //         <CancelBtn />
+        // //     </>
+        // //   )}
+        //     okText="Create"
+        //     cancelText="Cancel"
+        // 
         >
 
             <Form

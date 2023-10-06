@@ -1,16 +1,24 @@
 import React, { useState } from 'react';
-import type { RadioChangeEvent } from 'antd';
-import { Radio, Tabs } from 'antd';
+
+import { Modal, Tabs , Button} from 'antd';
 import type { SizeType } from 'antd/es/config-provider/SizeContext';
 import DetailCampaign from '../CampaignCard';
 import ReviewPage from '../../Review/Review_page';
 import './Tabs.css'
 const TabsPage: React.FC = () => {
-  const [size, setSize] = useState<SizeType>('small');
 
-  const onChange = (e: RadioChangeEvent) => {
-    setSize(e.target.value);
+  const [isModalOpen, setIsModalOpen] = useState(true);
+    
+  const showModal = () => {
+      setIsModalOpen(true);
   };
+  
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  
+
+  
   const Page = [{
     label : 'Detail',
     component: <DetailCampaign
@@ -34,22 +42,52 @@ const TabsPage: React.FC = () => {
 ]
 
   return (
-    <div>
+    <>
+      {/* <Modal title="Hello" open={isCampaignOpen} centered footer={null}>
+        {/* <Tabs 
+          defaultActiveKey="1"
+          type="card"
+          // size={size}
+          items={Page.map((_, i) => {
+            const id = String(i + 1);
+            return {
+              label: _.label,
+              key: id,
+              children: _.component,
+            };
+          })}
+        /> */}
+        {/* <p>Hello</p>
+      </Modal> */} 
+      <>
+      {/* <Button type="primary" onClick={showCampaign}>
+        Open Modal
+      </Button> */}
+      <Modal title="" open={isModalOpen} onCancel={handleCancel}  footer={null}>
+        {/* <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p> */}
+        <Tabs 
+          defaultActiveKey="1"
+          type="card"
+          // size={size}
+          items={Page.map((_, i) => {
+            const id = String(i + 1);
+            return {
+              label: _.label,
+              key: id,
+              children: _.component,
+            };
+          })}
+        />
+
+      </Modal>
+    </>
       
-      <Tabs 
-        defaultActiveKey="1"
-        type="card"
-        size={size}
-        items={Page.map((_, i) => {
-          const id = String(i + 1);
-          return {
-            label: _.label,
-            key: id,
-            children: _.component,
-          };
-        })}
-      />
-    </div>
+    
+    </>
+      
+      
   );
 };
 

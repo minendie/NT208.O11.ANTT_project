@@ -75,7 +75,7 @@ return(
                 
 
             </div>
-            <div className="container"> 
+            <div className="review-container"> 
                 <Form.Item name="rating" label="" style={{width: "100%"}} rules={[{ required: true, message: 'Please rating for campaign' }]}>
                     <Rate/>
                 </Form.Item>
