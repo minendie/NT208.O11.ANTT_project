@@ -89,7 +89,7 @@ const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
 
        <div className="flex-col grow" >
             
-                <div key={index} className="container">
+                <div key={index} className="review-container">
                 <label style={{color:"black"}}> {review.username}</label>
                 </div>
                        
@@ -122,7 +122,7 @@ const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
                 
 
             </div>
-            <div className="container"> 
+            <div className="review-container"> 
                 <Form.Item name="rating" label="" style={{width: "100%"}} rules={[{ required: true, message: 'Please rating for campaign' }]}>
                     <Rate disabled/>
                 </Form.Item>

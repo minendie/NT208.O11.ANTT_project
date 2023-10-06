@@ -10,7 +10,7 @@ const ReviewPage: React.FC = () => {
             
             <Space direction="vertical" size={15}>
                 <Review></Review>
-                <Divider></Divider>
+                <Divider style={{ borderTop: "0.3px solid gray"}}></Divider>
                 <Reviews reviews={[{username:'nhi', comment: 'hehe', rating: '4'},{username:'mai', comment: 'hehe', rating: '3'}]}></Reviews>
             </Space>
 

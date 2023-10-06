@@ -3,11 +3,15 @@ const AuthMiddleware = require('../middleware/auth.middleware')
 
 
 const router = app => {
-    // get User by Username
+    // RU User
     app.get('/users/:username', ControllerUser.userGet);
-    // upload user's data
-    // app.put('/edit/:userID', AuthMiddleware.authenToken, ControllerUser.userUpdate);
+    app.put('/update-user', ControllerUser.userPut);
+    // CRU User
+    app.post('/create-organizer', ControllerUser.organizerPost);
+    app.get('/organizer/:organizerID', ControllerUser.organizerGet);
+    app.put('/update-organizer', ControllerUser.organizerPut);
 }   
+
 
 // export the router
 module.exports = router;
