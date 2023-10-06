@@ -7,25 +7,37 @@ module.exports = {
     createCampaign: async(campaignData) => {
         try {
             const result = await db.Query(`
-                INSERT INTO Campaign (CampaignName, StartDate, EndDate, Street, Ward, District, Province, Country, Lat, Long, Description, Status, OpenHour, CloseHour)
+                INSERT INTO Campaign (CampaignName, StartDate, EndDate, Street, Ward, District, Province, Country, Lat, \`Long\`, Description, Status, OpenHour, CloseHour)
                 VALUES ('${campaignData.campaignName}', 
                         '${campaignData.startDate}', 
                         '${campaignData.endDate}', 
-                        '${campaignData.street}', 
-                        '${campaignData.ward}', 
-                        '${campaignData.district}', 
-                        '${campaignData.province}', 
-                        '${campaignData.country}',
-                        ${campaignData.lat},
-                        ${campaignData.long},
-                        '${campaignData.description}',
+                        ${campaignData.street ? `'${campaignData.street}'` : 'NULL'}, 
+                        ${campaignData.ward ? `'${campaignData.ward}'` : 'NULL'}, 
+                        ${campaignData.district ? `'${campaignData.district}'` : 'NULL'}, 
+                        ${campaignData.province ? `'${campaignData.province}'` : 'NULL'}, 
+                        ${campaignData.country ? `'${campaignData.country}'` : 'NULL'},
+                        ${campaignData.lat ? campaignData.lat : 'NULL'},
+                        ${campaignData.long ? campaignData.long : 'NULL'},
+                        ${campaignData.description ? `'${campaignData.description}'` : 'NULL'},
                         ${campaignData.status},
                         '${campaignData.openHour}',
                         '${campaignData.closeHour}')
                 `) /// them lat, lon nua
-                .then((result => {
-                    console.log(result);
-                }))
+            return result.insertId;
+        } catch (err) {
+            console.log(err);
+            throw err;
+        }
+    },
+
+    // create relationship between campaign and trash item
+    createCampaignItem: async(campaignID, campaignItems) => {
+        try {
+            const values = campaignItems.map((itemID) => `(${campaignID}, ${itemID})`)
+            const result = db.Query(`
+                INSERT INTO Recycling (CampaignID, ItemID)
+                VALUES ${values.join(', ')}
+            `)
         } catch (err) {
             console.log(err);
             throw err;
@@ -63,10 +75,11 @@ module.exports = {
     },
 
     // delete a campaign 
-    deleteCampaign: async(campaignID) => {
+    deleteCampaign: async(campaignID, userID) => {
         try {
             const result = await db.Query(`
-                DELETE FROM Campaign WHERE CampaignID = ${campaignID}
+                DELETE FROM Campaign 
+                WHERE CampaignID = ${campaignID}
             `).then((result) => console.log(result))
         } catch (err) {
             console.log(err)

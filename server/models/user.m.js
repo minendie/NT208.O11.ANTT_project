@@ -9,7 +9,7 @@ module.exports = {
     // retrieve user from the database 
     getUserByUsername: async (username) => {
         try {
-            console.log(username); // lam lai ko ho tro tra password
+            console.log(username); 
             const result = await db.Query(`
                 SELECT 
                     Username, Email, PhoneNumber, Bio,
@@ -139,6 +139,7 @@ module.exports = {
             if (!insertInfo.insertId) {
                 throw new Error('This is an organizer already. Each user can become one organizer only.')
             }
+            
             return true;
         } catch (err) { 
             console.log(err);
@@ -183,5 +184,20 @@ module.exports = {
             throw err;
         }
     },
+
+    checkOrganizerRole: async(userID) => {
+        try{
+            const result = db.Query(`
+                SELECT OrganizerID
+                FROM Organizer
+                WHERE UserID = ${userID}
+            `)
+            return result;
+        }
+        catch (err) {
+            console.log(err)
+            throw err;
+        }
+    }
 
 }

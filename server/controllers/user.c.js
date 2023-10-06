@@ -233,6 +233,28 @@ module.exports = {
                     message: err.message,
                 })
             })
-    }
+    },
 
+    authenOrganizer: async(req, res) => {
+        user.checkOrganizerRole(req.params.userID) 
+            .then((result) => {
+                if (result.length > 0) {
+                    res.send({
+                        success: true,
+                        organizerID: result[0].OrganizerID
+                    })
+                }
+                else {
+                    res.send({
+                        success: false
+                    })
+                }
+            })
+            .catch (err => {
+                res.send({
+                    success: false,
+                    message: err.message,
+                })
+            }) 
+    }
 }

@@ -40,7 +40,6 @@ module.exports = {
                         JOIN Item I ON R.ItemID = I.ItemID
                 WHERE 
                     R.ItemID='${id}'
-                    AND Status > 0 
                 `
             );
             // format the start and end date 
@@ -55,6 +54,36 @@ module.exports = {
         } catch (error) {
             console.log(error);
             throw error; // Throw the error to be caught by the caller
+        }
+    },
+
+    getAllTrash: async () => {
+        try {
+            var result = await db.Query( //'SELECT * FROM Recycling'
+                `
+                SELECT 
+                    ItemID, ItemName
+                FROM 
+                    Item
+                `
+            );
+            return result; // Return the result 
+        } catch (error) {
+            console.log(error);
+            throw error; // Throw the error to be caught by the caller
+        }
+    },
+
+    postNewTrash: async (trashName) => {
+        try {
+            const result = await db.Query(`
+                INSERT INTO Item (ItemName)
+                VALUES ('${trashName}')
+            `)
+            return result.insertId;
+        } catch (err) {
+            console.log(err);
+            throw err;
         }
     }
 }
