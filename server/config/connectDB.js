@@ -15,7 +15,7 @@ var config =
         ca: fs.readFileSync(`${__dirname}/DigiCertGlobalRootG2.crt.pem`),
         rejectUnauthorized: false // trust the self-assigned cert
     },
-    connectionLimit: 30, // Set the connection pool size
+    connectionLimit: 200, // Set the connection pool size
 };
 
 
