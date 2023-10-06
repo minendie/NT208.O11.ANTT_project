@@ -12,13 +12,13 @@ module.exports = {
         const password = `${req.body.password.trim()}`
         const email = req.body.email
         // validate password and username length
-        if (password.length < 8
+        if (password.length < 3
             || username.length < 5
             || password.length >= 50
             || username.length >= 50) {
             res.send({
                 success: false,
-                message: 'Password and Username must be bigger than 8 and smaller than 50 characters (not containing whitespaces)'
+                message: 'Password must have more than 3 characters and username must have more than 5 characters (not containing whitespaces)'
             })
             return
         }
@@ -47,7 +47,7 @@ module.exports = {
         if (password.length < 3 || username.length < 5) {
             res.send({
                 success: false,
-                message: 'Password must have more than 3 characters and username must have more than 5 characters and smaller than 50 (not containing whitespaces)'
+                message: 'Password must have more than 3 characters and username must have more than 5 characters (not containing whitespaces)'
             })
             return
         }
