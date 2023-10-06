@@ -1,4 +1,10 @@
 import React from 'react'
+import campaign from '../../assets/campaign.jpg'
+import image from '../../assets/image.png'
+import logo_4 from '../../assets/logo-4.png'
+import logo_5 from '../../assets/logo-5.svg'
+import logo_6 from '../../assets/logo-6.svg'
+
 import './globals.css'
 import './style.css'
 
@@ -15,7 +21,7 @@ const Aboutus = (): JSX.Element => {
           <div className="partners">
             <div className="element-partner">
               <div className="div">
-                <div className="logo"><img className="img" src="img/logo-4.png" /></div>
+                <div className="logo"><img className="img" src={logo_4} alt="uynkim"/></div>
               </div>
               <div className="details">
                 <div className="frame"><div className="partner-name">Partner 1</div></div>
