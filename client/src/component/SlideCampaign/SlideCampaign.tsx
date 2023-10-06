@@ -4,8 +4,10 @@ import React, { useState } from "react";
 import campaignImage from "../../assets/campaign.jpg";
 import CustomButton from "../ui/CustomButton";
 import WhiteButton from "../ui/WhiteButton";
+
 import Handle from "rc-slider/lib/Handles/Handle";
 import DetailCampaign from "../card/CampaignCard";
+import TabsPage from "../card/TabsPage/TabsPage";
 interface Slide {
   title: string;
   description: string;
@@ -19,6 +21,8 @@ const styles = {
   detail: "text-[#33BBC5] ",
 };
 const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
+  
+  
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextSlide = () => {
@@ -32,7 +36,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
   };
   const [showCampaign, setShowCampaign] = useState(false)
   const handleClick = () =>{
-    setShowCampaign((showCampaign) === true);
+    setShowCampaign(!showCampaign);
   }
 
   return (
@@ -75,9 +79,18 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
                 </div>
                 <div className="flex justify-between flex-row align-items justify-between">
                   <CustomButton title="↳ Direction " />
-                  <a href="/campaign">
-                  <WhiteButton title="⭐ Ratings" />
-                  </a>
+                  {/* <a href="/campaign">
+                  <WhiteButton title="⭐ Ratings" onClick = {handleClick} />
+                  </a> */}
+                  <div>
+                  <WhiteButton title="⭐ Ratings" onClick = {handleClick} />
+                  </div>
+                  {
+                    showCampaign&&<TabsPage/>
+                  }
+                  
+                  
+                  {/* </a> */}
                   {/* {showCampaign && <DetailCampaign organizer_name={""} address={""} start_date={""} end_date={""} open_hour={""} close_hour={""} description={""} recycling_items={[]}/>} */}
                   <WhiteButton title="  ...  " />
                 </div>

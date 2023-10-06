@@ -1,7 +1,13 @@
-.container{
-    display: block;
+.review-container{
+    display: flex;
     text-align: left;
     height: fit-content;
+    
+
+}
+.container{
+    height: 0px;
+    /* flex */
 }
 .ant-btn-primary{
     background-color: #33BBC5;

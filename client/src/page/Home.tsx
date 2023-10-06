@@ -14,14 +14,14 @@ const slides = [
     title: "Slide 1",
     description: "Description for Slide 1",
   },
-  {
-    title: "Slide 1",
-    description: "Description for Slide 1",
-  },
-  {
-    title: "Slide 1",
-    description: "Description for Slide 1",
-  },
+  // {
+  //   title: "Slide 1",
+  //   description: "Description for Slide 1",
+  // },
+  // {
+  //   title: "Slide 1",
+  //   description: "Description for Slide 1",
+  // },
 ];
 
 export default function Home() {
@@ -107,6 +107,7 @@ export default function Home() {
                   <RangePicker showTime />
                 </Space>
                 <CustomButton title="Search" onClick= {handleSearch} />
+                
 
                 <CustomButton title="Create a new campaign" onClick = {handleCreateForm}/>
               </div>
