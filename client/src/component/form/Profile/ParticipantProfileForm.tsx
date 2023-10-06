@@ -95,7 +95,7 @@ const ParticipantProfileForm: React.FC<{ canEdit: boolean, user: any, classNames
       setPassword(password.trim())
       setBio(bio.trim())
 
-      // validate password, phone number, email // tach ra validate rieng
+      // validate password, phone number, email
       var data = {
         'phoneNumber' : '',
         'password' : '',

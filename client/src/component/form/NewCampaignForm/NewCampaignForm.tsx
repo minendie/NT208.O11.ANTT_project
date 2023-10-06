@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { ExclamationCircleFilled, InboxOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button, Checkbox, DatePicker, TimePicker, Form, FormInstance, Input, message, Modal, Select, Space, Upload, ConfigProvider } from 'antd';
+import { Button, Checkbox, DatePicker, TimePicker, Form, FormInstance, Input, message, Modal, Select, Space, Upload, ConfigProvider, Result } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
-// import moment from "moment";
-// import locale from 'antd/locale/vi_VN';
+import { useAuth } from '../../../auth/AuthContext'
 import dayjs from 'dayjs';
+import axios from 'axios';
 import './styles.css'
 
-interface campaign {
+interface Campaign {
     startDate: string,
     endDate: string,
     openHour: string,
@@ -15,12 +15,13 @@ interface campaign {
     description: string,
     campaignName: string,
     address: string,
+    lat: number,
+    long: number,
     receiveItems: string[],
-    receiveGifts: string[],
+    receiveGifts: string,
 }
 
 const { Option, OptGroup } = Select;
-// const { confirm } = Modal;
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -29,86 +30,80 @@ const formItemLayout = {
 
 const { RangePicker } = DatePicker;
 
-// const ConfirmModal: React.FC = () => {
-//     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(true);
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
-//     const showConfirmModal = () => {
-//         setIsConfirmModalOpen(true);
-//     };
+const CreateCampaign = () => {
+    // const [campaign, setCampaign] = useState<Campaign>({
+    //     startDate: '',
+    //     endDate: '',
+    //     openHour: '',
+    //     closeHour: '',
+    //     description: '',
+    //     campaignName: '',
+    //     address: '',
+    //     lat: 0,
+    //     long: 0,
+    //     receiveItems: [],
+    //     receiveGifts: '',
+    //   });
 
-//     const handleConfirmOk = () => {
-//         Modal.destroyAll();
-//     };
+    const auth = useAuth();
+    const [organizerID, setOrganizerID] = useState(0);
+    const userID = localStorage.getItem('userID');
+    const [currentItems, setCurrentItems] = useState([]);
 
-//     const handleConfirmCancel = () => {
-//         setIsConfirmModalOpen(false);
-//     };
-
-//     return (
-//         <>
-//         <Modal title="Basic Modal" open={isConfirmModalOpen} onOk={handleConfirmOk} onCancel={handleConfirmCancel}>
-//             <p>Some contents...</p>
-//             <p>Some contents...</p>
-//             <p>Some contents...</p>
-//         </Modal>
-//         </>
-//     );
-// }
-
-const CreateCampaign = ({
-    startDate,
-    endDate,
-    openHour,
-    closeHour,
-    description,
-    campaignName,
-    address,
-    receiveItems,
-    receiveGifts,} : campaign) => {
+    useEffect(() => {
+        const fetchCurrentItems = async () => {
+          try {
+            // Make API request to fetch current items
+            axios.get(`${API_ENDPOINT}/trash/all`, {
+                headers: {
+                    'ngrok-skip-browser-warning': true
+                },
+            })
+            .then(result => {
+                setCurrentItems(result.data);
+            });
+    
+          } catch (error) {
+            // Handle error
+            console.error(error);
+          }
+        };
+    
+        fetchCurrentItems();
+      }, [auth.isLoggedIn]);
 
     // Create campaign modal
     const [isModalOpen, setIsModalOpen] = useState(true);
     
-    const showModal = () => {
-        setIsModalOpen(true);
-    };
+    // verify organizer
+    if (auth.isLoggedIn) {
+        axios.get(`${API_ENDPOINT}/is-organizer/${userID}`, { 
+                headers: {
+                    'ngrok-skip-browser-warning': true
+                },
+            })
+            .then((result) => {
+                if (result.data.success) {
+                    setOrganizerID(result.data.organizerID);
+                }
+                else {
+                    message.warning('Only organizer can create a new campaign');
+                    // do something 
+                    setIsModalOpen(false); // close this form 
+                }
+            })
+            .catch((err) =>{
+                message.error('Error:', err.message);
+            })
+    }
     
     const handleOk = () => {
         form.submit()
     };
     
     const handleCancel = () => {
-        // confirm({
-        //     title: 'Do you want to stop the process and close the form?',
-        //     icon: <ExclamationCircleFilled />,
-        //     content: 'All information will be discarded.',
-        //     centered: true,
-        //     okText: 'Confirm',
-        //     onOk() {
-        //         setIsModalOpen(false);
-        //     },
-        //     onCancel() {},
-        //     footer: (_, { OkBtn, CancelBtn }) => (
-        //         <>
-        //             <ConfigProvider
-        //                 theme={{
-        //                 token: {
-        //                     // Seed Token
-        //                     colorPrimary: '#33BBC5',
-        //                     borderRadius: 8,
-
-        //                     // Alias Token
-        //                     colorBgContainer: '#FFFFFF',
-
-        //                     },
-        //                 }}
-        //             >
-        //             <CancelBtn />
-        //             <OkBtn />
-        //             </ConfigProvider>
-        //         </>
-        //       ),
-        //   });
         showConfirmModal();
     };
 
@@ -140,21 +135,29 @@ const CreateCampaign = ({
         const closeHour = customDate.toISOString().replace('T', ' ').substring(11, 19)
 
         // Description and gifts
-        values.receiveGifts.join(', ')
-        values.description = values.description + "\nGift(s): " + values.receiveGifts
+        values.description = (values.description ? values.description : '') 
+                                + "\n Gifts: " + (values.receiveGifts ? values.receiveGifts : '')
 
         delete values.timeFrame
         delete values.workingTime
         delete values.receiveGifts
+        
+        // tam lam cai nay de create campaign
+        var lat = window.prompt('Nhap lattitude: ');
+        var long = window.prompt('Nhap longtitude: ');
+
         values = {
             ...values,
             startDate,
             endDate,
             openHour,
             closeHour,
+            lat: lat ? parseFloat(lat) : 0.0, 
+            long: long ? parseFloat(long) : 0.0,
         }
-
-        console.log(values)
+        // for temporarily use
+        // POST to database
+        axios.post(`${API_ENDPOINT}/create-campaign`, values)
         setIsModalOpen(false);
         message.success('Create campaign success!');
     };
@@ -175,13 +178,6 @@ const CreateCampaign = ({
         setIsConfirmModalOpen(false);
     };
 
-    // Checkbox
-    const [checked, setChecked] = useState(false);
-
-    const onChange = (e: CheckboxChangeEvent) => {
-        setChecked(e.target.checked);
-    };
-
     // Date range picker
     const dayRangeConfig = {
         rules: [{ type: 'array' as const, required: true, message: 'Please provide the time frame for your campaign!' }],
@@ -189,158 +185,71 @@ const CreateCampaign = ({
 
     // Time range picker
     const timeRangeConfig = {
-        rules: [{ type: 'array' as const, required: true, message: 'Please select working time!' }],
+        rules: [{ type: 'array' as const, required: true, message: 'Please select your working time!' }],
     };
 
     return (
         <>  
         <Modal title="New Campaign" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} centered
-        // footer={(_, { CancelBtn }) => (
-        //     <>
-        //         <Button type="primary" onClick={handleOk}>
-        //             Submit
-        //         </Button>,
-        //         <Button onClick={resetForm}>Reset</Button>,
-        //         <CancelBtn />
-        //     </>
-        //   )}
             okText="Create"
-            cancelText="Cancle"
+            cancelText="Cancel"
         >
 
             <Form
                 name="createCampaign"
                 {...formItemLayout}
                 onFinish={onFinish}
-                initialValues={{
-                    // Initial values here
-                    timeFrame: [dayjs(startDate, 'YYYY-MM-DD'),dayjs(endDate, 'YYYY-MM-DD')],
-                    workingTime: [dayjs(openHour, 'HH:mm:ss'),dayjs(closeHour, 'HH:mm:ss')],
-                    description: description,
-                    campaignName: campaignName,
-                    address: address,
-                    receiveItems: receiveItems,
-                    receiveGifts: receiveGifts,
-                }}
                 form={form}
                 style={{ maxWidth: 1000 }}
             >
                 <Form.Item
-                name="campaignName"
-                label="Name"
-                rules={[{ required: true, message: 'Please input your compaign name!' }]}
+                    name="campaignName"
+                    label="Name"
+                    rules={[{ required: true, message: 'Please input your compaign name!' }]}
+                >
+                    <Input placeholder="Please input your compaign name"/>
+                </Form.Item>
+
+                <Form.Item name="timeFrame" label="Time frame" {...dayRangeConfig}>
+                    <RangePicker />
+                </Form.Item>
+
+                <Form.Item name="workingTime" label="Working time" {...timeRangeConfig}>
+                    <TimePicker.RangePicker />
+                </Form.Item>
+
+                <Form.Item
+                    name="address"
+                    label="Address"
+                    hasFeedback
+                    rules={[{ required: true, message: 'Please type in your address!' }]}
                 >
                     <Input allowClear placeholder="Please input your compaign name"/>
                 </Form.Item>
 
-                <Form.Item name="timeFrame" label="Time frame" {...dayRangeConfig}>
-                    {/* <ConfigProvider locale={locale}> */}
-                    <RangePicker allowClear/>
-                    {/* </ConfigProvider> */}
-                </Form.Item>
-
-                <Form.Item name="workingTime" label="Working time" {...timeRangeConfig}>
-                    {/* <ConfigProvider locale={locale}> */}
-                    <TimePicker.RangePicker allowClear/>
-                    {/* </ConfigProvider> */}
-                </Form.Item>
-
                 <Form.Item
-                name="address"
-                label="Address"
-                hasFeedback
-                rules={[{ required: true, message: 'Please select your address!' }]}
-                >
-                <Select
-                    allowClear
-                    showSearch
-                    placeholder="Search to Select address"
-                    // optionFilterProp="children"
-                    filterOption={(input, option) => (option?.children ?? '').toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    || (option?.value ?? '').toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                    // filterSort={(optionA, optionB) =>
-                    // (optionA?.children ?? '').toLowerCase().localeCompare((optionB?.children ?? '').toLowerCase())
-                    // }
-                //     options={
-                //         [
-                //     {
-                //         value: '1',
-                //         label: 'Not Identified',
-                //     },
-                //     {
-                //         value: '2',
-                //         label: 'Closed',
-                //     },
-                //     {
-                //         value: '3',
-                //         label: 'Communicated',
-                //     },
-                //     {
-                //         value: '4',
-                //         label: 'Identified',
-                //     },
-                //     {
-                //         value: '5',
-                //         label: 'Resolved',
-                //     },
-                //     {
-                //         value: '6',
-                //         label: 'Cancelled',
-                //     },
-                //     ]
-                // }
-                >
-                    <OptGroup label="Your location">
-                        <Option value="ABcde">Battery</Option>
-                        <Option value="green">Green</Option>
-                        <Option value="blue">Blue</Option>
-                        <Option value="r">Battery</Option>
-                        <Option value="gree">Green</Option>
-                        <Option value="ble">Blue</Option>
-                    </OptGroup>
-                    <OptGroup label="Your address">
-
-                    </OptGroup>
-                    <OptGroup label="Other locations">
-                        <Option value="bttery">Battery</Option>
-                        <Option value="grfefeen">Green</Option>
-                        <Option value="blfefue">Blue</Option>
-                        <Option value="rfef">Battery</Option>
-                        <Option value="grfeffeee">Green</Option>
-                        <Option value="blfefe">Blue</Option>
-                    </OptGroup>
-                </Select>
-                </Form.Item>
-
-                <Form.Item
-                name="receiveItems"
-                label="Kinds of trash"
-                hasFeedback
-                rules={[{ required: true, message: 'Please select kinds of trash you are receiving!', type: 'array' }]}
+                    name="receiveItems"
+                    label="Kinds of trash"
+                    hasFeedback
+                    rules={[{ required: true, message: 'Please select kinds of trash you are receiving!', type: 'array' }]}
                 >
                 <Select 
                     allowClear
                     showSearch
-                    filterOption={(input, option) => (option?.children ?? '').toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    || (option?.value ?? '').toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                    filterOption={(input, option) => {
+                        const children = option?.children ?? '';
+                        const value = option?.value ?? '';
+                        return String(children).toLowerCase().indexOf(input.toLowerCase()) >= 0
+                        || String(value).toLowerCase().indexOf(input.toLowerCase()) >= 0;
+                    }}
                     mode="tags" 
                     placeholder="Please select kinds of trash"
                 >
-                    <Option value="Red">Battery</Option>
-                    <Option value="green">Green</Option>
-                    <Option value="blue">Blue</Option>
-                    <Option value="r">Battery</Option>
-                    <Option value="gree">Green</Option>
-                    <Option value="ble">Blue</Option>
-                    <Option value="ed">Battery</Option>
-                    <Option value="gren">Green</Option>
-                    <Option value="be">Blue</Option>
-                    <Option value="redjj">Battery</Option>
-                    <Option value="grejjen">Green</Option>
-                    <Option value="bluhe">Blue</Option>
-                    <Option value="rejd">Battery</Option>
-                    <Option value="grheen">Green</Option>
-                    <Option value="bljue">Blue</Option>
+                    {currentItems.map((val, idx) => (
+                        <Option key={val['ItemID']} value={val['ItemID']}>
+                        {val['ItemName']}
+                        </Option>
+                    ))}
                 </Select>
                 </Form.Item>
 
@@ -353,18 +262,10 @@ const CreateCampaign = ({
 
                 <Form.Item
                     name="receiveGifts"
-                    label="Gift(s)"
+                    label="Gift(s) for trade"
                 >
-                <Select 
-                    allowClear
-                    showSearch
-                    filterOption={(input, option) => (option?.children ?? '').toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    || (option?.value ?? '').toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                    mode="tags" 
-                    placeholder="Please select kinds of trash"
-                >
-                </Select>
-                        </Form.Item>
+                    <Input allowClear placeholder="Please input your gift(s)"/>
+                </Form.Item>
             </Form>          
         </Modal>
         <Modal 

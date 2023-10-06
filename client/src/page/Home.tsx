@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-
+import { useAuth } from '../auth/AuthContext'
 import icon from "../constant/constants";
 import { DatePicker, Input, Rate, Space } from "antd";
 import CustomButton from "../component/ui/CustomButton";
@@ -25,10 +25,12 @@ const slides = [
 ];
 
 export default function Home() {
+  
+  const auth = useAuth();
+
   function LocationMarker() {
     const [position, setPosition] = useState(null);
     const [bbox, setBbox] = useState([]);
-    
     const map = useMap();
     
   
@@ -108,19 +110,10 @@ export default function Home() {
                 </Space>
                 <CustomButton title="Search" onClick= {handleSearch} />
 
-                <CustomButton title="Create a new campaign" onClick = {handleCreateForm}/>
+                {auth.isLoggedIn&&<CustomButton title="Create a new campaign" onClick = {handleCreateForm}/>}
               </div>
                 {showComponent&&<SlideCampaign slides={slides}/>}
-                {showForm&&
-                <NewCampaignForm startDate="2023-06-09"
-                  endDate="2023-12-11"
-                  openHour="06:30:00"
-                  closeHour="20:00:00"
-                  description="We are 4 girls."
-                  campaignName="WhatEVER"
-                  address="somewhere on Earth"
-                  receiveItems={[]}
-                  receiveGifts={[]}/>}
+                {showForm&&auth.isLoggedIn&&<NewCampaignForm/>}
             </div>
           </div>
         </MapContainer>
