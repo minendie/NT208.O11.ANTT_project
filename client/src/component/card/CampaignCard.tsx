@@ -20,9 +20,15 @@ const styles = {
 };
 
 const DetailCampaign = (props: DataCampaign) => {
+  const start_date = props.startDate.split("T")[0].toString();
+  const end_date = props.endDate.split("T")[0].toString();
+
     return(
       <div className = " flex flex-col h-full items-start flex-start p-12 gap-2.5 margin">
-          <h1>{props.campaignName}</h1>
+          <div className="text-2xl text-center font-bold text-[#33BBC5] ">
+                    {" "}
+                    {props.campaignName}
+          </div>
           <div className={styles.title}>
             Organizer:{"   "}
             <span className={styles.detail}> {props.organizerName}</span>{" "}
@@ -33,7 +39,7 @@ const DetailCampaign = (props: DataCampaign) => {
           </div>
           <div className={styles.title}>
             Date:{" "}
-            <span className={styles.detail}> {props.startDate} {"-"} {props.endDate} </span>
+            <span className={styles.detail}> {start_date} {" to "} {end_date} </span>
           </div>
           <div className={styles.title}>
             Working hour:{" "}
