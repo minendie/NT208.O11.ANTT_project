@@ -1,8 +1,12 @@
+import { useState } from 'react';
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar } from "antd";
+import { Avatar, Dropdown} from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth } from '../auth/AuthContext'
+import type { MenuProps } from 'antd';
+import { useOrgan } from '../store/OrganizerContext';
+import OrganizerSignupForm from '../component/form/OrganizerSignupForm/OganizerSignupForm';
 
 
 const styles = {
@@ -21,7 +25,61 @@ const NavbarHeader = () => {
 
     { name: "About us", path: "/about" },
   ];
+
+  const {showOrganizerSignupForm, setShowOrganizerSignupForm} = useOrgan();
+  const [isOrganizer, setIsOrganizer] = useState(false);
+  
+  const items: MenuProps['items'] = [
+    {
+      label: (
+        <div style={{color: '#33BBC5', fontWeight: 'bold'}}>
+        Username
+        </div>
+      ),
+      key: '0',
+      disabled: true,
+    },
+    {
+      type: 'divider',
+    },
+    {
+      label: (
+        <Link to={"login"}>
+          Profile
+        </Link>
+      ),
+      key: '2',
+    },
+    {
+      label: (
+        <button 
+          onClick={
+            () => {
+               // Check if the user is an oganizer or not
+              if (!isOrganizer) {
+                setShowOrganizerSignupForm(true);
+              }
+            }
+          }
+        >
+          Switch to organizer
+        </button>
+      ),
+      key: '3',
+    },
+    {
+      label: (
+        <Link to={"login"}>
+          <div style={{color: '#614BC3', fontWeight: '600'}}>
+          Log out
+          </div>
+        </Link>
+      ),
+      key: '4',
+    },
+  ];
   return (
+    <>
     <div className={styles.container}>
       <a href="/">
       <div className={styles.nameApp} >Greendots</div>
@@ -46,9 +104,11 @@ const NavbarHeader = () => {
           </button>}
             {/* show avatar when user logged in */}
           {useAuth().isLoggedIn && <>
+            <Dropdown menu={{ items }} placement="bottom">
             <Link to={`profile/${localStorage.getItem('username')}`}>
               <Avatar shape="circle" icon={<UserOutlined />}></Avatar>
             </Link>
+            </Dropdown>
             {/* notification button */}
             <div className="">
               <BellOutlined className="text-3xl" />
@@ -57,6 +117,8 @@ const NavbarHeader = () => {
         </div>
       </div>
     </div>
+    {showOrganizerSignupForm && <OrganizerSignupForm />}
+    </>
   );
 };
 

@@ -3,22 +3,19 @@ import { ExclamationCircleFilled, InboxOutlined, UploadOutlined } from '@ant-des
 import { Button, Checkbox, DatePicker, TimePicker, Form, FormInstance, Input, message, Modal, Select, Space, Upload, ConfigProvider, Result } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { useAuth } from '../../../auth/AuthContext'
+import { useCampaign } from '../../../store/CampaignContext';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import './styles.css'
 
 interface Campaign {
-    startDate: string,
-    endDate: string,
-    openHour: string,
-    closeHour: string,
-    description: string,
-    campaignName: string,
-    address: string,
-    lat: number,
-    long: number,
-    receiveItems: string[],
-    receiveGifts: string,
+    startDate?: string,
+    endDate?: string,
+    openHour?: string,
+    closeHour?: string,
+    address?: string,
+    lat?: number,
+    long?: number,
 }
 
 const { Option, OptGroup } = Select;
@@ -32,7 +29,14 @@ const { RangePicker } = DatePicker;
 
 const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
-const CreateCampaign = () => {
+const NewCampaignForm = ({
+    startDate,
+    endDate,
+    openHour,
+    closeHour,
+    address,
+    lat,
+    long,} : Campaign) => {
 
     const auth = useAuth();
     const [organizerID, setOrganizerID] = useState(0);
@@ -45,7 +49,7 @@ const CreateCampaign = () => {
       }, [auth.isLoggedIn]);
 
       // Create campaign modal
-      const [isModalOpen, setIsModalOpen] = useState(true);
+      const {showNewCampaignForm, setShowNewCampaignForm} = useCampaign();
       const [currentItems, setCurrentItems] = useState([]);
     
     // verify organizer
@@ -61,7 +65,7 @@ const CreateCampaign = () => {
                 setOrganizerID(result.data.organizerID);
             } else {
                 message.warning('Only organizers can create a new campaign.');
-                setIsModalOpen(false);
+                setShowNewCampaignForm(false);
             }
         } catch (err) {
             console.error(err);
@@ -153,7 +157,7 @@ const CreateCampaign = () => {
         // for temporarily use
         // POST to database
         axios.post(`${API_ENDPOINT}/create-campaign`, values)
-        setIsModalOpen(false);
+        setShowNewCampaignForm(false);
         message.success('Create campaign success!');
     };
     
@@ -165,7 +169,7 @@ const CreateCampaign = () => {
     };
 
     const handleConfirmOk = () => {
-        setIsModalOpen(false);
+        setShowNewCampaignForm(false);
         setIsConfirmModalOpen(false);
     };
 
@@ -183,9 +187,17 @@ const CreateCampaign = () => {
         rules: [{ type: 'array' as const, required: true, message: 'Please select your working time!' }],
     };
 
+    // Initial values
+    const startDateInDayJSFormat = startDate ? dayjs(startDate, 'YYYY-MM-DD') : undefined
+    const endDateInDayJSFormat = endDate ? dayjs(endDate, 'YYYY-MM-DD') : undefined
+    const openHourInDayJSFormat = openHour ? dayjs(openHour, 'HH:mm:ss') : undefined
+    const closeHourInDayJSFormat = closeHour ? dayjs(openHour, 'HH:mm:ss') : undefined
+
+    const timeFrame = (startDateInDayJSFormat && endDateInDayJSFormat) ? [startDateInDayJSFormat, endDateInDayJSFormat] : undefined
+    const workingTime = (openHourInDayJSFormat  && closeHourInDayJSFormat) ? [openHourInDayJSFormat, closeHourInDayJSFormat] : undefined
     return (
         <>  
-        <Modal title="New Campaign" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} centered
+        <Modal title="New Campaign" open={showNewCampaignForm} onOk={handleOk} onCancel={handleCancel} centered
             okText="Create"
             cancelText="Cancel"
         >
@@ -193,15 +205,22 @@ const CreateCampaign = () => {
                 name="createCampaign"
                 {...formItemLayout}
                 onFinish={onFinish}
+                initialValues={{
+                    // Initial values here
+                    timeFrame: timeFrame,
+                    workingTime: workingTime,
+                    address: address,
+                }}
                 form={form}
                 style={{ maxWidth: 1000 }}
             >
                 <Form.Item
                     name="campaignName"
                     label="Name"
+                    hasFeedback
                     rules={[{ required: true, message: 'Please input your compaign name!' }]}
                 >
-                    <Input placeholder="Please input your compaign name"/>
+                    <Input allowClear placeholder="Please input your compaign name"/>
                 </Form.Item>
 
                 <Form.Item name="timeFrame" label="Time frame" {...dayRangeConfig}>
@@ -218,7 +237,7 @@ const CreateCampaign = () => {
                     hasFeedback
                     rules={[{ required: true, message: 'Please type in your address!' }]}
                 >
-                    <Input allowClear placeholder="Please input your compaign name"/>
+                    <Input allowClear placeholder="Please type in your address"/>
                 </Form.Item>
 
                 <Form.Item
@@ -275,4 +294,4 @@ const CreateCampaign = () => {
     );
 };
 
-export default CreateCampaign;
+export default NewCampaignForm;
