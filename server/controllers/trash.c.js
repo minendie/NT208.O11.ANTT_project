@@ -6,8 +6,4 @@ module.exports = {
              .then((result) => res.send(JSON.stringify(result)))
              .catch((err) => res.send({message: err.message}))
     },
-
-    postNewTrash: async (req, res) => {
-        
-    },
 }

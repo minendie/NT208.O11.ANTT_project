@@ -7,15 +7,11 @@ module.exports = {
     createCampaign: async(campaignData) => {
         try {
             const result = await db.Query(`
-                INSERT INTO Campaign (CampaignName, StartDate, EndDate, Street, Ward, District, Province, Country, Lat, \`Long\`, Description, Status, OpenHour, CloseHour)
+                INSERT INTO Campaign (CampaignName, StartDate, EndDate, Address, Lat, \`Long\`, Description, Status, OpenHour, CloseHour)
                 VALUES ('${campaignData.campaignName}', 
                         '${campaignData.startDate}', 
                         '${campaignData.endDate}', 
-                        ${campaignData.street ? `'${campaignData.street}'` : 'NULL'}, 
-                        ${campaignData.ward ? `'${campaignData.ward}'` : 'NULL'}, 
-                        ${campaignData.district ? `'${campaignData.district}'` : 'NULL'}, 
-                        ${campaignData.province ? `'${campaignData.province}'` : 'NULL'}, 
-                        ${campaignData.country ? `'${campaignData.country}'` : 'NULL'},
+                        ${campaignData.address ? `'${campaignData.address}'` : 'NULL'}, 
                         ${campaignData.lat ? campaignData.lat : 'NULL'},
                         ${campaignData.long ? campaignData.long : 'NULL'},
                         ${campaignData.description ? `'${campaignData.description}'` : 'NULL'},
@@ -53,13 +49,9 @@ module.exports = {
                     CampaignName = ${typeof campaignData.campaignName === 'undefined' ? 'CampaignName' : `'${campaignData.campaignName}'`},
                     StartDate    = ${typeof campaignData.startDate === 'undefined' ? 'StartDate' : `'${campaignData.startDate}'`},
                     EndDate      = ${typeof campaignData.endDate === 'undefined' ? 'EndDate' : `'${campaignData.endDate}'`},
-                    Street       = ${typeof campaignData.street === 'undefined' ? 'Street' : `'${campaignData.street}'`},
-                    Ward         = ${typeof campaignData.ward === 'undefined' ? 'Ward' : `'${campaignData.ward}'`},
-                    District     = ${typeof campaignData.district === 'undefined' ? 'District' : `'${campaignData.district}'`},
-                    Province     = ${typeof campaignData.province === 'undefined' ? 'Province' : `'${campaignData.province}'`},
-                    Country      = ${typeof campaignData.country === 'undefined' ? 'Country' : `'${campaignData.country}'`},
+                    Address      = ${typeof campaignData.address === 'undefined' ? 'Address' : `'${campaignData.address}'`},
                     Lat          = ${typeof campaignData.lat === 'undefined' ? 'Lat' : campaignData.lat},
-                    Long         = ${typeof campaignData.country === 'undefined' ? 'Long' : campaignData.long},
+                    \`Long\`     = ${typeof campaignData.country === 'undefined' ? 'Long' : campaignData.long},
                     Description  = ${typeof campaignData.description === 'undefined' ? 'Description' : `'${campaignData.description}'`},
                     Status       = ${typeof campaignData.status === 'undefined' ? 'Status' : campaignData.status},
                     OpenHour     = ${typeof campaignData.openHour === 'undefined' ? 'OpenHour' : `'${campaignData.openHour}'`},
@@ -101,7 +93,22 @@ module.exports = {
     // search campaign by id 
     getCampaignByID: async(campaignID) => {
         try {
-            const results = await db.Query(`SELECT * FROM Campaign WHERE CampaignID = ${campaignID}`)
+            const results = await db.Query(`
+                    SELECT 
+                        C.campaignID, campaignName,
+                        Name AS organizerName,
+                        startDate, endDate,
+                        openHour, closeHour, 
+                        lat, \`long\`,
+                        address,
+                        C.description
+                    FROM 
+                        Campaign C
+                        JOIN Organizing ON C.CampaignID = Organizing.CampaignID
+                        JOIN Organizer ON Organizing.OrganizerID = Organizer.OrganizerID
+                    WHERE 
+                        C.CampaignID = ${campaignID}
+            `)
             return results;
         } catch (err) {
             console.log(err);

@@ -74,6 +74,24 @@ module.exports = {
         }
     },
 
+    getTrashNameByCampaignID: async(campaignID) => {
+        try {
+            var result = await db.Query( //'SELECT * FROM Recycling'
+                `
+                SELECT 
+                    ItemName
+                FROM 
+                    Item JOIN Recycling ON Item.ItemID = Recycling.ItemID
+                WHERE campaignID = ${campaignID}
+                `
+            );
+            return result; // Return the result 
+        } catch (error) {
+            console.log(error);
+            throw error; // Throw the error to be caught by the caller
+        }
+    },
+
     postNewTrash: async (trashName) => {
         try {
             const result = await db.Query(`
@@ -85,5 +103,5 @@ module.exports = {
             console.log(err);
             throw err;
         }
-    }
+    },
 }

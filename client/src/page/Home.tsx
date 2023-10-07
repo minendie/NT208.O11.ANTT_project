@@ -4,7 +4,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useAuth } from '../auth/AuthContext'
 import icon from "../constant/constants";
-import { DatePicker, Input, Rate, Space } from "antd";
+import { DatePicker, Input, Space } from "antd";
 import CustomButton from "../component/ui/CustomButton";
 import SlideCampaign from "../component/SlideCampaign/SlideCampaign";
 import Search from "react-leaflet-search"
@@ -14,14 +14,14 @@ const slides = [
     title: "Slide 1",
     description: "Description for Slide 1",
   },
-  {
-    title: "Slide 1",
-    description: "Description for Slide 1",
-  },
-  {
-    title: "Slide 1",
-    description: "Description for Slide 1",
-  },
+  // {
+  //   title: "Slide 1",
+  //   description: "Description for Slide 1",
+  // },
+  // {
+  //   title: "Slide 1",
+  //   description: "Description for Slide 1",
+  // },
 ];
 
 export default function Home() {
@@ -109,6 +109,7 @@ export default function Home() {
                   <RangePicker showTime />
                 </Space>
                 <CustomButton title="Search" onClick= {handleSearch} />
+                
 
                 {auth.isLoggedIn&&<CustomButton title="Create a new campaign" onClick = {handleCreateForm}/>}
               </div>

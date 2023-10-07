@@ -11,10 +11,13 @@ module.exports = {
         }
         review.createReview(req.body) // campaignID, userID, rating, comment
                 .then((result) => res.send({success: true}))
-                .catch(err => res.send({
-                    success: false,
-                    message: err.message,
-                }))
+                .catch(err => {
+                    console.log(err)
+                    res.send({
+                        success: false,
+                        message: err.message,
+                    }
+                )})
     },
 
     getReviewsByCampaignID: async (req, res) => {

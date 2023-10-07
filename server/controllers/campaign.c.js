@@ -1,11 +1,40 @@
 const { type } = require('os');
 const campaign = require('../models/campaign.m')
-const trash = require('../models/trash.m')
+const trash = require('../models/trash.m');
+const user = require('../models/user.m');
 
 
 module.exports = {
     searchCampaign: async (req, res) => {
 
+    },
+
+    searchCampaignByID: async (req, res) => {
+        try {
+            var [result] = await campaign.getCampaignByID(req.params.id)
+            console.log(result)
+            if (!result) {
+                res.send({
+                    success: false,
+                    message: 'Invalid campaign ID'
+                });
+                return;
+            }
+
+            const receiveItems = await trash.getTrashNameByCampaignID(result.campaignID)
+            result.receiveItems = receiveItems.map((val, ) => val['ItemName']);
+            console.log(result)
+            res.send({
+                success: true,
+                result: JSON.stringify(result)
+            })
+        }
+        catch (err) {
+            res.send({
+                success: false,
+                message: err.message,
+            })
+        }
     },
 
     // read all campaigns
@@ -52,13 +81,6 @@ module.exports = {
     
             // set status
             campaignData['status'] = start > today ? 2 : (end < today ? 0 : 1)
-            // split address
-            const [street, ward, district, province, country] = 
-                                [...campaignData['address'].split(', ')];
-            campaignData = {
-                ...campaignData,
-                street, ward, district, province, country
-            }
             const itemsInCampaign = await Promise.all(campaignData.receiveItems.map(async(val) => {
                 if (typeof val == 'string') {
                     const trashID = await trash.postNewTrash(val);
@@ -76,6 +98,7 @@ module.exports = {
                                     })
                                 })
                                 .catch(err => res.send({message: err.message}));
+                        user.createOrganizerCampaign(campaignID, campaignData['organizerID']);
                     })
                     .catch(err => {
                         res.send({message: err.message})

@@ -8,10 +8,11 @@ module.exports = {
                 INSERT INTO Review (UserID, CampaignID, Rating, Comment)
                 SELECT * 
                 FROM (
-                    ${reviewData.userID} AS UserID, 
-                    ${reviewData.campaignID} AS CampaignID, 
-                    ${reviewData.rating} AS Rating, 
-                    '${reviewData.comment}' AS Comment
+                    SELECT 
+                        ${reviewData.userID} AS UserID, 
+                        ${reviewData.campaignID} AS CampaignID, 
+                        ${reviewData.rating} AS Rating, 
+                        '${reviewData.comment}' AS Comment
                 ) AS temp
                 WHERE NOT EXISTS (
                     SELECT 1 FROM Review
@@ -33,9 +34,9 @@ module.exports = {
         try {
             const reviews = await db.Query(`
                 SELECT 
-                    Username,
-                    Comment,
-                    Rating
+                    username,
+                    comment,
+                    rating
                 FROM User JOIN Review ON User.UserID = Review.UserID
                 WHERE CampaignID = ${campaignID}
             `)

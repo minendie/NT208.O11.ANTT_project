@@ -91,16 +91,17 @@ const ParticipantProfileForm: React.FC<{ canEdit: boolean, user: any, classNames
     setReadOnly(true)
     // PUT data to database
     if (canEdit) {
-      setPhoneNumber(phoneNumber.trim())
-      setPassword(password.trim())
-      setBio(bio.trim())
-
+      setPhoneNumber(phoneNumber.trim());
+      setPassword(password.trim());
+      setBio(bio.trim());
+      setAddress(address.trim());
       // validate password, phone number, email
       var data = {
         'phoneNumber' : '',
         'password' : '',
         userID: localStorage.getItem('userID'),
         bio: bio.replaceAll("'", "''"),
+        address: address.replaceAll("'", "''"),
       }
       // validate phone number
       if (phoneNumber !== '' && validatePhoneNumber(phoneNumber)) {

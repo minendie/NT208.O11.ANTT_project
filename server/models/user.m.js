@@ -12,8 +12,7 @@ module.exports = {
             console.log(username); 
             const result = await db.Query(`
                 SELECT 
-                    Username, Email, PhoneNumber, Bio,
-                    Street, Ward, District, Province, Country
+                    Username, Email, PhoneNumber, Bio, Address
                 FROM User 
                 WHERE username='${username}'
             `);
@@ -35,12 +34,8 @@ module.exports = {
                 SET 
                     Password     = ${!encryptedPassword ? 'Password' : `'${encryptedPassword}'`},
                     PhoneNumber  = ${(typeof userData.phoneNumber === 'undefined' || userData.phoneNumber === '') ? 'PhoneNumber' : `'${userData.phoneNumber}'`},
-                    Street       = ${(typeof userData.street === 'undefined' || userData.street === '') ? 'Street' : `'${userData.street}'`},
-                    Ward         = ${(typeof userData.ward === 'undefined' || userData.ward === '') ? 'Ward' : `'${userData.ward}'`},
-                    District     = ${(typeof userData.district === 'undefined' || userData.district === '') ? 'District' : `'${userData.district}'`},
-                    Province     = ${(typeof userData.province === 'undefined' || userData.province === '') ? 'Province' : `'${userData.province}'`},
-                    Country      = ${(typeof userData.country === 'undefined' || userData.country === '') ? 'Country' : `'${userData.country}'`},
-                    Bio          = ${(typeof userData.bio === 'undefined' || userData.bio === '') ? 'Bio' : `'${userData.bio}'`}
+                    Address      = ${(typeof userData.address === 'undefined') ? 'Address' : `'${userData.address}'`},
+                    Bio          = ${(typeof userData.bio === 'undefined') ? 'Bio' : `'${userData.bio}'`}
                 WHERE UserID = ${userData.userID};
             `).then((result) => {
                 console.log(result);
@@ -198,6 +193,19 @@ module.exports = {
             console.log(err)
             throw err;
         }
-    }
+    },
+
+    createOrganizerCampaign: async(campaignID, organizerID) => {
+        try {
+            const result = db.Query(`
+                INSERT INTO Organizing (campaignID, organizerID)
+                VALUES (${campaignID}, ${organizerID})
+            `)
+
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    },
 
 }

@@ -154,7 +154,9 @@ const CreateCampaign = () => {
             closeHour,
             lat: lat ? parseFloat(lat) : 0.0, 
             long: long ? parseFloat(long) : 0.0,
+            organizerID: organizerID
         }
+        console.log(values)
         // for temporarily use
         // POST to database
         axios.post(`${API_ENDPOINT}/create-campaign`, values)
