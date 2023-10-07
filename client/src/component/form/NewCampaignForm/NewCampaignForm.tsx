@@ -33,71 +33,64 @@ const { RangePicker } = DatePicker;
 const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
 const CreateCampaign = () => {
-    // const [campaign, setCampaign] = useState<Campaign>({
-    //     startDate: '',
-    //     endDate: '',
-    //     openHour: '',
-    //     closeHour: '',
-    //     description: '',
-    //     campaignName: '',
-    //     address: '',
-    //     lat: 0,
-    //     long: 0,
-    //     receiveItems: [],
-    //     receiveGifts: '',
-    //   });
 
     const auth = useAuth();
     const [organizerID, setOrganizerID] = useState(0);
     const userID = localStorage.getItem('userID');
-    const [currentItems, setCurrentItems] = useState([]);
+    
+    useEffect(() => {
+        if (auth.isLoggedIn) {
+            verifyOrganizer();
+        }
+      }, [auth.isLoggedIn]);
+
+      // Create campaign modal
+      const [isModalOpen, setIsModalOpen] = useState(true);
+      const [currentItems, setCurrentItems] = useState([]);
+    
+    // verify organizer
+    const verifyOrganizer = async () => {
+        try {
+            const result = await axios.get(`${API_ENDPOINT}/is-organizer/${userID}`, {
+                headers: {
+                    'ngrok-skip-browser-warning': true,
+                },
+            });
+
+            if (result.data.success) {
+                setOrganizerID(result.data.organizerID);
+            } else {
+                message.warning('Only organizers can create a new campaign.');
+                setIsModalOpen(false);
+            }
+        } catch (err) {
+            console.error(err);
+            message.error('Failed to verify organizer.');
+        }
+    };
 
     useEffect(() => {
         const fetchCurrentItems = async () => {
-          try {
-            // Make API request to fetch current items
-            axios.get(`${API_ENDPOINT}/trash/all`, {
-                headers: {
-                    'ngrok-skip-browser-warning': true
-                },
-            })
-            .then(result => {
-                setCurrentItems(result.data);
-            });
-    
-          } catch (error) {
-            // Handle error
-            console.error(error);
-          }
-        };
-    
+            try {
+                // Make API request to fetch current items
+                axios.get(`${API_ENDPOINT}/trash/all`, {
+                    headers: {
+                        'ngrok-skip-browser-warning': true
+                    },
+                })
+                .then(result => {
+                    setCurrentItems(result.data);
+                });
+        
+            } catch (error) {
+                // Handle error
+                console.error(error);
+            }
+            };
+        
         fetchCurrentItems();
-      }, [auth.isLoggedIn]);
+    }, [auth.isLoggedIn]);
 
-    // Create campaign modal
-    const [isModalOpen, setIsModalOpen] = useState(true);
-    
-    // verify organizer
-    if (auth.isLoggedIn) {
-        axios.get(`${API_ENDPOINT}/is-organizer/${userID}`, { 
-                headers: {
-                    'ngrok-skip-browser-warning': true
-                },
-            })
-            .then((result) => {
-                if (result.data.success) {
-                    setOrganizerID(result.data.organizerID);
-                }
-                else {
-                    message.warning('Only organizer can create a new campaign');
-                    // do something 
-                    setIsModalOpen(false); // close this form 
-                }
-            })
-            .catch((err) =>{
-                message.error('Error:', err.message);
-            })
-    }
     
     const handleOk = () => {
         form.submit()
@@ -196,7 +189,6 @@ const CreateCampaign = () => {
             okText="Create"
             cancelText="Cancel"
         >
-
             <Form
                 name="createCampaign"
                 {...formItemLayout}
