@@ -96,8 +96,6 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
                     </div> 
             
             </div>
-            
-            
         </div>
         </Form>
             </ConfigProvider>
