@@ -17,6 +17,7 @@ interface ReView {
 interface ReviewProps{
     reviews: ReView[]
 }
+const { TextArea } = Input;
   
 //   const InputComment = (props: FormProps) => {
 //     const [placeholder, setPlaceholder] = useState('Write some comments');
@@ -104,14 +105,14 @@ const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
                     {min:5},
                 ]}
                 style={{width:"100%"}}>
-            <Input name="Comment"className="self-start..."            
+            <TextArea name="Comment"className="self-start..."            
                     style={{ width: "100%" }}
-                    type="text"
-                    
+                    // type="text"
+                    autoSize
                     disabled
                     // placeholder="Write your review here ..."
                     >          
-            </Input>
+            </TextArea>
             </Form.Item>
                 
                 {/* <CustomButton title="Send" onClick= {handleSend} />  */}
