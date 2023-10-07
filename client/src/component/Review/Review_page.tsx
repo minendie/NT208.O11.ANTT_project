@@ -36,7 +36,9 @@ const ReviewPage: React.FC<{ campaignID: number }> = ({ campaignID }) => {
             <Space direction="vertical" size={15}>
                 {auth.isLoggedIn ? <Review setReviews={setReviews} campaignID={campaignID}></Review> : <p>Please log in to write your review!</p>}
                 <Divider style={{ borderTop: "0.3px solid gray"}}></Divider>
+
                 <Reviews reviews={reviews}></Reviews>
+
             </Space>
         </div>
     )

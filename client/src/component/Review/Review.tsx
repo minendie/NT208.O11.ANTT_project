@@ -5,9 +5,94 @@ import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Rate, Input, Form, Button, ConfigProvider, message } from "antd";
 import "./style.css";
 
+
+
+
+
+
+
+
+const Review: React.FC = () =>{
+    const [value, setValue] = useState('');
+    return(
+        
+        
+    <>       
+        <ConfigProvider
+            theme={{
+            token: {
+                // Seed Token
+                colorPrimary: '#33BBC5',
+                borderRadius: 8,
+                // Alias Token
+                colorBgContainer: '#FFFFFF',
+
+            },
+            }}
+            >
+            <Form
+                name="basic"
+                layout="vertical"         
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                autoComplete="off"
+            >
+        <div className="flex flex-row w-full items-scretch  text-transparent gap-2">    
+            {/* //<div className="pb-5"> */}
+            <Avatar className="flex-none"icon={<UserOutlined />} />
+            {/* </div> */}
+        
+
+        <div className="flex-col grow" >
+                        
+                
+                <div className="flex self-center flex-row gap-5">
+                    <Form.Item 
+                    name= "comment" 
+                    label="" 
+                    rules={[
+                        {whitespace: true},
+                        {max:500},
+                        {min:5},
+                    ]}
+                    style={{width:"100%"}}>
+                        <TextArea name="Comment"className="self-start..."            
+                                style={{ width: "100%" }}
+                                // type="text"
+                                // disabled
+                                placeholder="Write your review here ..."
+                                autoSize
+                                >            
+                        </TextArea>
+                    </Form.Item>
+                    
+                    
+                    {/* <CustomButton title="Send" onClick= {handleSend} />  */}
+                    
+                    <Button type="primary" htmlType="submit" >
+                        Submit
+                    </Button>
+                    
+
+                </div>
+                <div className="review-container"> 
+                    <Form.Item name="rating" label="" style={{width: "100%"}} rules={[{ required: true, message: 'Please rating for campaign' }]}>
+                        <Rate/>
+                    </Form.Item>
+                </div> 
+        
+        </div>
+        
+        
+    </div>
+    </Form>
+    </ConfigProvider>
+    </>
+=======
 const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
-
+const { TextArea } = Input;
 interface ReviewProps {
     setReviews: React.Dispatch<React.SetStateAction<any[]>>;
     campaignID: number;
@@ -68,23 +153,24 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
                     <Avatar className="flex-none"icon={<UserOutlined />} />
                 <div className="flex-col grow" >
                     <div className="flex self-center flex-row gap-5">
-                        <Form.Item 
-                            name= "comment" 
-                            label="" 
-                            rules={[
-                                {whitespace: true},
-                                {max:500},
-                                {min:5},
-                            ]}
-                            style={{width:"100%"}}>
-                            <Input name="Comment"className="self-start..."            
-                                    style={{ width: "100%" }}
-                                    type="text"
-                                    // disabled
-                                    placeholder="Write your review here ..."
-                                    >            
-                            </Input>
-                        </Form.Item>
+                         <Form.Item 
+                    name= "comment" 
+                    label="" 
+                    rules={[
+                        {whitespace: true},
+                        {max:500},
+                        {min:5},
+                    ]}
+                    style={{width:"100%"}}>
+                        <TextArea name="Comment"className="self-start..."            
+                                style={{ width: "100%" }}
+                                // type="text"
+                                // disabled
+                                placeholder="Write your review here ..."
+                                autoSize
+                                >            
+                        </TextArea>
+                    </Form.Item>
                         <Button type="primary" htmlType="submit" >
                             Submit
                         </Button>
@@ -100,6 +186,7 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
         </Form>
             </ConfigProvider>
         </>
+
     )
 }
 
