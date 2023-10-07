@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // navigate to another page
 import { signup } from '../../services/services';
+import { message } from 'antd';
 
 
 function validate(username: string, password: string, email: string) {
@@ -13,19 +14,19 @@ function validate(username: string, password: string, email: string) {
 
   // test username
   if (!usernamePattern.test(username)) {
-    alert('Username must be from 5-45 characters');
+    message.warning('Username must be from 5-45 characters');
     return false;
   }
 
   // test password
   if (!passwordPattern.test(password)) {
-    alert('Password must be from 3-50 characters, having at least 1 digit, 1 uppercase character and 1 lowercase character.')
+    message.warning('Password must be from 3-50 characters, having at least 1 digit, 1 uppercase character and 1 lowercase character.')
     return false;
   }
 
   // test email 
   if (!emailPattern.test(email)) {
-    alert('Invalid email. Please try again.')
+    message.warning('Invalid email. Please try again.')
     return false;
   }
 
@@ -56,23 +57,23 @@ const SignupForm: React.FC = () => {
 
     try {
         if (response.data.success) {
-          alert('Sign up successfully!');
+          message.success('Sign up successfully!');
           navigate("/login");
         } else {
-          alert(response.data.message)
+          message.info(response.data.message)
         }
     } catch (error: any) {
         console.log(error);
         // Handle error cases
         if (error.response) {
           // Request was made and server responded with a status code outside the range of 2xx
-          alert(error.response.data.message);
+          message.error(error.response.data.message);
         } else if (error.request) {
           // Request was made but no response was received
-          alert('No response from server');
+          message.error('No response from server');
         } else {
           // Something else happened while setting up the request
-          alert('Error occurred');
+          message.error('Error occurred');
         }
     }
   };

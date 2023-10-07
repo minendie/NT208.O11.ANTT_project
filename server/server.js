@@ -5,6 +5,11 @@ const multer = require('./models/ModelMulter');
 const AIToolrouter = require('./routes/ai_tools.r');
 const ProfileRouter = require('./routes/profile.r')
 const UserRouter = require('./routes/user.r')
+const TrashRouter = require('./routes/trash.r')
+const CampaignRouter = require('./routes/campaign.r')
+const ReviewRouter = require('./routes/review.r')
+
+
 require('dotenv').config()
 
 // const session = require('express-session')
@@ -35,6 +40,9 @@ app.set('view engine', 'ejs');
 AIToolrouter(app)
 ProfileRouter(app)
 UserRouter(app)
+TrashRouter(app)
+ReviewRouter(app)
+CampaignRouter(app)
 
 // Start the server on port 3002
 const server = app.listen(port, (error) => {

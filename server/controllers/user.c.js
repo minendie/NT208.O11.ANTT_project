@@ -104,7 +104,7 @@ module.exports = {
                     Email: result[0]['Email'],
                     PhoneNumber: result[0]['PhoneNumber'],
                     Bio: result[0]['Bio'],
-                    Address: result[0]['Street'] ? `${result[0]['Street']}, ${result[0]['Ward']}, ${result[0]['District']}, ${result[0]['Province']}, ${result[0]['Country']}}` : null,
+                    Address: result[0]['Address'],
                 }]
                 res.send(JSON.stringify(processedResult))
             })
@@ -233,6 +233,28 @@ module.exports = {
                     message: err.message,
                 })
             })
-    }
+    },
 
+    authenOrganizer: async(req, res) => {
+        user.checkOrganizerRole(req.params.userID) 
+            .then((result) => {
+                if (result.length > 0) {
+                    res.send({
+                        success: true,
+                        organizerID: result[0].OrganizerID
+                    })
+                }
+                else {
+                    res.send({
+                        success: false
+                    })
+                }
+            })
+            .catch (err => {
+                res.send({
+                    success: false,
+                    message: err.message,
+                })
+            }) 
+    },
 }

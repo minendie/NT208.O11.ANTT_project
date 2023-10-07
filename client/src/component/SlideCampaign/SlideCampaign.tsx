@@ -24,6 +24,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
   
   
   const [currentIndex, setCurrentIndex] = useState(0);
+  const campaignID=5;
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
@@ -86,7 +87,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
                   <WhiteButton title="⭐ Ratings" onClick = {handleClick} />
                   </div>
                   {
-                    showCampaign&&<TabsPage/>
+                    showCampaign&&<TabsPage campaignID={campaignID}/>
                   }
                   
                   
@@ -101,12 +102,12 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
     
       <RightCircleOutlined
         onClick={prevSlide}
-        className="absolute rounded-full top-1/2 left-4 transform -translate-y-1/2 px-4 py-2 bg-gray-800 text-white rounded-full focus:outline-none"
+        className="absolute top-1/2 right-4 transform -translate-y-1/2 px-4 py-2 bg-gray-800 text-white rounded-full focus:outline-none"
       />
      
       <LeftCircleOutlined
         onClick={nextSlide}
-        className="absolute top-1/2 right-4 transform -translate-y-1/2 px-4 py-2 bg-gray-800 text-white rounded-full focus:outline-none"
+        className="absolute rounded-full top-1/2 left-4 transform -translate-y-1/2 px-4 py-2 bg-gray-800 text-white rounded-full focus:outline-none"
       />
     </div>
   );

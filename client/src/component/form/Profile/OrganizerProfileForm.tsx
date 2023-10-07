@@ -20,7 +20,7 @@ const InputForm = (props: FormProps) => {
   <>
   {
     !props.isHidden && 
-    <div class="mb-4 flex-start">
+    <div className="mb-4 flex-start">
       <div className="align-left" > 
       <label htmlFor={props.htmlFor}>{props.labelValue}</label>
       <input
