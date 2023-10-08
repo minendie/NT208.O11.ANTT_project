@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-
+import { useAuth } from '../auth/AuthContext'
 import icon from "../constant/constants";
-import { DatePicker, Input, Rate, Space } from "antd";
+import { DatePicker, Input, Space } from "antd";
 import CustomButton from "../component/ui/CustomButton";
 import SlideCampaign from "../component/SlideCampaign/SlideCampaign";
 import Search from "react-leaflet-search"
-import NewCampaignForm from "../component/form/NewCampaignForm/NewCampaignForm";
+import NewCampaignForm from "../component/form/CampaignForm/NewCampaignForm";
+import { useCampaign } from "../contexts/CampaignContext";
 const slides = [
   {
     title: "Slide 1",
@@ -25,10 +26,12 @@ const slides = [
 ];
 
 export default function Home() {
+  
+  const auth = useAuth();
+
   function LocationMarker() {
     const [position, setPosition] = useState(null);
     const [bbox, setBbox] = useState([]);
-    
     const map = useMap();
     
   
@@ -62,9 +65,9 @@ export default function Home() {
   const handleSearch = () => {
     setShowComponent(!showComponent)
     }
-    const [showForm, setShowForm] = useState(false)
-    const handleCreateForm = () => {
-      setShowForm(!showForm)
+  const {showNewCampaignForm, setShowNewCampaignForm} = useCampaign()
+    const handleCreateCampaign = () => {
+      setShowNewCampaignForm(true)
       }
   const { RangePicker } = DatePicker;
   return (
@@ -108,20 +111,10 @@ export default function Home() {
                 </Space>
                 <CustomButton title="Search" onClick= {handleSearch} />
                 
-
-                <CustomButton title="Create a new campaign" onClick = {handleCreateForm}/>
+                {auth.isLoggedIn&&<CustomButton title="Create a new campaign" onClick = {handleCreateCampaign}/>}
               </div>
                 {showComponent&&<SlideCampaign slides={slides}/>}
-                {showForm&&
-                <NewCampaignForm startDate="2023-06-09"
-                  endDate="2023-12-11"
-                  openHour="06:30:00"
-                  closeHour="20:00:00"
-                  description="We are 4 girls."
-                  campaignName="WhatEVER"
-                  address="somewhere on Earth"
-                  receiveItems={[]}
-                  receiveGifts={[]}/>}
+                {auth.isLoggedIn&&<NewCampaignForm />}
             </div>
           </div>
         </MapContainer>

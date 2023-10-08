@@ -1,76 +1,105 @@
-import React, { useState } from 'react';
-
-import { Modal, Tabs , Button} from 'antd';
-import type { SizeType } from 'antd/es/config-provider/SizeContext';
+import React, { useState, useEffect } from 'react';
+import { Modal, Tabs } from 'antd';
 import DetailCampaign from '../CampaignCard';
 import ReviewPage from '../../Review/Review_page';
 import './Tabs.css'
-const TabsPage: React.FC = () => {
+import axios from 'axios';
+
+
+interface Campaign {
+  organizerName: string,
+  startDate: string,
+  endDate: string,
+  openHour: string,
+  closeHour: string,
+  description: string,
+  campaignName: string,
+  address: string,
+  lat: number,
+  long: number,
+  receiveItems: string[],
+  receiveGifts: string,
+}
+
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+
+
+const TabsPage: React.FC<{ campaignID: number }> = ({ campaignID }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(true);
-    
-  const showModal = () => {
-      setIsModalOpen(true);
-  };
+  const [campaign, setCampaign] = useState<Campaign>({
+                              organizerName: '',
+                              startDate: '',
+                              endDate: '',
+                              openHour: '',
+                              closeHour: '',
+                              description: '',
+                              campaignName: '',
+                              address: '',
+                              lat: 0,
+                              long: 0,
+                              receiveItems: [],
+                              receiveGifts: '',
+                            });
+
+  useEffect(() => {
+    const fetchCampaign = async () => {
+      try {
+        const response = await axios.get(`${API_ENDPOINT}/search/${campaignID}`, { 
+            headers: {
+                'ngrok-skip-browser-warning': true
+            }
+        }); 
+        console.log(response)
+        if (response.data.success) {
+          var result = JSON.parse(response.data.result);
+          const [description, receiveGifts] = String(result.description).split('\n Gifts: ')
+          result = {
+            ...result,
+            description, receiveGifts
+          }
+          setCampaign(result);
+        }
+      } catch (error) {
+        console.error('Error fetching campaign information:', error);
+      }
+    };
+
+    fetchCampaign();
+  }, []);
   
   const handleCancel = () => {
     setIsModalOpen(false);
   };
   
-
-  
-  const Page = [{
-    label : 'Detail',
-    component: <DetailCampaign
-    organizer_name="Tên tổ chức"
-    address="Địa chỉ tổ chức"
-    start_date="Ngày bắt đầu"
-    end_date="Ngày kết thúc"
-    open_hour="Giờ mở cửa"
-    close_hour="Giờ đóng cửa"
-    description="Mô tả chi tiết"
-    recycling_items={[{ title: 'Mục tái chế 1' }, { title: 'Mục tái chế 2' }]} // Mảng các mục tái chế
-    />
-
-
-  },
-  {
-    label: 'Review',
-    component: <ReviewPage></ReviewPage>
-
-  }
-]
+  const Page = [
+    {
+      label : 'Detail',
+      component: <DetailCampaign 
+                    campaignName={campaign.campaignName}
+                    organizerName={campaign.organizerName}
+                    address={campaign.address}
+                    startDate={campaign.startDate}
+                    endDate={campaign.endDate}
+                    openHour={campaign.openHour}
+                    closeHour={campaign.closeHour}
+                    description={campaign.description}
+                    recyclingItems={campaign.receiveItems} // Mảng các mục tái chế
+                    receiveGifts={campaign.receiveGifts}
+      />
+    },
+    {
+      label: 'Review',
+      component: <ReviewPage campaignID={campaignID}></ReviewPage>
+    }
+  ] 
 
   return (
     <>
-      {/* <Modal title="Hello" open={isCampaignOpen} centered footer={null}>
-        {/* <Tabs 
-          defaultActiveKey="1"
-          type="card"
-          // size={size}
-          items={Page.map((_, i) => {
-            const id = String(i + 1);
-            return {
-              label: _.label,
-              key: id,
-              children: _.component,
-            };
-          })}
-        /> */}
-        {/* <p>Hello</p>
-      </Modal> */} 
-      <>
-      {/* <Button type="primary" onClick={showCampaign}>
-        Open Modal
-      </Button> */}
       <Modal title="" open={isModalOpen} onCancel={handleCancel}  footer={null}>
-        {/* <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p> */}
         <Tabs 
           defaultActiveKey="1"
           type="card"
-          // size={size}
           items={Page.map((_, i) => {
             const id = String(i + 1);
             return {
@@ -80,14 +109,8 @@ const TabsPage: React.FC = () => {
             };
           })}
         />
-
       </Modal>
     </>
-      
-    
-    </>
-      
-      
   );
 };
 

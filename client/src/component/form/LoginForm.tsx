@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'; // navigate to another page
 import { login } from "../../services/services";
 import * as jwt_decode from "jwt-decode";
 import { useAuth } from '../../auth/AuthContext'
+import { message } from 'antd';
 
 
 function validate(username: string, password: string) {
@@ -14,13 +15,13 @@ function validate(username: string, password: string) {
 
   // test username
   if (!usernamePattern.test(username)) {
-    alert('Invalid username.');
+    message.warning('Invalid username.');
     return false;
   }
 
   // test password
   if (!passwordPattern.test(password)) {
-    alert('Wrong password.')
+    message.error('Wrong password.')
     return false;
   }
 
@@ -52,9 +53,7 @@ const Login: React.FC = () => {
           // Store the JWT token in local storage
           const accessToken = response.data.accessToken;
           localStorage.setItem('jwtToken', accessToken);
-          console.log(accessToken)
           const jwtPayload = jwt_decode(accessToken)
-          console.log(jwtPayload)
           localStorage.setItem('userID', jwtPayload['userID'])
           localStorage.setItem('username', jwtPayload['username'])
           localStorage.setItem('exp', jwtPayload['exp'])
@@ -62,20 +61,20 @@ const Login: React.FC = () => {
           auth.setLoggedIn(true);
           navigate('/'); // Navigate back to the home page
         } else {
-          alert(response.data.message);
+          message.info(response.data.message);
         }
     } catch (error: any) {
         console.log(error);
         // Handle error cases
         if (error.response) {
           // Request was made and server responded with a status code outside the range of 2xx
-          alert(error.response.data.message);
+          message.error(error.response.data.message);
         } else if (error.request) {
           // Request was made but no response was received
-          alert('No response from server');
+          message.error('No response from server');
         } else {
           // Something else happened while setting up the request
-          alert('Error occurred');
+          message.error('Error occurred');
         }
     }
   };
