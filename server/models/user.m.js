@@ -163,7 +163,7 @@ module.exports = {
             const result = db.Query(`
                 UPDATE Organizer
                 SET 
-                    Name         = ${(typeof organizerData.name === 'undefined' || organizerData.name === '') ? 'Name' : `'${organizerData.orgName}'`},
+                    Name         = ${(typeof organizerData.name === 'undefined' || organizerData.name === '') ? 'Name' : `'${organizerData.name}'`},
                     Email        = ${(typeof organizerData.email === 'undefined' || organizerData.email === '') ? 'Email' : `'${organizerData.email}'`},
                     Website      = ${(typeof organizerData.website === 'undefined' || organizerData.website === '') ? 'Website' : `'${organizerData.website}'`},
                     FB_Link      = ${(typeof organizerData.fb_Link === 'undefined' || organizerData.fb_Link === '') ? 'FB_Link' : `'${organizerData.fb_Link}'`},
