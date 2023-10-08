@@ -175,7 +175,7 @@ module.exports = {
             return;
         }
 
-        // deny post if there's no userID
+        // deny post if there's no userID or userID is not a number
         if (typeof req.body.userID === 'undefined' || req.body.userID === '') {
             res.send({
                 success: false,
@@ -183,7 +183,6 @@ module.exports = {
             })
             return;
         }
-
         organizerData['userID'] = parseInt(organizerData['userID']);
         if (isNaN(organizerData.userID)) {
             res.send({
@@ -197,6 +196,7 @@ module.exports = {
             .then((result) => {
                 res.send({
                     success: true,
+                    organizerID: result
                 })
             })
             .catch((err) => {

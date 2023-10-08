@@ -26,6 +26,7 @@ const CreateCampaign = () => {
     const [currentItems, setCurrentItems] = useState([]);
     
     useEffect(() => {
+
         const fetchCurrentItems = async () => {
             try {
                 // Make API request to fetch current items

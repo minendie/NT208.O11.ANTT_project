@@ -135,7 +135,7 @@ module.exports = {
                 throw new Error('This is an organizer already. Each user can become one organizer only.')
             }
             
-            return true;
+            return insertInfo.insertId;
         } catch (err) { 
             console.log(err);
             throw err;

@@ -5,7 +5,7 @@ const router = app => {
     // search for a campaign
     app.get('/search', ControllerCampaign.searchCampaign);
 
-    app.get('/search/:id', ControllerCampaign.searchCampaignByID);
+    app.get('/campaign/:id', ControllerCampaign.searchCampaignByID);
 
     // read all campaigns
     app.get('/campaign/all', ControllerCampaign.readAll);

@@ -45,7 +45,7 @@ const TabsPage: React.FC<{ campaignID: number }> = ({ campaignID }) => {
   useEffect(() => {
     const fetchCampaign = async () => {
       try {
-        const response = await axios.get(`${API_ENDPOINT}/search/${campaignID}`, { 
+        const response = await axios.get(`${API_ENDPOINT}/campaign/${campaignID}`, { 
             headers: {
                 'ngrok-skip-browser-warning': true
             }
