@@ -1,5 +1,5 @@
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Dropdown} from "antd";
+import { Avatar, Dropdown, Modal} from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth } from '../auth/AuthContext'
@@ -7,6 +7,7 @@ import type { MenuProps } from 'antd';
 import { useOrgan } from '../contexts/OrganizerContext';
 import OrganizerSignupForm from '../component/form/OrganizerSignupForm/OganizerSignupForm';
 import { useNavigate } from 'react-router-dom'; // navigate to another page
+import { useState } from "react";
 
 
 const styles = {
@@ -60,7 +61,7 @@ const NavbarHeader = () => {
         <button 
           onClick={() => { 
             if (!organizerID) {
-              setShowOrganizerSignupForm(true)
+              showConfirmModal();
             }
             else {
               navigator(`/organizer/${organizerID}`)
@@ -82,6 +83,21 @@ const NavbarHeader = () => {
     },
   ];
 
+  // Confirm modal
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
+  const showConfirmModal = () => {
+      setIsConfirmModalOpen(true);
+  };
+
+  const handleConfirmOk = () => {
+      setShowOrganizerSignupForm(true);
+      setIsConfirmModalOpen(false);
+  };
+
+  const handleConfirmCancel = () => {
+      setIsConfirmModalOpen(false);
+  };
 
   return (
     <>
@@ -117,6 +133,15 @@ const NavbarHeader = () => {
       </div>
     </div>
     {showOrganizerSignupForm && <OrganizerSignupForm />}
+    <Modal 
+        centered 
+        title = "Do you want to register as an organizer?"
+        open={isConfirmModalOpen} 
+        onOk={handleConfirmOk} onCancel={handleConfirmCancel}
+        width={480}
+    >
+        <p>You need to be an organizer to perform this action.</p>
+    </Modal>
     </>
   );
 };

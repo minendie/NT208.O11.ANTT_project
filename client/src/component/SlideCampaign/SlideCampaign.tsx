@@ -40,12 +40,13 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
       prevIndex === 0 ? slides.length - 1 : prevIndex - 1
     );
   };
-  const {showEditCampaignForm, setShowEditCampaignForm} = useCampaign()
+  const {showEditCampaignForm, setShowEditCampaignForm,
+    showCampaignDetail, setShowCampaignDetail} = useCampaign()
 
   const items: MenuProps['items'] = [
     {
       label: (
-        <Link to={"login"}>
+        <Link to={"login"} style={{width: "100%", textAlign: "start"}}>
           Profile
         </Link>
       ),
@@ -59,6 +60,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
               setShowEditCampaignForm(true);
             }
           }
+          style={{width: "100%", textAlign: "start"}}
         >
           Edit
         </button>
@@ -67,17 +69,15 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
     },
     {
       label: (
-        <Link to={"login"}>
+        <Link to={"login"} style={{width: "100%", textAlign: "start"}}>
           Contact organizer
         </Link>
       ),
       key: '2',
     },
   ];
-  
-  const [showCampaign, setShowCampaign] = useState(false)
   const handleClick = () =>{
-    setShowCampaign(!showCampaign);
+    setShowCampaignDetail(true);
   }
 
   return (
@@ -128,9 +128,8 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
                   <WhiteButton title="⭐ Ratings" onClick = {handleClick} />
                   </div>
                   {
-                    showCampaign&&<TabsPage campaignID={campaignID}/>
-                  }
-                  
+                    showCampaignDetail&&<TabsPage campaignID={campaignID}/>
+                  }                 
                   
                   {/* </a> */}
                   {/* {showCampaign && <DetailCampaign organizer_name={""} address={""} start_date={""} end_date={""} open_hour={""} close_hour={""} description={""} recycling_items={[]}/>} */}
@@ -154,7 +153,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
         className="absolute rounded-full top-1/2 left-4 transform -translate-y-1/2 px-4 py-2 bg-gray-800 text-white rounded-full focus:outline-none"
       />
     </div>
-    <EditCampaignForm 
+    {showEditCampaignForm && <EditCampaignForm 
       startDate="2023-06-09"
       endDate="2023-12-11"
       openHour="06:30:00"
@@ -163,7 +162,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
       campaignName="WhatEVER"
       address="somewhere on Earth"
       receiveItems={[]}  
-    />
+    />}
     </>
   );
 };
