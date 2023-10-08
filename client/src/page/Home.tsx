@@ -3,8 +3,9 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useAuth } from '../auth/AuthContext'
+import { useOrgan } from "../contexts/OrganizerContext";
 import icon from "../constant/constants";
-import { DatePicker, Input, Space } from "antd";
+import { DatePicker, Input, Space, message } from "antd";
 import CustomButton from "../component/ui/CustomButton";
 import SlideCampaign from "../component/SlideCampaign/SlideCampaign";
 import Search from "react-leaflet-search"
@@ -28,6 +29,7 @@ const slides = [
 export default function Home() {
   
   const auth = useAuth();
+  const organizer = useOrgan();
 
   function LocationMarker() {
     const [position, setPosition] = useState(null);
@@ -66,9 +68,14 @@ export default function Home() {
     setShowComponent(!showComponent)
     }
   const {showNewCampaignForm, setShowNewCampaignForm} = useCampaign()
-    const handleCreateCampaign = () => {
-      setShowNewCampaignForm(true)
+  const handleCreateCampaign = () => {
+      if (organizer.organizerID) {
+          setShowNewCampaignForm(true)
       }
+      else {
+          message.warning('Only organizer can create a new campaign')
+      }
+  }
   const { RangePicker } = DatePicker;
   return (
     <div>

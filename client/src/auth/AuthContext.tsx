@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<AuthProviderProps>> 
         } else {
           logout()
         }
-      }, []);
+      }, [isLoggedIn]);
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, setLoggedIn, username, userID, logout }}>
