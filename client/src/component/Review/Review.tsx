@@ -1,9 +1,10 @@
 //src/component/Review
-import React, { useEffect, useState } from "react";
+import React from "react";
 import axios from "axios"
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Rate, Input, Form, Button, ConfigProvider, message } from "antd";
 import "./style.css";
+import { useAuth } from "../../auth/AuthContext";
 
 
 
@@ -16,26 +17,23 @@ interface ReviewProps {
   }
 
 
-const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
-    const [value, setValue] = useState('');
-    
+const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{    
+    const auth = useAuth();
+
     const onFinish = async (values: any) => {
         try {
-            const userID = localStorage.getItem('userID');
             values['campaignID'] = campaignID;
-            values['userID'] = parseInt(String(userID));
+            values['userID'] = auth.userID;
             const response = await axios.post(`${API_ENDPOINT}/write-review`, values); 
             if (response.data.success) {
                 setReviews((prevReviews: any[]) => [...prevReviews, {
                                                     comment: values.comment,
                                                     rating: values.rating,
-                                                    username: localStorage.getItem('username'),
+                                                    username: auth.username,
                                                 }]);
-
-            
             }
             else (
-                message.error(response.data.message)
+                message.error('You can only submit one review!')
             )
           } catch (error) {
             console.error("Error submitting review:", error);
@@ -47,7 +45,7 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
     };
     
     return(
-        <>       
+    <>       
         <ConfigProvider
                 theme={{
                 token: {
@@ -101,8 +99,7 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
                 </div>
             </Form> 
         </ConfigProvider>
-        </>
-
+    </>
     )
 }
 
