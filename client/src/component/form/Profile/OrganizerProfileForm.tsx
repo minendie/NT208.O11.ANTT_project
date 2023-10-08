@@ -1,7 +1,8 @@
 // src/components/Form.tsx
 import React, { useState } from 'react';
-import '../Profile/css/styles.css'
-import { Input, Button , Space, ConfigProvider, Divider} from 'antd';
+import './css/styles.css'
+import axios from 'axios';
+import { Button , Space} from 'antd';
 
 interface FormProps {
     htmlFor: string,
@@ -20,14 +21,14 @@ const InputForm = (props: FormProps) => {
   <>
   {
     !props.isHidden && 
-    <div className="mb-4 flex-start">
+    <div className="mb-4 align-left">
       <div className="align-left" > 
       <label htmlFor={props.htmlFor}>{props.labelValue}</label>
       <input
         type={props.inputType}
         placeholder={props.placeholder ? props.placeholder : 'Type in'}
         className="w-full p-2 border rounded"
-        value={props.value}
+        value={props.value || ''}
         readOnly={props.isReadOnly}
         onChange={(e) => props.setValue(e.target.value)}
       />
@@ -38,17 +39,32 @@ const InputForm = (props: FormProps) => {
   )
 }
 
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+
+
+function validatePhoneNumber(phoneNumber: string) {
+  const phoneNumberPattern = /^(\+\d{1,3}\s?)?(\(\d{1,3}\)\s?)?\d{10,14}$/
+
+  // test phone number
+  if (!phoneNumberPattern.test(phoneNumber)) {
+    alert('Please check your phone number again.')
+    return false;
+  }
+
+  return true;
+}
+
 
 const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNames?:string }> 
                                         = ({ canEdit, organizer, classNames }) => {
-  const [orgName, setOrgName] = useState('Test organizer\'s name');
-  const [email, setEmail] = useState('Test email');
-  const [phoneNumber, setPhoneNumber] = useState('Test phone');
-  const [address, setAddress] = useState('Test address');
-  const [description, setDescription] = useState('Test description');
-  const [fbLink, setFbLink] = useState('')
-  const [linkedInLink, setLinkedInLink] = useState('')
-  const [websiteLink, setWebsiteLink] = useState('')
+  const [orgName, setOrgName] = useState(organizer?.Name  );
+  const [email, setEmail] = useState(organizer?.Email );
+  const [phoneNumber, setPhoneNumber] = useState(organizer?.PhoneNumber );
+  const [address, setAddress] = useState(organizer?.Address);
+  const [description, setDescription] = useState(organizer?.Description);
+  const [fbLink, setFbLink] = useState(organizer?.fbLink )
+  const [linkedInLink, setLinkedInLink] = useState(organizer?.linkedInLink )
+  const [websiteLink, setWebsiteLink] = useState(organizer?.websiteLink )
   const [readOnly, setReadOnly] = useState(true);
 
  
@@ -62,6 +78,38 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
   const handleSave = () => {
     setReadOnly(true)
     // PUT data to database
+    if (canEdit) {
+      setPhoneNumber(phoneNumber.trim());
+      setOrgName(orgName.trim());
+      setDescription(description.trim());
+      setAddress(address.trim());
+      setEmail(email.trim())
+      setFbLink(fbLink.trim())
+      setLinkedInLink(linkedInLink.trim())
+      setWebsiteLink(websiteLink.trim())
+      
+      // validate password, phone number, email
+      var data = {
+        'phoneNumber' : '',
+
+        
+        organizerID: localStorage.getItem('organizerID'),
+        description: description.replaceAll("'", "''"),
+        address: address.replaceAll("'", "''"),
+      }
+      // validate phone number
+      if (phoneNumber !== '' && validatePhoneNumber(phoneNumber)) {
+        data['phoneNumber'] = phoneNumber;
+      } 
+      
+      
+
+      axios.put(`${API_ENDPOINT}/update-organizer`, data)
+        .then((res) => {
+          alert('Your information is editted successfully.')
+        })
+        .catch()
+    }
   }
 
   const handleCancelEditing = () => {
@@ -71,23 +119,28 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
     }
 
   }
+  console.log({organizer});
+  // console.log({org})
 
 
   return (
          
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
     <div className="bg-white p-8 rounded shadow-md w-96"> 
-        <InputForm 
-            htmlFor="orgName"
-            labelValue='Organization Name'
-            placeholder= 'Type new organizer name'
-            isHidden={false}
-            inputType="text"
-            value={orgName}
-            setValue={setOrgName}
-            isReadOnly={readOnly}
-          />
-        <InputForm 
+    <h2 className="text-2xl font-semibold mb-4">Profile</h2>
+    
+      <InputForm 
+        htmlFor="orgName"
+        labelValue='Organization Name'
+        placeholder= 'Type new organizer name'
+        isHidden={false}
+        inputType="text"
+        value={orgName}
+        setValue={setOrgName}
+        isReadOnly={true}
+        /> 
+        
+          <InputForm 
             htmlFor="description"
             labelValue='Description'
             placeholder= "Email"
@@ -97,16 +150,8 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
             setValue={setDescription}
             isReadOnly={readOnly}
           />
-        <InputForm 
-            htmlFor="address"
-            labelValue='Address'
-            placeholder= "Address"
-            isHidden={false}
-            inputType="text"
-            value= {address}
-            setValue={setAddress}
-            isReadOnly={readOnly}
-          />
+              
+       
         <InputForm 
             htmlFor="email"
             labelValue='Email'
@@ -117,7 +162,7 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
             setValue={setEmail}
             isReadOnly={readOnly}
           />
-        <InputForm 
+          <InputForm 
             htmlFor="phone"
             labelValue='Phone number'
             placeholder= "Phone number"
@@ -127,38 +172,56 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
             setValue={setPhoneNumber}
             isReadOnly={readOnly}
           />
-        <InputForm 
+        
+          <InputForm 
             htmlFor="fb-link"
             labelValue='Facebook'
             placeholder= "Type in your Facebook link"
-            isHidden={fbLink === '' && readOnly ? true : false}
+            isHidden={!canEdit}
             inputType="text"
             value={fbLink}
             setValue={setFbLink}
             isReadOnly={readOnly}
           />
-        <InputForm 
+       
+        
+          <InputForm 
             htmlFor="linked-in-link"
             labelValue='Linked In'
             placeholder= "Type your Linked In link"
-            isHidden={linkedInLink === '' && readOnly ? true : false}
+            isHidden={!canEdit}
             inputType="text"
             value={linkedInLink}
             setValue={setLinkedInLink}
             isReadOnly={readOnly}
           />
-        <InputForm 
+        
+          <InputForm 
             htmlFor="website-link"
             labelValue="Website"
             placeholder= "Type your website link"
-            isHidden={websiteLink === '' && readOnly ? true : false}
+            isHidden={!canEdit}
             inputType="text"
             value={websiteLink}
             setValue={setWebsiteLink}
             isReadOnly={readOnly}
           /> 
-          </div>
-          </div>   
+          
+       
+          { canEdit && (<>{
+            readOnly  ?
+            <Button className="custom-button-color" shape='round' type="text" onClick={handleEditing}>Edit</Button>                  
+            : (
+              <div className='row'>
+                <Button className="custom-button-color" shape='round' type="text" onClick={handleSave}>Save</Button>
+                <Space> <Space ><Space></Space></Space></Space>
+                <Button className="custom-button-color" shape='round' type="text" onClick={handleCancelEditing}>Cancel</Button>
+              </div>
+            )
+        }</>)}
+        </div>
+        </div> 
+   
         
         
   );
