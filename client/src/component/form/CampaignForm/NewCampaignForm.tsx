@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DatePicker, TimePicker, Form, Input, message, Modal, Select } from 'antd';
 import { useCampaign } from '../../../contexts/CampaignContext';
 import { useOrgan } from '../../../contexts/OrganizerContext';
@@ -181,7 +181,7 @@ const CreateCampaign = () => {
                     hasFeedback
                     rules={[{ required: true, message: 'Please type in your address!' }]}
                 >
-                    <Input allowClear placeholder="Please input your compaign name"/>
+                    <Input allowClear placeholder="Please input your address"/>
                 </Form.Item>
 
                 <Form.Item

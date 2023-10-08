@@ -9,7 +9,9 @@ module.exports = {
             })
             return;
         }
-        review.createReview(req.body) // campaignID, userID, rating, comment
+        var reviewContent = {...req.body}
+        reviewContent.comment = reviewContent.comment.replaceAll("'", "''")      
+        review.createReview(reviewContent) // campaignID, userID, rating, comment
                 .then((result) => res.send({success: true}))
                 .catch(err => {
                     console.log(err)
