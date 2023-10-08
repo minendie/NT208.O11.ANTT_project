@@ -82,7 +82,25 @@ module.exports = {
     // read all campaigns
     getAllCampaigns: async() => {
         try {
-            const results = await db.Query('SELECT * FROM Campaign')
+            const results = await db.Query(`
+                    SELECT
+                        C.campaignID, campaignName,
+                        O.organizerID, O.Name AS organizerName,
+                        startDate, endDate,
+                        openHour, closeHour,
+                        lat, \`long\`,
+                        C.address,
+                        C.description,
+                        ROUND(IFNULL((
+                            SELECT AVG(rating)
+                            FROM review
+                            WHERE campaignID = C.campaignID
+                        ), 0), 1) AS averageRating
+                    FROM
+                    Campaign C
+                    JOIN Organizing ON C.CampaignID = Organizing.CampaignID
+                    JOIN Organizer O ON O.OrganizerID = Organizing.OrganizerID;
+                `)
             return results;
         } catch (err) {
             console.log(err);
