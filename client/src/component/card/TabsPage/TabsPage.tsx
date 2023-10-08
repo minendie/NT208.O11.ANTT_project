@@ -58,9 +58,7 @@ const TabsPage: React.FC<{ campaignID: number }> = ({ campaignID }) => {
             ...result,
             description, receiveGifts
           }
-          console.log(result)
           setCampaign(result);
-          
         }
       } catch (error) {
         console.error('Error fetching campaign information:', error);

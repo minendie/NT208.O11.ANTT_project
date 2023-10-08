@@ -4,7 +4,7 @@ import { Button, Checkbox, DatePicker, TimePicker, Form, FormInstance, Input, me
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 // import moment from "moment";
 // import locale from 'antd/locale/vi_VN';
-import { useCampaign } from '../../../store/CampaignContext';
+import { useCampaign } from '../../../contexts/CampaignContext';
 import dayjs from 'dayjs';
 import './styles.css'
 
@@ -21,7 +21,6 @@ interface campaign {
 }
 
 const { Option, OptGroup } = Select;
-// const { confirm } = Modal;
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -30,31 +29,6 @@ const formItemLayout = {
 
 const { RangePicker } = DatePicker;
 
-// const ConfirmModal: React.FC = () => {
-//     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(true);
-
-//     const showConfirmModal = () => {
-//         setIsConfirmModalOpen(true);
-//     };
-
-//     const handleConfirmOk = () => {
-//         Modal.destroyAll();
-//     };
-
-//     const handleConfirmCancel = () => {
-//         setIsConfirmModalOpen(false);
-//     };
-
-//     return (
-//         <>
-//         <Modal title="Basic Modal" open={isConfirmModalOpen} onOk={handleConfirmOk} onCancel={handleConfirmCancel}>
-//             <p>Some contents...</p>
-//             <p>Some contents...</p>
-//             <p>Some contents...</p>
-//         </Modal>
-//         </>
-//     );
-// }
 
 const EditCampaignForm = ({
     startDate,

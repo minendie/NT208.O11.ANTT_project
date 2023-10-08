@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { ExclamationCircleFilled, InboxOutlined, UploadOutlined } from '@ant-design/icons';
 import { Button, Checkbox, DatePicker, TimePicker, Form, FormInstance, Input, message, Modal, Select, Space, Upload, ConfigProvider } from 'antd';
-import { useOrgan } from '../../../store/OrganizerContext';
+import { useOrgan } from '../../../contexts/OrganizerContext';
 import './styles.css'
 
 interface organizer {

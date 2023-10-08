@@ -9,7 +9,7 @@ import CustomButton from "../component/ui/CustomButton";
 import SlideCampaign from "../component/SlideCampaign/SlideCampaign";
 import Search from "react-leaflet-search"
 import NewCampaignForm from "../component/form/CampaignForm/NewCampaignForm";
-import { useCampaign } from "../store/CampaignContext";
+import { useCampaign } from "../contexts/CampaignContext";
 const slides = [
   {
     title: "Slide 1",
@@ -111,7 +111,6 @@ export default function Home() {
                 </Space>
                 <CustomButton title="Search" onClick= {handleSearch} />
                 
-
                 {auth.isLoggedIn&&<CustomButton title="Create a new campaign" onClick = {handleCreateCampaign}/>}
               </div>
                 {showComponent&&<SlideCampaign slides={slides}/>}

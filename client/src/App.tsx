@@ -21,7 +21,7 @@ function App() {
             {/* <Route path="/campaign" element={<DetailCampaign />} /> */}
             <Route path="/tool" element={<AITool />} />
             <Route path="/profile/:targetUsername" element={<DetailProfile />} />
-            <Route path="/organizer" element={<DetailOrganizer />} />
+            <Route path="/organizer/:organizerID" element={<DetailOrganizer />} />
 
             <Route path="login" element={<LogIn />} />
             <Route path="signup" element={<Signup />} />

@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import {ConfigProvider} from 'antd'
 import { AuthProvider } from './auth/AuthContext';
-import { OrganizerProvider } from './store/OrganizerContext';
-import { CampaignProvider } from './store/CampaignContext';
+import { OrganizerProvider } from './contexts/OrganizerContext';
+import { CampaignProvider } from './contexts/CampaignContext';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

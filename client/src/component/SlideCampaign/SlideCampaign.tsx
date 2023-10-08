@@ -11,7 +11,7 @@ import Handle from "rc-slider/lib/Handles/Handle";
 import DetailCampaign from "../card/CampaignCard";
 import TabsPage from "../card/TabsPage/TabsPage";
 import EditCampaignForm from "../form/CampaignForm/EditCampaignForm";
-import { useCampaign } from "../../store/CampaignContext";
+import { useCampaign } from "../../contexts/CampaignContext";
 import { Link } from "react-router-dom";
 interface Slide {
   title: string;
@@ -29,7 +29,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
   
   
   const [currentIndex, setCurrentIndex] = useState(0);
-  const campaignID=5;
+  const campaignID=8;
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
