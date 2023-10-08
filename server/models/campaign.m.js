@@ -117,9 +117,16 @@ module.exports = {
     },
 
     // search campaign by city and is active or upcoming
-    getCampaignByCity: async(city) => {
+    getCampaignsByDateRange: async(startDate, endDate, topK=50) => {
         try {
-            const results = await db.Query(`SELECT * FROM Campaign WHERE Province = ${city}`)
+            const results = await db.Query(`
+                SELECT campaignID
+                FROM campaign
+                WHERE endDate >= '${startDate}'
+                      AND startDate <= '${endDate}'
+                ORDER BY startDate ASC
+                LIMIT ${topK};
+            `)
             return results;
         } catch (err) {
             console.log(err);
@@ -127,11 +134,23 @@ module.exports = {
         }
     },
 
-    // search campaign by distance // wait for latitude and longtitude
-    getCampaignByDistance: async (targetedLattitude, targetedLongtitude, startDate, endDate) => {
+    // search campaign by Haversine distance 
+    getCampaignsByDistance: async (targetedLattitude, targetedLongtitude, startDate, endDate, topK=5) => {
         try {
             const results = await db.Query(`
-                SELECT * FROM Campaign WHERE Province = ${city}
+                SELECT campaignID,
+                    (
+                        6371 * 
+                        acos(
+                        cos(radians(${targetedLattitude})) * cos(radians(lat)) * cos(radians(\`long\`) - radians(${targetedLongtitude})) +
+                        sin(radians(${targetedLattitude})) * sin(radians(lat))
+                        )
+                    ) AS distance
+                FROM campaign
+                WHERE endDate >= '${startDate}'
+                      AND startDate <= '${endDate}'
+                ORDER BY distance ASC, startDate ASC
+                LIMIT ${topK};
             `)
             return results;
         } catch (err) {
