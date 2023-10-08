@@ -1,7 +1,7 @@
 import Layout from "./layout/Layout";
 import "./App.css"
 import Home  from "./page/Home";
-import  Aboutus  from "./page/Aboutus/Aboutus2";
+import  Aboutus  from "./page/Aboutus/Aboutus";
 import  LogIn  from "./page/LogIn";
 import  Signup from "./page/Signup";
 import ErrorPage from "./ErrorPage";
@@ -9,8 +9,7 @@ import  AITool  from "./page/AITool";
 import  DetailOrganizer  from "./page/DetailOrganizer";
 import  DetailProfile  from "./page/DetailProfile";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import TabsPage from "./component/card/TabsPage/TabsPage";
-import DetailCampaign from "./page/DetailCampaign";
+
 function App() {
   return (
     <div className="app px-2 text-base w-full">

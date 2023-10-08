@@ -1,412 +1,272 @@
-import introImage from '../../assets/image.png'
-import avatarPartner from '../../assets/logo-4.png'
-import logoAITool from '../../assets/logo-5.svg'
-import dotTextureBottomLeft from '../../assets/pattern-dot-1.svg'
-import logoSearch from '../../assets/logo-6.svg'
-import logoWrite from '../../assets/logo-7.svg'
-import verticalOrnament from '../../assets/ornament-83-1.png'
-import dotTextureTopRight from '../../assets/pattern-dot-2.svg'
-import introBackground from '../../assets/rectangle-8.svg'
-import verticalSeparator from '../../assets/separator-1.svg'
-import partnerBackground from '../../assets/unsplash-6vhpy27jdps.png'
-import offerBackground from '../../assets/unsplash-9d0ln17mdeu.png'
-import firstStrength from '../../assets/unsplash-ph4skrfgyy.png'
-import secondStrength from '../../assets/unsplash-eq2z9ay9wws.png'
-import thirdStrength from '../../assets/unsplash-4ebhbxxckru.png'
-import fourthStrength from '../../assets/unsplash-jibmsms4-ka.png'
-import fifthStrength from '../../assets/unsplash-fhnnjk1yj7y.png'
-
-
+import image from '../../assets/image.png'
+import logo_1 from '../../assets/img/logo-1.svg'
+import logo_2 from '../../assets/img/logo-2.svg'
+import pattern_dot_1 from '../../assets/img/pattern-dot-1.svg'
+import logo_3 from '../../assets/img/logo-3.svg'
+import logo_7 from '../../assets/img/logo-7.png'
+import ornament_38_2 from '../../assets/img/ornament-38-2.svg'
+import ornament_38_5 from '../../assets/img/ornament-38-5.svg'
+import ornament_38_6 from '../../assets/img/ornament-38-6.svg'
+import ornament_38_7 from '../../assets/img/ornament-38-7.svg'
+import ornament_82_1 from '../../assets/img/ornament-82-1.png'
+import ornament_83_1 from '../../assets/img/ornament-83-1.png'
+import ornament_84_1 from '../../assets/img/ornament-84-1.png'
+import ornament_86_1 from '../../assets/img/ornament-86-1.png'
+import separator_1 from '../../assets/img/separator-1.svg'
+import separator from '../../assets/img/separator.svg'
+import unsplash_4ebhbxxckru from '../../assets/img/unsplash-4ebhbxxckru.png'
+import unsplash_eq2z9ay9wws from '../../assets/img/unsplash-eq2z9ay9wws.png'
+import unsplash_fhnnjk1yj7y from '../../assets/img/unsplash-fhnnjk1yj7y.png'
+import unsplash_jibmsms4_ka from '../../assets/img/unsplash-jibmsms4-ka.png'
+import unsplash_ph4skrfgyy from '../../assets/img/unsplash-ph4skrfgyy.png'
+import './styles.css'
+import { Link } from "react-router-dom";
 
 const Aboutus = (): JSX.Element => {
-  return (
-    <div className="relative w-[98vw] h-[515vh]">
-      {/* Partners */}
-      <div className="absolute w-[98vw] h-[100vh] top-[420vh] left-0 overflow-hidden">
-        <div className="relative h-[695px]">
-          <div className="inline-flex flex-col items-start gap-[10px] absolute top-0 left-0">
-            <img
-              className="relative w-[98vw] h-[90vh] object-cover"
-              alt="Unsplash"
-              src={partnerBackground}
-            />
-            <div className="absolute w-[521px] h-[483px] top-0 left-0 rotate-[180.00deg]">
-              <img className="absolute w-[370px] h-[340px] top-0 left-0 !h-[483px] !rotate-[-180.00deg] !w-[521px]" 
-                   alt="Pattern dot" 
-                   src={dotTextureBottomLeft} 
-              />
-            </div>
-          </div>
-          <div className="inline-flex items-start w-[98vw] gap-[30px] p-[10px] absolute top-[125px] left-0"
-              style={{justifyContent: 'center'}}
-          >
-            {/* ElementPartner */}
-            <div className="flex flex-col w-[20vw] items-center gap-[15px] px-[10px] py-[20px] relative bg-[#d9d9d9] rounded-[8px]">
-              <div className="inline-flex items-center gap-[10px] relative flex-[0_0_auto]">
-                <div className="flex w-[10vw] h-[10vw] items-center gap-[10px] relative">
-                  <img className="relative flex-1 self-stretch grow object-cover" alt="Logo" src={avatarPartner} />
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-[5px] relative self-stretch w-full flex-[0_0_auto]">
-                <div className="flex items-center gap-[10px] px-0 py-[5px] relative self-stretch w-full flex-[0_0_auto]">
-                  <div className="relative flex-1 mt-[-1.00px] [font-family:'Inter',Helvetica] font-bold text-black text-[20px] text-center tracking-[0] leading-[normal]">
-                  Partner 1
-                  </div>
-                </div>
-                <div className="flex items-center gap-[10px] px-[5px] py-0 relative self-stretch w-full flex-[0_0_auto]">
-                  <p className="relative flex-1 mt-[-1.00px] [font-family:'Inter',Helvetica] font-normal text-black text-[12px] text-justify tracking-[0] leading-[normal]">
-                    Lorem ipsum dolor sit amet consectetur. Pellentesque mollis amet venenatis at accumsan purus. Lorem volutpat
-                    donec turpis a eros sodales. Sit consectetur scelerisque tempor
-                  </p>
-                </div>
-                <div className="flex items-center gap-[10px] px-0 py-[10px] relative self-stretch w-full flex-[0_0_auto]">
-                  <div className="relative flex-1 mt-[-1.00px] [font-family:'Inter',Helvetica] font-normal text-black text-[15px] text-center tracking-[0] leading-[normal]">
-                    Website
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* ElementPartner */}
-            <div className="flex flex-col w-[20vw] items-center gap-[15px] px-[10px] py-[20px] relative bg-[#d9d9d9] rounded-[8px]">
-              <div className="inline-flex items-center gap-[10px] relative flex-[0_0_auto]">
-                <div className="flex w-[10vw] h-[10vw] items-center gap-[10px] relative">
-                  <img className="relative flex-1 self-stretch grow object-cover" alt="Logo" src={avatarPartner} />
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-[5px] relative self-stretch w-full flex-[0_0_auto]">
-                <div className="flex items-center gap-[10px] px-0 py-[5px] relative self-stretch w-full flex-[0_0_auto]">
-                  <div className="relative flex-1 mt-[-1.00px] [font-family:'Inter',Helvetica] font-bold text-black text-[20px] text-center tracking-[0] leading-[normal]">
-                  Partner 2
-                  </div>
-                </div>
-                <div className="flex items-center gap-[10px] px-[5px] py-0 relative self-stretch w-full flex-[0_0_auto]">
-                  <p className="relative flex-1 mt-[-1.00px] [font-family:'Inter',Helvetica] font-normal text-black text-[12px] text-justify tracking-[0] leading-[normal]">
-                    Lorem ipsum dolor sit amet consectetur. Pellentesque mollis amet venenatis at accumsan purus. Lorem volutpat
-                    donec turpis a eros sodales. Sit consectetur scelerisque tempor
-                  </p>
-                </div>
-                <div className="flex items-center gap-[10px] px-0 py-[10px] relative self-stretch w-full flex-[0_0_auto]">
-                  <div className="relative flex-1 mt-[-1.00px] [font-family:'Inter',Helvetica] font-normal text-black text-[15px] text-center tracking-[0] leading-[normal]">
-                    Website
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* ElementPartner */}
-            <div className="flex flex-col w-[20vw] items-center gap-[15px] px-[10px] py-[20px] relative bg-[#d9d9d9] rounded-[8px]">
-              <div className="inline-flex items-center gap-[10px] relative flex-[0_0_auto]">
-                <div className="flex w-[10vw] h-[10vw] items-center gap-[10px] relative">
-                  <img className="relative flex-1 self-stretch grow object-cover" alt="Logo" src={avatarPartner} />
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-[5px] relative self-stretch w-full flex-[0_0_auto]">
-                <div className="flex items-center gap-[10px] px-0 py-[5px] relative self-stretch w-full flex-[0_0_auto]">
-                  <div className="relative flex-1 mt-[-1.00px] [font-family:'Inter',Helvetica] font-bold text-black text-[20px] text-center tracking-[0] leading-[normal]">
-                  Partner 3
-                  </div>
-                </div>
-                <div className="flex items-center gap-[10px] px-[5px] py-0 relative self-stretch w-full flex-[0_0_auto]">
-                  <p className="relative flex-1 mt-[-1.00px] [font-family:'Inter',Helvetica] font-normal text-black text-[12px] text-justify tracking-[0] leading-[normal]">
-                    Lorem ipsum dolor sit amet consectetur. Pellentesque mollis amet venenatis at accumsan purus. Lorem volutpat
-                    donec turpis a eros sodales. Sit consectetur scelerisque tempor
-                  </p>
-                </div>
-                <div className="flex items-center gap-[10px] px-0 py-[10px] relative self-stretch w-full flex-[0_0_auto]">
-                  <div className="relative flex-1 mt-[-1.00px] [font-family:'Inter',Helvetica] font-normal text-black text-[15px] text-center tracking-[0] leading-[normal]">
-                    Website
-                  </div>
-                </div>
-              </div>
-            </div>
-            {/* ElementPartner */}
-            <div className="flex flex-col w-[20vw] items-center gap-[15px] px-[10px] py-[20px] relative bg-[#d9d9d9] rounded-[8px]">
-              <div className="inline-flex items-center gap-[10px] relative flex-[0_0_auto]">
-                <div className="flex w-[10vw] h-[10vw] items-center gap-[10px] relative">
-                  <img className="relative flex-1 self-stretch grow object-cover" alt="Logo" src={avatarPartner} />
-                </div>
-              </div>
-              <div className="flex flex-col items-center gap-[5px] relative self-stretch w-full flex-[0_0_auto]">
-                <div className="flex items-center gap-[10px] px-0 py-[5px] relative self-stretch w-full flex-[0_0_auto]">
-                  <div className="relative flex-1 mt-[-1.00px] [font-family:'Inter',Helvetica] font-bold text-black text-[20px] text-center tracking-[0] leading-[normal]">
-                  Partner 4
-                  </div>
-                </div>
-                <div className="flex items-center gap-[10px] px-[5px] py-0 relative self-stretch w-full flex-[0_0_auto]">
-                  <p className="relative flex-1 mt-[-1.00px] [font-family:'Inter',Helvetica] font-normal text-black text-[12px] text-justify tracking-[0] leading-[normal]">
-                    Lorem ipsum dolor sit amet consectetur. Pellentesque mollis amet venenatis at accumsan purus. Lorem volutpat
-                    donec turpis a eros sodales. Sit consectetur scelerisque tempor
-                  </p>
-                </div>
-                <div className="flex items-center gap-[10px] px-0 py-[10px] relative self-stretch w-full flex-[0_0_auto]">
-                  <div className="relative flex-1 mt-[-1.00px] [font-family:'Inter',Helvetica] font-normal text-black text-[15px] text-center tracking-[0] leading-[normal]">
-                    Website
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="absolute w-[98vw] h-[100px] top-[50px] [text-shadow:0px_4px_4px_#00000040] text-[#614bc3] text-[54px] text-center leading-[30px] [font-family:'Inter',Helvetica] font-bold tracking-[0]"
-               style={{textAlign: 'center'}}
-          >
-            Our partners
-          </div>
-        </div>
-      </div>
-      {/* Why choose us? (Strengths) */}
-      <div className="inline-flex w-[98vw] h-[90vh] items-start gap-[10px] absolute top-[180vh] -left-px"
-           style={{justifyContent: 'center'}}
-      >
-        <div className="inline-flex items-start relative flex-[0_0_auto]">
-          <div className="relative w-[10vw]">
-            <div className="relative w-[10vw]">
-              <div className="absolute w-[10vw] h-[1214px] top-0 left-0">
-                <img 
-                  className="absolute w-[10vw] h-[405px] top-0 left-0" 
-                  alt="Ornament" 
-                  src={verticalOrnament} />
-                <img
-                  className="absolute w-[10vw] h-[405px] top-[405px] left-0"
-                  alt="Ornament"
-                  src={verticalOrnament}
-                />
-                <img
-                  className="absolute w-[10vw] h-[405px] top-[809px] left-0"
-                  alt="Ornament"
-                  src={verticalOrnament}
-                />
-              </div>
-              <img
-                className="absolute w-[10vw] h-[405px] top-[1057px] left-0"
-                alt="Ornament"
-                src={verticalOrnament}
-              />
-            </div>
-          </div>
-          <div className="relative w-[78vw]" />
-          <div className="relative w-[10vw]">
-            <div className="relative w-[10vw] h-[1461px]">
-              <div className="absolute w-[10vw] h-[1214px] top-0 left-0">
-                <img className="absolute w-[10vw] h-[405px] top-0 left-0" 
-                alt="Ornament" 
-                src={verticalOrnament} />
-                <img
-                  className="absolute w-[10vw] h-[405px] top-[405px] left-0"
-                  alt="Ornament"
-                  src={verticalOrnament}
-                />
-                <img
-                  className="absolute w-[10vw] h-[405px] top-[809px] left-0"
-                  alt="Ornament"
-                  src={verticalOrnament}
-                />
-              </div>
-              <img
-                className="absolute w-[10vw] h-[405px] top-[1057px] left-0"
-                alt="Ornament"
-                src={verticalOrnament}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="inline-flex flex-col w-[78vw] h-[240vh] items-center gap-[30px] bg-[#33bbc5] absolute top-0 left-[10vw]">
-          <div className="relative w-[78vw] mt-[-1.00px] [text-shadow:0px_4px_4px_#00000040] text-white text-[100px] text-center leading-[normal] [font-family:'Inter',Helvetica] font-bold tracking-[0]">
-            Why choose us?
-          </div>
-          <div className="inline-flex flex-col w-[78vw] items-end relative flex-[0_0_auto]">
-            <div className="flex w-[77vw] items-center gap-[20px] relative flex-[0_0_auto]">
-              <div className="w-[50vw] p-[10px] flex-1 grow flex items-center justify-center gap-[10px] relative">
-                <p className="w-[50vw] mt-[-1.00px] ml-[-3.50px] mr-[-3.50px] text-white text-[22px] relative [font-family:'Inter',Helvetica] font-normal text-justify tracking-[0] leading-[normal]">
-                  Lorem ipsum dolor sit amet consectetur. Pellentesque mollis amet venenatis at accumsan purus. Lorem
-                  volutpat donec turpis a eros sodales. Sit consectetur scelerisque tempor commodo orci tincidunt
-                  lectus. Tincidunt sed molestie ut sed.
+    return (
+        <div className="aboutus">
+        <div className="container-wrapper">
+          <div className="container">
+            <div className="team-intro-content">
+              <div className="frame">
+                <div className="large">GREEN DOTS</div>
+                <p className="p">
+                  Green Dots is a platform that allows people to find and navigate nearby recycling collection points.
+                  While this solution helps everyone easily access current recycling points around their neighborhood, it
+                  also makes each individual a game-changer through additional features.
                 </p>
+                <Link to={"/"}>
+                <div className="button-primary"><div className="label">Get started -&gt;</div></div>
+                </Link>
               </div>
-              <div className="items-start inline-flex gap-[10px] relative flex-[0_0_auto]">
-                <img className="relative w-[20vw] h-[20vw]" alt="Unsplash" src={firstStrength} />
-              </div>
-            </div>
-            <div className="flex w-[77w] items-center gap-[20px] relative flex-[0_0_auto]">
-              <div className="items-center inline-flex gap-[10px] relative flex-[0_0_auto]">
-                <img className="relative w-[20vw] h-[20vw]" alt="Unsplash" src={secondStrength} />
-              </div>
-              <div className="w-[50vw] p-[10px] flex-1 grow flex items-center justify-center gap-[10px] relative">
-                <p className="w-[50vw] relative flex-1 self-stretch mt-[-1.00px] [font-family:'Inter',Helvetica] font-normal text-white text-[22px] text-justify tracking-[0] leading-[normal]">
-                  Lorem ipsum dolor sit amet consectetur. Pellentesque mollis amet venenatis at accumsan purus. Lorem
-                  volutpat donec turpis a eros sodales. Sit consectetur scelerisque tempor commodo orci tincidunt
-                  lectus. Tincidunt sed molestie ut sed.
-                </p>
+              <div className="div">
+                <img className="pattern-dot" src={pattern_dot_1} />
+                <img className="vector" src={image}></img>
               </div>
             </div>
-            <div className="flex w-[77vw] items-center gap-[20px] relative flex-[0_0_auto]">
-              <div className="w-[50vw] flex-1 grow flex items-center justify-center gap-[10px] relative">
-                <p className="w-[50vw] mt-[-1.00px] ml-[-5.00px] mr-[-5.00px] text-white text-[22px] relative [font-family:'Inter',Helvetica] font-normal text-justify tracking-[0] leading-[normal]">
-                  Lorem ipsum dolor sit amet consectetur. Pellentesque mollis amet venenatis at accumsan purus. Lorem
-                  volutpat donec turpis a eros sodales. Sit consectetur scelerisque tempor commodo orci tincidunt
-                  lectus. Tincidunt sed molestie ut sed.
-                </p>
+            <div className="something">
+              <div className="component-wrapper">
+                <Link to={"/"}>
+                    <div className="component">
+                        <img className="ornament" src={ornament_38_2} />
+                        <div className="h-large">Map for now!</div>
+                    </div>
+                </Link>
               </div>
-              <div className="items-start inline-flex gap-[10px] relative flex-[0_0_auto]">
-                <img className="relative w-[20vw] h-[20vw]" alt="Unsplash" src={thirdStrength} />
-              </div>
-            </div>
-            <div className="flex w-[77vw] items-center gap-[20px] relative flex-[0_0_auto]">
-              <div className="items-center inline-flex gap-[10px] relative flex-[0_0_auto]">
-                <img
-                  className="relative w-[20vw] h-[20vw]"
-                  alt="Unsplash ka"
-                  src={fourthStrength}
-                />
-              </div>
-              <div className="w-[50vw] p-[10px] flex-1 grow flex items-center justify-center gap-[10px] relative">
-                <p className="w-[50vw] relative flex-1 self-stretch mt-[-1.00px] [font-family:'Inter',Helvetica] font-normal text-white text-[22px] text-justify tracking-[0] leading-[normal]">
-                  Lorem ipsum dolor sit amet consectetur. Pellentesque mollis amet venenatis at accumsan purus. Lorem
-                  volutpat donec turpis a eros sodales. Sit consectetur scelerisque tempor commodo orci tincidunt
-                  lectus. Tincidunt sed molestie ut sed.
-                </p>
-              </div>
-            </div>
-            <div className="flex w-[78vw] items-center gap-[20px] relative flex-[0_0_auto]">
-              <div className="w-[50vw] p-[10px] flex-1 grow flex items-center justify-center gap-[10px] relative">
-                <p className="w-[50vw] w-[616px] mt-[-1.00px] ml-[-5.50px] mr-[-5.50px] text-white text-[22px] relative [font-family:'Inter',Helvetica] font-normal text-justify tracking-[0] leading-[normal]">
-                  Lorem ipsum dolor sit amet consectetur. Pellentesque mollis amet venenatis at accumsan purus. Lorem
-                  volutpat donec turpis a eros sodales. Sit consectetur scelerisque tempor commodo orci tincidunt
-                  lectus. Tincidunt sed molestie ut sed.
-                </p>
-              </div>
-              <div className="items-start inline-flex gap-[10px] relative flex-[0_0_auto]">
-                <img className="relative w-[20vw] h-[20vw]" alt="Unsplash" src={fifthStrength} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* What we offer */}
-      <div className="absolute w-[98vw] h-[90vh] top-[90vh] left-0">
-        <div className="relative w-[98vw] h-[90vh] -left-px">
-          <div className="absolute w-[98vw] h-[377px] top-[126px] left-px">
-            <div className="relative w-[98vw] h-[90vh] top-[-126px] -left-px bg-cover bg-[50%_50%]"
-                style={{backgroundImage: `url(${offerBackground})`}}
-            >
-              <div className="absolute w-[98vw] h-[377px] top-[126px] left-px bg-[#33bbc599] opacity-60" />
-              <div className="absolute w-[98vw] h-[377px] top-[126px]  bg-[#c8ffe0cc]" />
-            </div>
-          </div>
-          <div className="flex flex-col w-[98vw] h-[603px] items-center gap-[11px] px-0 py-[10px] absolute top-0 left-0">
-            <div className="relative w-[98vw] h-[150px] mt-[-1.00px] [text-shadow:0px_4px_4px_#00000040] text-black text-[54px] text-center leading-[normal] [font-family:'Inter',Helvetica] font-bold tracking-[0]">
-              What we offer
-            </div>
-            <div className="inline-flex justify-center p-[10px] flex-[0_0_auto] items-center relative">
-              <div className="flex flex-col w-[30vw] items-center relative">
-                <img className="relative flex-[0_0_auto]" alt="Logo" src={logoAITool} />
-                <div className="inline-flex items-center justify-center gap-[10px] p-[10px] relative flex-[0_0_auto]">
-                  <div className="relative w-fit mt-[-1.00px] [font-family:'Inter',Helvetica] font-bold text-black text-[20px] text-center tracking-[0] leading-[normal] whitespace-nowrap">
-                    Title
-                  </div>
+              <div className="div-wrapper">
+              <Link to={"/"}>
+                <div className="component-2">
+                  <img className="img" src={ornament_38_5} />
+                  <div className="text-wrapper">Map for now!</div>
                 </div>
-                <div className="flex-col w-[28vw] h-[194px] px-[10px] py-[5px] flex items-center justify-center gap-[10px] relative">
-                  <p className="self-stretch text-black text-[17px] relative [font-family:'Inter',Helvetica] font-normal text-justify tracking-[0] leading-[normal]">
-                    Lorem ipsum dolor sit amet consectetur. Pellentesque mollis amet venenatis at accumsan purus. Lorem
-                    volutpat donec turpis a eros sodales. Sit consectetur scelerisque.
-                  </p>
-                  {/* Start GoTo */}
-                  <div className="w-[238px] h-[21px] relative">
-                    <div
-                      className="[font-family:'Inter',Helvetica] w-[238px] left-0 tracking-[0] text-[17px] -top-px h-[21px] font-semibold text-center leading-[normal] absolute text-black"
-                    >
-                      Go to ... -&gt;
+                </Link>
+              </div>
+            </div>
+            <div className="project-description">
+              <div className="large-2">What we offer</div>
+              <div className="product-wrapper">
+                <div className="product-descriptions">
+                  <div className="product-description">
+                    <img className="logo" src={logo_1} />
+                    <div className="title"><div className="text-wrapper-2">AI Tool</div></div>
+                    <div className="description">
+                      <p className="text-wrapper-3">
+                      The AI waste detection tool quickly recognizes and categorizes various types of waste based on images, 
+                      while providing detailed information on recycling methods and recycling locations, saving time and effort in searching.
+                      </p>
+                      <div className="go-to"><div className="go-to-2"><Link to={"/tool"}>Go to AI Tool -&gt;</Link></div></div>
                     </div>
                   </div>
-                  {/* End GoTo */}
-                </div>
-              </div>
-              <div className="inline-flex items-center justify-center px-[10px] py-0 relative flex-[0_0_auto]">
-                <img className="relative w-px h-[320px] mr-[-0.46px]" alt="Separator" src={verticalSeparator} />
-              </div>
-              <div className="flex flex-col w-[30vw] items-center relative">
-                <img className="relative flex-[0_0_auto]" alt="Logo" src={logoSearch} />
-                <div className="inline-flex items-center justify-center gap-[10px] p-[10px] relative flex-[0_0_auto]">
-                  <div className="relative w-fit mt-[-1.00px] [font-family:'Inter',Helvetica] font-bold text-black text-[20px] text-center tracking-[0] leading-[normal] whitespace-nowrap">
-                    Title
-                  </div>
-                </div>
-                <div className="flex-col w-[28vw] h-[194px] px-[10px] py-[5px] flex items-center justify-center gap-[10px] relative">
-                  <p className="self-stretch text-black text-[17px] relative [font-family:'Inter',Helvetica] font-normal text-justify tracking-[0] leading-[normal]">
-                    Lorem ipsum dolor sit amet consectetur. Pellentesque mollis amet venenatis at accumsan purus. Lorem
-                    volutpat donec turpis a eros sodales. Sit consectetur scelerisque.
-                  </p>
-                  {/* Start GoTo */}
-                  <div className="w-[238px] h-[21px] relative">
-                    <div
-                      className="[font-family:'Inter',Helvetica] w-[238px] left-0 tracking-[0] text-[17px] -top-px h-[21px] font-semibold text-center leading-[normal] absolute text-black"
-                    >
-                      Go to ... -&gt;
+                  <div className="separator"><img className="separator-2" src={separator} /></div>
+                  <div className="product-description">
+                    <img className="logo" src={logo_2} />
+                    <div className="title"><div className="text-wrapper-2">Search tool</div></div>
+                    <div className="description">
+                      <p className="text-wrapper-3">
+                      A map-based tool for searching waste collection campaigns, enabling users to locate nearby initiatives, 
+                      fostering community engagement in waste management.
+                      </p>
+                      <div className="go-to-wrapper"><div className="go-to-3"><Link to={"/"}>Go to Home page -&gt;</Link></div></div>
                     </div>
                   </div>
-                  {/* End GoTo */}
-                </div>
-              </div>
-              <div className="inline-flex items-center justify-center px-[10px] py-0 relative flex-[0_0_auto]">
-                <img className="relative w-px h-[320px] mr-[-1.00px]" alt="Separator" src={verticalSeparator} />
-              </div>
-              <div className="flex flex-col w-[30vw] items-center relative">
-                <img className="relative flex-[0_0_auto]" alt="Logo" src={logoWrite} />
-                <div className="inline-flex items-center justify-center gap-[10px] p-[10px] relative flex-[0_0_auto]">
-                  <div className="relative w-fit mt-[-1.00px] [font-family:'Inter',Helvetica] font-bold text-black text-[20px] text-center tracking-[0] leading-[normal] whitespace-nowrap">
-                    Title
-                  </div>
-                </div>
-                <div className="flex-col w-[28vw] h-[194px] px-[10px] py-[5px] flex items-center justify-center gap-[10px] relative">
-                  <p className="self-stretch text-black text-[17px] relative [font-family:'Inter',Helvetica] font-normal text-justify tracking-[0] leading-[normal]">
-                    Lorem ipsum dolor sit amet consectetur. Pellentesque mollis amet venenatis at accumsan purus. Lorem
-                    volutpat donec turpis a eros sodales. Sit consectetur scelerisque.
-                  </p>
-                  {/* Start GoTo */}
-                  <div className="w-[238px] h-[21px] relative">
-                    <div
-                      className="[font-family:'Inter',Helvetica] w-[238px] left-0 tracking-[0] text-[17px] -top-px h-[21px] font-semibold text-center leading-[normal] absolute text-black"
-                    >
-                      Go to ... -&gt;
+                  <div className="separator"><img className="separator-3" src={separator_1} /></div>
+                  <div className="product-description">
+                    <img className="logo" src={logo_3} />
+                    <div className="title"><div className="text-wrapper-2">Rating and review</div></div>
+                    <div className="description">
+                      <p className="text-wrapper-3">
+                      A rating and review feature allows users to provide feedback and rate waste collection campaigns, 
+                      promoting transparency and accountability in waste management efforts.
+                      </p>
+                      <div className="go-to-wrapper"><div className="go-to-3"><Link to={"/"}>Go to Home page -&gt;</Link></div></div>
                     </div>
                   </div>
-                  {/* End GoTo */}
+                </div>
+              </div>
+            </div>
+            <div className="strength-content">
+              <div className="group">
+                <div className="overlap-group">
+                  <div className="group-2">
+                    <img className="ornament-2" src={ornament_82_1} />
+                    <img className="ornament-3" src={ornament_83_1} />
+                    <img className="ornament-4" src={ornament_84_1} />
+                  </div>
+                  <img className="ornament-5" src={ornament_86_1} />
+                </div>
+              </div>
+              <div className="container-2">
+                <div className="large-3">Why choose us?</div>
+                <div className="container-3">
+                  <div className="div-2">
+                    <div className="description-2">
+                      <p className="text-wrapper-4">
+                        Utilizing our waste collection campaign search tool brings significant benefits.
+                        With the ability to search nationwide, from the smallest nooks and crannies to major locations, users can easily identify ongoing waste collection campaigns throughout the country. 
+                        Our tool visually displays these campaigns on a map and continuously updates them in real-time, making it easier than ever for 
+                        waste management organizations and individuals eager to participate to find each other effortlessly.
+                      </p>
+                    </div>
+                    <div className="thumbnail"><img className="unsplash" src={unsplash_ph4skrfgyy} /></div>
+                  </div>
+                  <div className="div-2">
+                    <div className="div-3"><img className="unsplash-2" src={unsplash_eq2z9ay9wws} /></div>
+                    <div className="description-2">
+                      <p className="text-wrapper-5">
+                      Our product saves time for campaign organizers and participants. Organizers can easily create campaign information with a few clicks, 
+                      reaching a wide audience without the need for extensive advertising on scattered platforms. Participants can quickly and visually search for nearby campaigns, 
+                      avoiding the hassle of outdated information on social media or general search engines.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="div-2">
+                    <div className="description-2">
+                      <p className="text-wrapper-4">
+                      Our product allows users to evaluate and rate campaigns, creating transparency and improved organization to enhance credibility. 
+                      Additionally, it provides participants with the opportunity to share their reviews and feedback based on their experiences, 
+                      while helping them discover high-quality and reliable campaigns that meet their expectations.
+                      </p>
+                    </div>
+                    <div className="thumbnail"><img className="unsplash-2" src={unsplash_4ebhbxxckru} /></div>
+                  </div>
+                  <div className="div-2">
+                    <div className="div-3"><img className="img-2" src={unsplash_jibmsms4_ka} /></div>
+                    <div className="description-2">
+                      <p className="text-wrapper-5">
+                      Our AI-based waste classification tool empowers contributors to donate without prior knowledge of waste sorting. 
+                      By leveraging the AI tool's predictions, individuals can confidently contribute their waste to the appropriate organization. 
+                      This addresses a common barrier where people hesitate to donate because they are unsure about the type of waste they have or whether it is accepted by any organization. 
+                      By eliminating this uncertainty, we encourage more individuals to actively participate in waste donation, ensuring their concerns for waste contribution are met.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="div-2">
+                    <div className="description-2">
+                      <p className="text-wrapper-4">
+                      Our platform enables organizers to create cost-effective campaigns, reaching participants without excessive advertising costs. 
+                      With a user-friendly interface, efficient campaign setup and promotion are facilitated. By eliminating expensive advertising, 
+                      resources can be allocated effectively for meaningful participant experiences. This fosters inclusivity, enabling a wider range of individuals to engage with campaigns and events. 
+                      Our goal is to democratize the organizing process, ensuring impactful initiatives thrive irrespective of budget constraints.
+                      </p>
+                    </div>
+                    <div className="thumbnail"><img className="img-2" src={unsplash_fhnnjk1yj7y} /></div>
+                  </div>
+                </div>
+              </div>
+              <div className="group">
+                <div className="overlap-group">
+                  <div className="group-2">
+                    <img className="ornament-2" src={ornament_82_1} />
+                    <img className="ornament-3" src={ornament_83_1} />
+                    <img className="ornament-4" src={ornament_84_1} />
+                  </div>
+                  <img className="ornament-5" src={ornament_86_1} />
+                </div>
+              </div>
+            </div>
+            <div className="something">
+              <div className="component-wrapper">
+              <Link to={"/"}>
+                <div className="component">
+                  <img className="ornament" src={ornament_38_6} />
+                  <div className="h-large">Map for now!</div>
+                </div>
+                </Link>
+              </div>
+              <div className="div-wrapper">
+              <Link to={"/"}>
+                <div className="component-2">
+                  <img className="img" src={ornament_38_7} />
+                  <div className="text-wrapper">Map for now!</div>
+                </div>
+                </Link>
+              </div>
+            </div>
+            <div className="partner-content">
+              <div className="large-4">Our partners</div>
+              <div className="partners">
+                <div className="element-partner">
+                  <div className="div-3">
+                    <div className="logo-wrapper"><img className="logo-2" src={logo_7} /></div>
+                  </div>
+                  <div className="details">
+                    <div className="partner-name-wrapper"><div className="partner-name">Thanh Hương</div></div>
+                    <div className="brief-description-wrapper">
+                        <p className="brief-description">
+                            Studying at the University of Information Technology.
+                        </p>
+                    </div>
+                    <div className="contact-info-wrapper"><div className="contact-info">Website</div></div>
+                  </div>
+                </div>
+                <div className="element-partner">
+                  <div className="div-3">
+                    <div className="logo-wrapper"><img className="logo-2" src={logo_7} /></div>
+                  </div>
+                  <div className="details">
+                    <div className="partner-name-wrapper"><div className="partner-name">Kim Uyên</div></div>
+                    <div className="brief-description-wrapper">
+                        <p className="brief-description">
+                            Studying at the University of Information Technology.
+                        </p>
+                    </div>
+                    <div className="contact-info-wrapper"><div className="contact-info">Website</div></div>
+                  </div>
+                </div>
+                <div className="element-partner">
+                  <div className="div-3">
+                    <div className="logo-wrapper"><img className="logo-2" src={logo_7} /></div>
+                  </div>
+                  <div className="details">
+                    <div className="partner-name-wrapper"><div className="partner-name">Uyển Nhi</div></div>
+                    <div className="brief-description-wrapper">
+                      <p className="brief-description">
+                        Studying at the University of Information Technology.
+                      </p>
+                    </div>
+                    <div className="contact-info-wrapper"><div className="contact-info">Website</div></div>
+                  </div>
+                </div>
+                <div className="element-partner">
+                  <div className="div-3">
+                    <div className="logo-wrapper"><img className="logo-2" src={logo_7} /></div>
+                  </div>
+                  <div className="details">
+                    <div className="partner-name-wrapper"><div className="partner-name">Thanh Mai</div></div>
+                    <div className="brief-description-wrapper">
+                        <p className="brief-description">
+                            Studying at the University of Information Technology.
+                        </p>
+                    </div>
+                    <div className="contact-info-wrapper"><div className="contact-info">Website</div></div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      {/* Intro */}
-      <div className="absolute w-[98vw] h-[90vh]"
-          style={{backgroundColor: '#33BBC5'}}
-      >
-        <div className="inline-flex flex-col items-start gap-[10px] absolute top-0 left-px">
-          <div className="inline-flex flex-col items-start gap-[10px] relative flex-[0_0_auto]">
-            <img className="relative w-[98vw] h-[90vh]" alt="Rectangle" src={introBackground} />
-            <img className="absolute w-[370px] h-[340px] top-0 right-0 !h-[418px] !w-[451px] !top-[19px]" 
-                 alt="Pattern dot" 
-                 src={dotTextureTopRight} />
-            <div className="absolute w-[332px] h-[323px] bottom-[50px] right-[50px] bg-cover bg-[50%_50%]" 
-                style={{backgroundImage: `url(${introImage})`}}
-            />
-          </div>
-          <div className="flex flex-wrap items-end gap-[0px_31px] absolute top-[100px] left-[100px]"
-               style={{flexDirection: 'column', alignItems: 'flex-start'}}
-          >
-            <div className="relative h-[150px] mt-[-1.00px] [text-shadow:12px_8px_8px_#614bc340] text-white text-[80px] leading-[normal] [font-family:'Inter',Helvetica] font-bold tracking-[0]">
-              GREEN DOTS
-            </div>
-            <p className="relative w-[50vw] h-[291px] [font-family:'Inter',Helvetica] font-normal text-black text-[30px] tracking-[0] leading-[normal]"
-              style={{textAlign: 'left'}}
-            >
-              Green Dots is a platform that allows people to find and navigate nearby recycling collection points. While
-              this solution helps everyone easily access current recycling points around their neighborhood, it also
-              makes each individual a game-changer through additional features.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
 
-export default Aboutus
+export default Aboutus;
