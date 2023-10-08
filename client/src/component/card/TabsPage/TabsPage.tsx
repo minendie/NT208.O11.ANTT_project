@@ -4,6 +4,7 @@ import DetailCampaign from '../CampaignCard';
 import ReviewPage from '../../Review/Review_page';
 import './Tabs.css'
 import axios from 'axios';
+import { useCampaign } from '../../../contexts/CampaignContext';
 
 
 interface Campaign {
@@ -26,7 +27,8 @@ const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
 const TabsPage: React.FC<{ campaignID: number }> = ({ campaignID }) => {
 
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const {showCampaignDetail, setShowCampaignDetail} = useCampaign();
+
   const [campaign, setCampaign] = useState<Campaign>({
                               organizerName: '',
                               startDate: '',
@@ -69,7 +71,7 @@ const TabsPage: React.FC<{ campaignID: number }> = ({ campaignID }) => {
   }, []);
   
   const handleCancel = () => {
-    setIsModalOpen(false);
+    setShowCampaignDetail(false);
   };
   
   const Page = [
@@ -96,7 +98,7 @@ const TabsPage: React.FC<{ campaignID: number }> = ({ campaignID }) => {
 
   return (
     <>
-      <Modal title="" open={isModalOpen} onCancel={handleCancel}  footer={null}>
+      <Modal title="" open={showCampaignDetail} onCancel={handleCancel}  footer={null}>
         <Tabs 
           defaultActiveKey="1"
           type="card"

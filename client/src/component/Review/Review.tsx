@@ -46,7 +46,7 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
     
     return(
     <>       
-        <ConfigProvider
+        {/* <ConfigProvider
                 theme={{
                 token: {
                     // Seed Token
@@ -56,7 +56,7 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
                     colorBgContainer: '#FFFFFF',
                 },
                 }}
-        >
+        > */}
             <Form
                     name="basic"
                     layout="vertical"         
@@ -90,7 +90,7 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
                             </Button>
                         </div>
                          <div className="review-container"> 
-                        <Form.Item name="rating" label="" style={{width: "100%"}} rules={[{ required: true, message: 'Please rating for campaign' }]}>
+                        <Form.Item name="rating" label="" style={{width: "100%"}} rules={[{ required: true, message: 'Please rating for campaign!' }]}>
                             <Rate/>
                         </Form.Item>
                         </div> 
@@ -98,7 +98,7 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
                     </div>
                 </div>
             </Form> 
-        </ConfigProvider>
+        {/* </ConfigProvider> */}
     </>
     )
 }

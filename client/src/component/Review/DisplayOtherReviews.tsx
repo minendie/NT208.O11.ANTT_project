@@ -19,7 +19,7 @@ const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
     return(
     
         <> 
-        <ConfigProvider
+        {/* <ConfigProvider
                 theme={{
                 token: {
                     // Seed Token
@@ -28,7 +28,7 @@ const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
                     // Alias Token
                     colorBgContainer: '#FFFFFF',
                 },}}
-        >
+        > */}
 
         {reviews.map((review, index) => (
         <Form
@@ -85,7 +85,7 @@ const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
         </div>
         </Form>
         ))} 
-    </ConfigProvider>
+    {/* </ConfigProvider> */}
     </>
     )
 

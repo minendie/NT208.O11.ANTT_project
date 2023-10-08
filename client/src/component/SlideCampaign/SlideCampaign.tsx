@@ -40,7 +40,8 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
       prevIndex === 0 ? slides.length - 1 : prevIndex - 1
     );
   };
-  const {showEditCampaignForm, setShowEditCampaignForm} = useCampaign()
+  const {showEditCampaignForm, setShowEditCampaignForm,
+    showCampaignDetail, setShowCampaignDetail} = useCampaign()
 
   const items: MenuProps['items'] = [
     {
@@ -75,10 +76,8 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
       key: '2',
     },
   ];
-  
-  const [showCampaign, setShowCampaign] = useState(false)
   const handleClick = () =>{
-    setShowCampaign(!showCampaign);
+    setShowCampaignDetail(true);
   }
 
   return (
@@ -129,7 +128,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
                   <WhiteButton title="⭐ Ratings" onClick = {handleClick} />
                   </div>
                   {
-                    showCampaign&&<TabsPage campaignID={campaignID}/>
+                    showCampaignDetail&&<TabsPage campaignID={campaignID}/>
                   }                 
                   
                   {/* </a> */}
