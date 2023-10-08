@@ -121,7 +121,7 @@ export default function Home() {
                 {auth.isLoggedIn&&<CustomButton title="Create a new campaign" onClick = {handleCreateCampaign}/>}
               </div>
                 {showComponent&&<SlideCampaign slides={slides}/>}
-                {auth.isLoggedIn&&<NewCampaignForm />}
+                {showNewCampaignForm&&auth.isLoggedIn&&<NewCampaignForm />}
             </div>
           </div>
         </MapContainer>

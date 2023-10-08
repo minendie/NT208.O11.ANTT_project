@@ -4,7 +4,7 @@ interface CampaignContextProps {
   showNewCampaignForm: boolean;
   setShowNewCampaignForm: (showNewCampaignForm: boolean) => void;
   showEditCampaignForm: boolean;
-  setShowEditCampaignForm: (showNewCampaignForm: boolean) => void;
+  setShowEditCampaignForm: (showEditCampaignForm: boolean) => void;
 }
 
 const CampaignContext = createContext<CampaignContextProps>({

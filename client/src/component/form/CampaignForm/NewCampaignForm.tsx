@@ -17,7 +17,7 @@ const { RangePicker } = DatePicker;
 
 const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
-const CreateCampaign = () => {
+const NewCampaignForm = () => {
 
     const auth = useAuth();
     const organizer = useOrgan();
@@ -162,17 +162,18 @@ const CreateCampaign = () => {
                 <Form.Item
                     name="campaignName"
                     label="Name"
+                    hasFeedback
                     rules={[{ required: true, message: 'Please input your compaign name!' }]}
                 >
-                    <Input placeholder="Please input your compaign name"/>
+                    <Input allowClear placeholder="Please input your compaign name"/>
                 </Form.Item>
 
-                <Form.Item name="timeFrame" label="Time frame" {...dayRangeConfig}>
-                    <RangePicker />
+                <Form.Item hasFeedback name="timeFrame" label="Time frame" {...dayRangeConfig}>
+                    <RangePicker allowClear/>
                 </Form.Item>
 
-                <Form.Item name="workingTime" label="Working time" {...timeRangeConfig}>
-                    <TimePicker.RangePicker />
+                <Form.Item hasFeedback name="workingTime" label="Working time" {...timeRangeConfig}>
+                    <TimePicker.RangePicker allowClear/>
                 </Form.Item>
 
                 <Form.Item
@@ -238,4 +239,4 @@ const CreateCampaign = () => {
     );
 };
 
-export default CreateCampaign;
+export default NewCampaignForm;
