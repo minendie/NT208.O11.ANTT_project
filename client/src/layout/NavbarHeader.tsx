@@ -1,8 +1,13 @@
+import { useState } from 'react';
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar } from "antd";
+import { Avatar, Dropdown} from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth } from '../auth/AuthContext'
+import type { MenuProps } from 'antd';
+import { useOrgan } from '../contexts/OrganizerContext';
+import OrganizerSignupForm from '../component/form/OrganizerSignupForm/OganizerSignupForm';
+import { useNavigate } from 'react-router-dom'; // navigate to another page
 
 
 const styles = {
@@ -15,25 +20,81 @@ const styles = {
 }; 
 
 const NavbarHeader = () => {
+
+  const auth = useAuth();
+  const navigator = useNavigate();
+
   const NavigationItem = [
     { name: "Home", path: "/" },
     { name: " AI Tool", path: "/tool" },
-
     { name: "About us", path: "/about" },
   ];
+
+  const {showOrganizerSignupForm, 
+          setShowOrganizerSignupForm,
+          organizerID
+        } = useOrgan();
+  
+  const items: MenuProps['items'] = [
+    {
+      label: (
+        <div style={{color: '#33BBC5', fontWeight: 'bold'}}>
+        {auth.username}
+        </div>
+      ),
+      key: '0',
+      disabled: true,
+    },
+    {
+      type: 'divider',
+    },
+    {
+      label: (
+        <Link to={`/profile/${auth.username}`}>
+          Profile
+        </Link>
+      ),
+      key: '2',
+    },
+    {
+      label: (
+        <button 
+          onClick={() => { 
+            if (!organizerID) {
+              setShowOrganizerSignupForm(true)
+            }
+            else {
+              navigator(`/organizer/${organizerID}`)
+            } 
+          }}
+        >
+          Switch to organizer
+        </button>
+      ),
+      key: '3',
+    },
+    {
+      label: (
+        <div style={{color: '#614BC3', fontWeight: '600'}}  onClick={auth.logout}>
+        Log out
+        </div>
+      ),
+      key: '4',
+    },
+  ];
+
+
   return (
+    <>
     <div className={styles.container}>
       <a href="/">
       <div className={styles.nameApp} >Greendots</div>
       </a>
       <div className={styles.navContainer}>
-        <div className={styles.menuNavbarItem}>
+        <div className={styles.menuNavbarItem} >
           {NavigationItem.map((item, index) => (
             <div key={index}>
-              <a
-                href={item.path}
-                className="  hover:text-gray-300 px-4 text-lg"
-              >
+              <a href={item.path} className="hover:text-gray-300 px-4 text-lg">
                 {item.name}
               </a>
             </div>
@@ -41,15 +102,14 @@ const NavbarHeader = () => {
         </div>
         <div className={styles.menuNavbarButton}>
           {/* show log in button when user does not log in */}
-          {!useAuth().isLoggedIn && <button className="rounded-2xl bg-[#FDA172] px-2 text-bold text-black">
+          {!auth.isLoggedIn && <button className="rounded-2xl bg-[#FDA172] px-2 text-bold text-black">
             <Link to={"login"}>JOIN US ! </Link>
           </button>}
             {/* show avatar when user logged in */}
-          {useAuth().isLoggedIn && <>
-            <Link to={`profile/${localStorage.getItem('username')}`}>
+          {auth.isLoggedIn && <>
+            <Dropdown menu={{ items }} placement="bottom">
               <Avatar shape="circle" icon={<UserOutlined />}></Avatar>
-            </Link>
-            {/* notification button */}
+            </Dropdown>
             <div className="">
               <BellOutlined className="text-3xl" />
             </div>
@@ -57,6 +117,8 @@ const NavbarHeader = () => {
         </div>
       </div>
     </div>
+    {showOrganizerSignupForm && <OrganizerSignupForm />}
+    </>
   );
 };
 

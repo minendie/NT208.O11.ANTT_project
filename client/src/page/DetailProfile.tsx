@@ -1,13 +1,9 @@
-import { UserOutlined } from "@ant-design/icons";
-import { Avatar } from "antd";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import '../component/form/Profile/css/styles.css'
 import ParticipantProfileForm from '../component/form/Profile/ParticipantProfileForm'
 import { useAuth } from '../auth/AuthContext'
-
-
 
 
 interface User {
@@ -39,12 +35,9 @@ const DetailProfile = () => {
         })
         .then((result) => {
             const userInfo = result.data[0];
-            console.log(targetUsername)
-            console.log(userInfo)
             setUser({
                 ...userInfo,
             })
-            console.log(user)
         })
         .catch((error) => {
             console.error(error);
