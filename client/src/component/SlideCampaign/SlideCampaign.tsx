@@ -10,7 +10,7 @@ import TabsPage from "../card/TabsPage/TabsPage";
 import EditCampaignForm from "../form/CampaignForm/EditCampaignForm";
 import { useCampaign } from "../../contexts/CampaignContext";
 import { Link } from "react-router-dom";
-
+import { useAuth } from "../../auth/AuthContext";
 
 interface Slide {
   campaignName: string,
@@ -38,6 +38,8 @@ const styles = {
 const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {  
   
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [selectedOrganizerID, setSelectedOrganizerID] = useState(0);
+  const {isLoggedIn} = useAuth();
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
@@ -48,35 +50,22 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
       prevIndex === 0 ? slides.length - 1 : prevIndex - 1
     );
   };
-  const {showEditCampaignForm, setShowEditCampaignForm} = useCampaign()
+  const { showEditCampaignForm, setShowEditCampaignForm } = useCampaign()
 
   const items: MenuProps['items'] = [
     {
-      label: (
-        <Link to={"login"} style={{width: "100%", textAlign: "start"}}>
-          Profile
-        </Link>
-      ),
-      key: '0',
-    },
-    {
-      label: (
+      label: ( isLoggedIn&&
         <button 
-          onClick={
-            () => {
-              setShowEditCampaignForm(true);
-            }
-          }
+          onClick={ () => {setShowEditCampaignForm(true) }}
           style={{width: "100%", textAlign: "start"}}
-        >
-          Edit
+        > Edit
         </button>
       ),
       key: '1',
     },
     {
       label: (
-        <Link to={"login"} style={{width: "100%", textAlign: "start"}}>
+        <Link to={`/profile/${selectedOrganizerID}`} style={{width: "100%", textAlign: "start"}}>
           Contact organizer
         </Link>
       ),
@@ -84,9 +73,9 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
     },
   ];
   
-  const [showCampaign, setShowCampaign] = useState(false)
-  const handleClick = () =>{
-    setShowCampaign(!showCampaign);
+  const [showCampaignIndex, setShowCampaignIndex] = useState(-1)
+  const handleClick = (index: number) =>{ 
+    setShowCampaignIndex(index);
   }
 
   return (
@@ -133,7 +122,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
                     }
                   </div>
                 <div className="flex justify-between flex-row align-items justify-between">
-                  <CustomButton title="↳ Direction " />
+                    <CustomButton title="↳ Direction " />
                   <div>
                     <WhiteButton title="⭐ Ratings" onClick = {() => handleClick(index)} />
                   </div>
@@ -143,7 +132,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
                                                 campaign={slide}/>
                   }
                   <Dropdown menu={{ items }} placement="bottom">
-                    <Button style={{backgroundColor:'white', borderRadius:"12px" ,color:"black", padding:"4px" , margin:"4px"}}> ... </Button>
+                    <Button style={{backgroundColor:'white', borderRadius:"12px", color:"black", padding:"4px" , margin:"4px"}}> ... </Button>
                   </Dropdown>
                 </div>
               </div>

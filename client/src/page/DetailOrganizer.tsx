@@ -15,9 +15,9 @@ interface Organizer {
     Email: string,
     PhoneNumber: string,
     Description: string,
-    FB_Link?: string,
-    Website?: string,
-    LinkedIn_Link?: string,
+    FB_Link: string,
+    Website: string,
+    LinkedIn_Link: string,
 }
 
 
@@ -29,10 +29,6 @@ const DetailOrganizer = () => {
     const organ = useOrgan();
     const auth = useAuth();
     const [canEdit, setcanEdit] = useState(false)
-    
-    
-    
-    
 
     useEffect(() => {
         // fetch target organizer's data from the database based on their ID
@@ -49,7 +45,6 @@ const DetailOrganizer = () => {
             setOrganizer({
                 ...userInfo,
             })
-            console.log(userInfo)
         })
         .catch((error) => {
             console.error(error);

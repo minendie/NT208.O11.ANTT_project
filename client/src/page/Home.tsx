@@ -5,7 +5,7 @@ import L from "leaflet";
 import { useAuth } from '../auth/AuthContext'
 import { useOrgan } from "../contexts/OrganizerContext";
 import icon from "../constant/constants";
-import { DatePicker, Input, Modal, Space, message } from "antd";
+import { DatePicker, Input, Modal, Space } from "antd";
 import CustomButton from "../component/ui/CustomButton";
 import SlideCampaign from "../component/SlideCampaign/SlideCampaign";
 import Search from "react-leaflet-search"
@@ -76,7 +76,7 @@ export default function Home() {
       console.error('Error fetching campaigns:', error);
     });
   }
-  const {showNewCampaignForm, setShowNewCampaignForm} = useCampaign()
+  const { setShowNewCampaignForm } = useCampaign()
   const handleCreateCampaign = () => {
       if (organizer.organizerID) {
           setShowNewCampaignForm(true)
@@ -112,7 +112,7 @@ export default function Home() {
       </div>
       <div className="">
         <MapContainer
-          center={[49.1951, 16.6068]}
+          center={[10.8231, 106.6297]}
           zoom={13}
           scrollWheelZoom
           style={{ height: "100vh" }}
@@ -150,6 +150,7 @@ export default function Home() {
               </div>
                 {showComponent&&<SlideCampaign slides={campaigns}/>}
                 {auth.isLoggedIn&&<NewCampaignForm />}
+                {organizer.showOrganizerSignupForm && <OrganizerSignupForm />}
             </div>
           </div>
         </MapContainer>
