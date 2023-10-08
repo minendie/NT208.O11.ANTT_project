@@ -1,0 +1,23 @@
+.ant-btn-primary {
+    background-color: #33BBC5;
+}
+
+.ant-checkbox-wrapper {
+    height: 48px;
+}
+
+.ant-row {
+    padding: 6px 0px;
+}
+/* .giftname .ant-form-item-control-input ::before {
+    display: inline-block;
+    margin-inline-end: 4px;
+    color: #ff4d4f;
+    font-size: 14px;
+    line-height: 1;
+    content: "* Gift(s) is required";
+} */
+
+.ant-picker-range {
+    width: 100%;
+}

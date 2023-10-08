@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import {ConfigProvider} from 'antd'
 import { AuthProvider } from './auth/AuthContext';
+import { OrganizerProvider } from './contexts/OrganizerContext';
+import { CampaignProvider } from './contexts/CampaignContext';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -19,7 +21,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       }}
     >
       <AuthProvider>
-        <App />
+        <OrganizerProvider>
+          <CampaignProvider>
+            <App />
+          </CampaignProvider>
+        </OrganizerProvider>
       </AuthProvider>
     </ConfigProvider>
   </React.StrictMode>,

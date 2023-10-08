@@ -1,17 +1,13 @@
 //src/component/DisplayOtherReviews
-import React, { useEffect, useState } from "react";
-import axios from "axios"
-import CustomButton from "../ui/CustomButton";
-import WhiteButton from "../ui/WhiteButton";
+import React from "react";
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Space, Rate, Input, Form, Button, ConfigProvider } from "antd";
+import { Avatar, Rate, Input, Form, ConfigProvider } from "antd";
 
 import "./style.css"
 interface ReView {
     username: string;
     comment: string;        
     rating: any   
-       
 }
 
 interface ReviewProps{
@@ -19,9 +15,6 @@ interface ReviewProps{
 }
 const { TextArea } = Input;
   
-
-
-
 const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
     return(
     
@@ -45,7 +38,6 @@ const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
                 comment: review.comment,
                 rating: review.rating
             }}
-            
             autoComplete="off"
         >
         
@@ -80,13 +72,13 @@ const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
                             >          
                     </TextArea>
                 </Form.Item>
-                <Button type="primary" htmlType="submit" >
-                    Submit
-                </Button>
                 </div>
                 <div className="review-container"> 
-                <Form.Item name="rating" label="" style={{width: "100%"}} rules={[{ required: true, message: 'Please rating for campaign' }]}>
-                    <Rate/>
+                <Form.Item name="rating" 
+                        label="" 
+                        style={{width: "100%"}} 
+                        rules={[{ required: true, message: 'Please rating for campaign' }]}>
+                    <Rate disabled/>
                 </Form.Item>
                 </div> 
             </div>

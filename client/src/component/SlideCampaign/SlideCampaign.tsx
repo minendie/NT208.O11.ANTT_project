@@ -1,6 +1,8 @@
 // src/Slider.tsx
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
+import { Button, Dropdown} from "antd";
+import type { MenuProps } from 'antd';
 import campaignImage from "../../assets/campaign.jpg";
 import CustomButton from "../ui/CustomButton";
 import WhiteButton from "../ui/WhiteButton";
@@ -8,6 +10,9 @@ import WhiteButton from "../ui/WhiteButton";
 import Handle from "rc-slider/lib/Handles/Handle";
 import DetailCampaign from "../card/CampaignCard";
 import TabsPage from "../card/TabsPage/TabsPage";
+import EditCampaignForm from "../form/CampaignForm/EditCampaignForm";
+import { useCampaign } from "../../contexts/CampaignContext";
+import { Link } from "react-router-dom";
 interface Slide {
   title: string;
   description: string;
@@ -24,7 +29,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
   
   
   const [currentIndex, setCurrentIndex] = useState(0);
-  const campaignID=5;
+  const campaignID=8;
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
@@ -35,12 +40,48 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
       prevIndex === 0 ? slides.length - 1 : prevIndex - 1
     );
   };
+  const {showEditCampaignForm, setShowEditCampaignForm} = useCampaign()
+
+  const items: MenuProps['items'] = [
+    {
+      label: (
+        <Link to={"login"}>
+          Profile
+        </Link>
+      ),
+      key: '0',
+    },
+    {
+      label: (
+        <button 
+          onClick={
+            () => {
+              setShowEditCampaignForm(true);
+            }
+          }
+        >
+          Edit
+        </button>
+      ),
+      key: '1',
+    },
+    {
+      label: (
+        <Link to={"login"}>
+          Contact organizer
+        </Link>
+      ),
+      key: '2',
+    },
+  ];
+  
   const [showCampaign, setShowCampaign] = useState(false)
   const handleClick = () =>{
     setShowCampaign(!showCampaign);
   }
 
   return (
+    <>
     <div className="flex justify-center border-2 h-64 overflow-hidden bg-gray-200 rounded-lg shadow-md relative">
   
         {slides.map((slide, index) => (
@@ -93,7 +134,10 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
                   
                   {/* </a> */}
                   {/* {showCampaign && <DetailCampaign organizer_name={""} address={""} start_date={""} end_date={""} open_hour={""} close_hour={""} description={""} recycling_items={[]}/>} */}
-                  <WhiteButton title="  ...  " />
+                  <Dropdown menu={{ items }} placement="bottom">
+                  {/* <WhiteButton title="  ...  " /> */}
+                  <Button style={{backgroundColor:'white', borderRadius:"12px" ,color:"black", padding:"4px" , margin:"4px"}}> ... </Button>
+                  </Dropdown>
                 </div>
               </div>
             </div>
@@ -110,6 +154,17 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
         className="absolute rounded-full top-1/2 left-4 transform -translate-y-1/2 px-4 py-2 bg-gray-800 text-white rounded-full focus:outline-none"
       />
     </div>
+    <EditCampaignForm 
+      startDate="2023-06-09"
+      endDate="2023-12-11"
+      openHour="06:30:00"
+      closeHour="20:00:00"
+      description="We are 4 girls."
+      campaignName="WhatEVER"
+      address="somewhere on Earth"
+      receiveItems={[]}  
+    />
+    </>
   );
 };
 

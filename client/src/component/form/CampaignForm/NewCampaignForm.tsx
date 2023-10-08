@@ -1,27 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { ExclamationCircleFilled, InboxOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button, Checkbox, DatePicker, TimePicker, Form, FormInstance, Input, message, Modal, Select, Space, Upload, ConfigProvider, Result } from 'antd';
-import type { CheckboxChangeEvent } from 'antd/es/checkbox';
+import { useState, useEffect } from 'react';
+import { DatePicker, TimePicker, Form, Input, message, Modal, Select } from 'antd';
+import { useCampaign } from '../../../contexts/CampaignContext';
+import { useOrgan } from '../../../contexts/OrganizerContext';
 import { useAuth } from '../../../auth/AuthContext'
-import dayjs from 'dayjs';
 import axios from 'axios';
 import './styles.css'
 
-interface Campaign {
-    startDate: string,
-    endDate: string,
-    openHour: string,
-    closeHour: string,
-    description: string,
-    campaignName: string,
-    address: string,
-    lat: number,
-    long: number,
-    receiveItems: string[],
-    receiveGifts: string,
-}
-
-const { Option, OptGroup } = Select;
+const { Option } = Select;
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -35,40 +20,11 @@ const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 const CreateCampaign = () => {
 
     const auth = useAuth();
-    const [organizerID, setOrganizerID] = useState(0);
-    const userID = localStorage.getItem('userID');
+    const organizer = useOrgan();
+    // Create campaign modal
+    const {showNewCampaignForm, setShowNewCampaignForm} = useCampaign();
+    const [currentItems, setCurrentItems] = useState([]);
     
-    useEffect(() => {
-        if (auth.isLoggedIn) {
-            verifyOrganizer();
-        }
-      }, [auth.isLoggedIn]);
-
-      // Create campaign modal
-      const [isModalOpen, setIsModalOpen] = useState(true);
-      const [currentItems, setCurrentItems] = useState([]);
-    
-    // verify organizer
-    const verifyOrganizer = async () => {
-        try {
-            const result = await axios.get(`${API_ENDPOINT}/is-organizer/${userID}`, {
-                headers: {
-                    'ngrok-skip-browser-warning': true,
-                },
-            });
-
-            if (result.data.success) {
-                setOrganizerID(result.data.organizerID);
-            } else {
-                message.warning('Only organizers can create a new campaign.');
-                setIsModalOpen(false);
-            }
-        } catch (err) {
-            console.error(err);
-            message.error('Failed to verify organizer.');
-        }
-    };
-
     useEffect(() => {
         const fetchCurrentItems = async () => {
             try {
@@ -91,7 +47,6 @@ const CreateCampaign = () => {
         fetchCurrentItems();
     }, [auth.isLoggedIn]);
 
-    
     const handleOk = () => {
         form.submit()
     };
@@ -147,13 +102,12 @@ const CreateCampaign = () => {
             closeHour,
             lat: lat ? parseFloat(lat) : 0.0, 
             long: long ? parseFloat(long) : 0.0,
-            organizerID: organizerID
+            organizerID: organizer.organizerID
         }
-        console.log(values)
         // for temporarily use
         // POST to database
         axios.post(`${API_ENDPOINT}/create-campaign`, values)
-        setIsModalOpen(false);
+        setShowNewCampaignForm(false);
         message.success('Create campaign success!');
     };
     
@@ -165,7 +119,7 @@ const CreateCampaign = () => {
     };
 
     const handleConfirmOk = () => {
-        setIsModalOpen(false);
+        setShowNewCampaignForm(false);
         setIsConfirmModalOpen(false);
     };
 
@@ -175,17 +129,25 @@ const CreateCampaign = () => {
 
     // Date range picker
     const dayRangeConfig = {
-        rules: [{ type: 'array' as const, required: true, message: 'Please provide the time frame for your campaign!' }],
+        rules: [{ 
+            type: 'array' as const, 
+            required: true, 
+            message: 'Please provide the time frame for your campaign!' 
+        }],
     };
 
     // Time range picker
     const timeRangeConfig = {
-        rules: [{ type: 'array' as const, required: true, message: 'Please select your working time!' }],
+        rules: [{ 
+            type: 'array' as const, 
+            required: true, 
+            message: 'Please select your working time!' 
+        }],
     };
 
     return (
         <>  
-        <Modal title="New Campaign" open={isModalOpen} onOk={handleOk} onCancel={handleCancel} centered
+        <Modal title="New Campaign" open={showNewCampaignForm} onOk={handleOk} onCancel={handleCancel} centered
             okText="Create"
             cancelText="Cancel"
         >

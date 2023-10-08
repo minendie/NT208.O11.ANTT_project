@@ -6,6 +6,9 @@
     height: 48px;
 }
 
+.ant-row {
+    padding: 6px 0px;
+}
 /* .giftname .ant-form-item-control-input ::before {
     display: inline-block;
     margin-inline-end: 4px;
