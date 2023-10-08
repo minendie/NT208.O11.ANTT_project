@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal, Tabs } from 'antd';
 import DetailCampaign from '../CampaignCard';
 import ReviewPage from '../../Review/Review_page';

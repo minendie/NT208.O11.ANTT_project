@@ -17,7 +17,7 @@ const { RangePicker } = DatePicker;
 
 const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
-const CreateCampaign = () => {
+const NewCampaignForm = () => {
 
     const auth = useAuth();
     const organizer = useOrgan();
@@ -54,6 +54,7 @@ const CreateCampaign = () => {
     
     const handleCancel = () => {
         showConfirmModal();
+        form.resetFields();
     };
 
     // Create campaign form
@@ -110,6 +111,7 @@ const CreateCampaign = () => {
         axios.post(`${API_ENDPOINT}/create-campaign`, values)
         setShowNewCampaignForm(false);
         message.success('Create campaign success!');
+        form.resetFields();
     };
     
     // Confirm modal
@@ -162,32 +164,35 @@ const CreateCampaign = () => {
                 <Form.Item
                     name="campaignName"
                     label="Name"
+                    hasFeedback
                     rules={[{ required: true, message: 'Please input your compaign name!' }]}
                 >
-                    <Input placeholder="Please input your compaign name"/>
+                    <Input allowClear placeholder="Please input your compaign name"/>
                 </Form.Item>
 
-                <Form.Item name="timeFrame" label="Time frame" {...dayRangeConfig}>
-                    <RangePicker />
+                <Form.Item hasFeedback name="timeFrame" label="Time frame" {...dayRangeConfig}>
+                    <RangePicker allowClear/>
                 </Form.Item>
 
-                <Form.Item name="workingTime" label="Working time" {...timeRangeConfig}>
-                    <TimePicker.RangePicker />
+                <Form.Item hasFeedback name="workingTime" label="Working time" {...timeRangeConfig}>
+                    <TimePicker.RangePicker allowClear/>
                 </Form.Item>
 
                 <Form.Item
                     name="address"
                     label="Address"
                     hasFeedback
+                    initialValue={""}
                     rules={[{ required: true, message: 'Please type in your address!' }]}
                 >
-                    <Input allowClear placeholder="Please input your address"/>
+                    <Input allowClear placeholder="Please input your campaign address"/>
                 </Form.Item>
 
                 <Form.Item
                     name="receiveItems"
                     label="Kinds of trash"
                     hasFeedback
+                    initialValue={""}
                     rules={[{ required: true, message: 'Please select kinds of trash you are receiving!', type: 'array' }]}
                 >
                 <Select 
@@ -213,13 +218,15 @@ const CreateCampaign = () => {
                 <Form.Item
                 name="description"
                 label="Description"
+                initialValue={""}
                 >
-                    <Input allowClear placeholder="Please input your description"/>
+                    <Input allowClear placeholder="Please input some description"/>
                 </Form.Item>
 
                 <Form.Item
                     name="receiveGifts"
                     label="Gift(s) for trade"
+                    initialValue={""}
                 >
                     <Input allowClear placeholder="Please input your gift(s)"/>
                 </Form.Item>
@@ -238,4 +245,4 @@ const CreateCampaign = () => {
     );
 };
 
-export default CreateCampaign;
+export default NewCampaignForm;

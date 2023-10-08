@@ -5,12 +5,13 @@ import L from "leaflet";
 import { useAuth } from '../auth/AuthContext'
 import { useOrgan } from "../contexts/OrganizerContext";
 import icon from "../constant/constants";
-import { DatePicker, Input, Space, message } from "antd";
+import { DatePicker, Input, Modal, Space, message } from "antd";
 import CustomButton from "../component/ui/CustomButton";
 import SlideCampaign from "../component/SlideCampaign/SlideCampaign";
 import Search from "react-leaflet-search"
 import NewCampaignForm from "../component/form/CampaignForm/NewCampaignForm";
 import { useCampaign } from "../contexts/CampaignContext";
+import OrganizerSignupForm from "../component/form/OrganizerSignupForm/OganizerSignupForm";
 import axios from 'axios';
 
 
@@ -81,11 +82,30 @@ export default function Home() {
           setShowNewCampaignForm(true)
       }
       else {
-          message.warning('Only organizer can create a new campaign')
+          // message.warning('Only organizer can create a new campaign')
+          showConfirmModal();
       }
   }
   const { RangePicker } = DatePicker;
+
+  // Confirm modal
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
+  const showConfirmModal = () => {
+      setIsConfirmModalOpen(true);
+  };
+
+  const handleConfirmOk = () => {
+      organizer.setShowOrganizerSignupForm(true);
+      setIsConfirmModalOpen(false);
+  };
+
+  const handleConfirmCancel = () => {
+      setIsConfirmModalOpen(false);
+  };
+
   return (
+    <>
     <div>
       <div className="text-3xl font-bold p-4">
         <span className="text-black">WELCOME TO</span> GREENDOTS!
@@ -133,9 +153,17 @@ export default function Home() {
             </div>
           </div>
         </MapContainer>
-
-       
       </div>
     </div>
+    <Modal 
+        centered 
+        title = "Do you want to register as an organizer?"
+        open={isConfirmModalOpen} 
+        onOk={handleConfirmOk} onCancel={handleConfirmCancel}
+        width={480}
+    >
+        <p>Only organizer can create a new campaign.</p>
+    </Modal>
+    </>
   );
 }

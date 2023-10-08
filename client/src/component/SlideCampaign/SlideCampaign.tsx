@@ -6,9 +6,6 @@ import type { MenuProps } from 'antd';
 import campaignImage from "../../assets/campaign.jpg";
 import CustomButton from "../ui/CustomButton";
 import WhiteButton from "../ui/WhiteButton";
-
-import Handle from "rc-slider/lib/Handles/Handle";
-import DetailCampaign from "../card/CampaignCard";
 import TabsPage from "../card/TabsPage/TabsPage";
 import EditCampaignForm from "../form/CampaignForm/EditCampaignForm";
 import { useCampaign } from "../../contexts/CampaignContext";
@@ -56,7 +53,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
   const items: MenuProps['items'] = [
     {
       label: (
-        <Link to={"login"}>
+        <Link to={"login"} style={{width: "100%", textAlign: "start"}}>
           Profile
         </Link>
       ),
@@ -70,6 +67,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
               setShowEditCampaignForm(true);
             }
           }
+          style={{width: "100%", textAlign: "start"}}
         >
           Edit
         </button>
@@ -78,7 +76,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
     },
     {
       label: (
-        <Link to={"login"}>
+        <Link to={"login"} style={{width: "100%", textAlign: "start"}}>
           Contact organizer
         </Link>
       ),
@@ -86,9 +84,9 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
     },
   ];
   
-  const [showCampaignIndex, setShowCampaignIndex] = useState(-1)
-  const handleClick = (index: number) =>{ 
-    setShowCampaignIndex(index);
+  const [showCampaign, setShowCampaign] = useState(false)
+  const handleClick = () =>{
+    setShowCampaign(!showCampaign);
   }
 
   return (
@@ -163,7 +161,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
         className="absolute rounded-full top-1/2 left-4 transform -translate-y-1/2 px-4 py-2 bg-gray-800 text-white rounded-full focus:outline-none"
       />
     </div>
-    <EditCampaignForm 
+    {showEditCampaignForm && <EditCampaignForm 
       startDate="2023-06-09"
       endDate="2023-12-11"
       openHour="06:30:00"
@@ -172,7 +170,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
       campaignName="WhatEVER"
       address="somewhere on Earth"
       receiveItems={[]}  
-    />
+    />}
     </>
   );
 };
