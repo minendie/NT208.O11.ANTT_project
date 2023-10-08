@@ -4,7 +4,7 @@ interface AuthContextProps {
   isLoggedIn: boolean;
   setLoggedIn: (loggedIn: boolean) => void;
   username?: string | null;
-  userID?: number;
+  userID?: any;
   logout: () => void;
 }
 
@@ -23,7 +23,7 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<React.PropsWithChildren<AuthProviderProps>> = ({ children }) => {
     const [isLoggedIn, setLoggedIn] = useState(false);
     const [username, setUsername] = useState<string | null>(null);
-    const [userID, setUserID] = useState(0);
+    const [userID, setUserID] = useState(localStorage.getItem('userID'));
 
     const logout = () => {
       setLoggedIn(false);
@@ -38,7 +38,8 @@ export const AuthProvider: React.FC<React.PropsWithChildren<AuthProviderProps>> 
           const currUsername = localStorage.getItem('username');
           setUsername(currUsername);
           var currUserID: any = localStorage.getItem('userID');
-          currUserID = parseInt(String(userID | 0));
+          currUserID = parseInt(String(userID));
+          console.log(userID)
           setUserID(currUserID)
         } else {
           logout()

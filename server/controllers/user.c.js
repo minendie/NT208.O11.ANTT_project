@@ -196,6 +196,7 @@ module.exports = {
             .then((result) => {
                 res.send({
                     success: true,
+                    organizerID: result
                 })
             })
             .catch((err) => {
