@@ -50,9 +50,13 @@ const NavbarHeader = () => {
     },
     {
       label: (
+        
         <Link to={`/profile/${auth.username}`}>
           Profile
         </Link>
+
+        
+        
       ),
       key: '2',
     },
@@ -76,7 +80,7 @@ const NavbarHeader = () => {
     {
       label: (
         <div style={{color: '#614BC3', fontWeight: '600'}}  onClick={auth.logout}>
-        Log out
+          <Link to ={`/`}>Log out</Link>
         </div>
       ),
       key: '4',

@@ -54,7 +54,9 @@ const NewCampaignForm = () => {
     
     const handleCancel = () => {
         showConfirmModal();
+        form.resetFields();
     };
+    
 
     // Create campaign form
     const [form] = Form.useForm();
@@ -110,6 +112,7 @@ const NewCampaignForm = () => {
         axios.post(`${API_ENDPOINT}/create-campaign`, values)
         setShowNewCampaignForm(false);
         message.success('Create campaign success!');
+        form.resetFields();
     };
     
     // Confirm modal
@@ -180,15 +183,17 @@ const NewCampaignForm = () => {
                     name="address"
                     label="Address"
                     hasFeedback
+                    initialValue={""}
                     rules={[{ required: true, message: 'Please type in your address!' }]}
                 >
-                    <Input allowClear placeholder="Please input your compaign name"/>
+                    <Input allowClear placeholder="Please input your campaign address"/>
                 </Form.Item>
 
                 <Form.Item
                     name="receiveItems"
                     label="Kinds of trash"
                     hasFeedback
+                    initialValue={""}
                     rules={[{ required: true, message: 'Please select kinds of trash you are receiving!', type: 'array' }]}
                 >
                 <Select 
@@ -214,13 +219,15 @@ const NewCampaignForm = () => {
                 <Form.Item
                 name="description"
                 label="Description"
+                initialValue={""}
                 >
-                    <Input allowClear placeholder="Please input your description"/>
+                    <Input allowClear placeholder="Please input some description"/>
                 </Form.Item>
 
                 <Form.Item
                     name="receiveGifts"
                     label="Gift(s) for trade"
+                    initialValue={""}
                 >
                     <Input allowClear placeholder="Please input your gift(s)"/>
                 </Form.Item>

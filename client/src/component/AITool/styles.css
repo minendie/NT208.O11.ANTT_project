@@ -136,12 +136,13 @@ html, body, #root {
 }
 
 .AITool-result-toggle-title {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   padding: 5px;
   margin-bottom: 10px;
   border-radius: 10px;
   box-shadow: 0 0 10px #333333;
+  background-color: #33BBC5;
 }
 
 .AITool-result-button:hover {
