@@ -8,11 +8,6 @@ const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT
 export const PreviewCampaign = ({ data }) => {
     return (
         <div className="preview-campaign">
-            {
-                data.avatar
-                ? (<img src={`${API_ENDPOINT}/image/${data.avatar}`}/>)
-                : (<div className="campaign-avatar" /> )
-            }
             <div className="preview-campaign-component">
                 <div className="header">
                     <div className="div">
@@ -23,15 +18,6 @@ export const PreviewCampaign = ({ data }) => {
                             className="button-primary-instance"
                             labelClassName="design-preview-campaign-component-instance-node"
                             text="↳"
-                        />
-                        <Button 
-                            className="button-primary-2" 
-                            labelClassName="button-primary-3" 
-                            text="⭐"
-                        />
-                        <Button 
-                            className="button-more" 
-                            text='More'
                         />
                     </div>
                 </div>
@@ -81,31 +67,14 @@ export const PreviewCampaign = ({ data }) => {
                         <span className="text-wrapper-3"> 
                             {
                                 data['Description'] 
-                                ? data['Description'].split('\n Gift: ')[1]
+                                ? data['Description'].split('\n Gifts: ')[1]
                                 : 'Notebooks and pen'
                             }
                         </span>
                     </p>
                 </div>
-                {/* <div className="accepted-trash">
-                    <div className="accepted-trash-2">Accepted trash: </div>
-                    <div className="tags">
-                        {
-                            data.trashTags 
-                            ? data.trashTags.map((tag) => <ElementTrashTag className="element-trash-tag-instance" text="{tag}" />)
-                            : (
-                                <>
-                                    <ElementTrashTag className="element-trash-tag-instance" text="Paper" />
-                                    <ElementTrashTag className="element-trash-tag-instance" text="Bottles" />
-                                </>
-                            )
-                        }
-                    </div>
-                </div> */}
             </div>
         </div>
     );
 };
-
-// import "./styles.css";
 
