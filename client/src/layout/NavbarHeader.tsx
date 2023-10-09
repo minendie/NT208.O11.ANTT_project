@@ -106,16 +106,16 @@ const NavbarHeader = () => {
   return (
     <>
     <div className={styles.container}>
-      <a href="/">
-      <div className={styles.nameApp} >Greendots</div>
-      </a>
+      <Link to={"/"}>
+        <div className={styles.nameApp} >Greendots</div>
+      </Link>
       <div className={styles.navContainer}>
         <div className={styles.menuNavbarItem} >
           {NavigationItem.map((item, index) => (
             <div key={index}>
-              <a href={item.path} className="hover:text-gray-300 px-4 text-lg">
+              <Link to={item.path} className="hover:text-gray-300 px-4 text-lg">
                 {item.name}
-              </a>
+              </Link>
             </div>
           ))}
         </div>

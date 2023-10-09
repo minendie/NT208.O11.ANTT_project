@@ -54,7 +54,6 @@ const NewCampaignForm = () => {
     
     const handleCancel = () => {
         showConfirmModal();
-        form.resetFields();
     };
     
 
@@ -112,7 +111,7 @@ const NewCampaignForm = () => {
         axios.post(`${API_ENDPOINT}/create-campaign`, values)
         setShowNewCampaignForm(false);
         message.success('Create campaign success!');
-        form.resetFields();
+        form.resetFields();  
     };
     
     // Confirm modal
@@ -125,6 +124,7 @@ const NewCampaignForm = () => {
     const handleConfirmOk = () => {
         setShowNewCampaignForm(false);
         setIsConfirmModalOpen(false);
+        form.resetFields();
     };
 
     const handleConfirmCancel = () => {
@@ -183,7 +183,7 @@ const NewCampaignForm = () => {
                     name="address"
                     label="Address"
                     hasFeedback
-                    initialValue={""}
+                    // initialValue={""}
                     rules={[{ required: true, message: 'Please type in your address!' }]}
                 >
                     <Input allowClear placeholder="Please input your campaign address"/>
@@ -193,7 +193,7 @@ const NewCampaignForm = () => {
                     name="receiveItems"
                     label="Kinds of trash"
                     hasFeedback
-                    initialValue={""}
+                    // initialValue={""}
                     rules={[{ required: true, message: 'Please select kinds of trash you are receiving!', type: 'array' }]}
                 >
                 <Select 
