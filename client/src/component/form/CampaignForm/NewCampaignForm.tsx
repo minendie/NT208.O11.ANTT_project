@@ -3,6 +3,7 @@ import { DatePicker, TimePicker, Form, Input, message, Modal, Select } from 'ant
 import { useCampaign } from '../../../contexts/CampaignContext';
 import { useOrgan } from '../../../contexts/OrganizerContext';
 import { useAuth } from '../../../auth/AuthContext'
+import SearchBar from '../../ui/SearchBar';
 import axios from 'axios';
 import './styles.css'
 
@@ -11,6 +12,13 @@ const { Option } = Select;
 const formItemLayout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 14 },
+};
+
+
+interface Location {
+    display_name: string,
+    lat: number,
+    lon: number,
 };
 
 const { RangePicker } = DatePicker;
@@ -24,6 +32,7 @@ const NewCampaignForm = () => {
     // Create campaign modal
     const {showNewCampaignForm, setShowNewCampaignForm} = useCampaign();
     const [currentItems, setCurrentItems] = useState([]);
+    const [address, setAddress] = useState<Location>();
     
     useEffect(() => {
 
@@ -54,7 +63,6 @@ const NewCampaignForm = () => {
     
     const handleCancel = () => {
         showConfirmModal();
-        form.resetFields();
     };
 
     // Create campaign form
@@ -91,10 +99,6 @@ const NewCampaignForm = () => {
         delete values.timeFrame
         delete values.workingTime
         delete values.receiveGifts
-        
-        // tam lam cai nay de create campaign
-        var lat = window.prompt('Nhap lattitude: ');
-        var long = window.prompt('Nhap longtitude: ');
 
         values = {
             ...values,
@@ -102,12 +106,14 @@ const NewCampaignForm = () => {
             endDate,
             openHour,
             closeHour,
-            lat: lat ? parseFloat(lat) : 0.0, 
-            long: long ? parseFloat(long) : 0.0,
+            address: address?.display_name,
+            lat: address?.lat, 
+            long: address?.lon,
             organizerID: organizer.organizerID
         }
         // for temporarily use
         // POST to database
+        console.log(values);
         axios.post(`${API_ENDPOINT}/create-campaign`, values)
         setShowNewCampaignForm(false);
         message.success('Create campaign success!');
@@ -124,6 +130,7 @@ const NewCampaignForm = () => {
     const handleConfirmOk = () => {
         setShowNewCampaignForm(false);
         setIsConfirmModalOpen(false);
+        form.resetFields();
     };
 
     const handleConfirmCancel = () => {
@@ -182,9 +189,10 @@ const NewCampaignForm = () => {
                     name="address"
                     label="Address"
                     hasFeedback
+                    initialValue={address}
                     rules={[{ required: true, message: 'Please type in your address!' }]}
                 >
-                    <Input allowClear placeholder="Please input your campaign address"/>
+                    <SearchBar onLocationSearch={(location:any) => setAddress({...location})}/>
                 </Form.Item>
 
                 <Form.Item
