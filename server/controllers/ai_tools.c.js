@@ -3,13 +3,14 @@ const tfn = require('@tensorflow/tfjs-node') // loads the TensorflowJS binding f
 const sharp = require('sharp'); // image processing 
 const fs = require('fs'); // read files
 const trash = require('../models/trash.m')
+require('dotenv').config() // enable process.env
 
 
 // CONFIG PREDEFINED PARAMETERS
 // const NUM_CLASSES = 28; // declare number of supported classes
-const CONFIDENT_THRESHOLD = 0.3; // define threshold that we accept a prediction
-const IOU_THRESHOLD = 0.4; // define threshold that we suppress other predictions
-const MAX_SELECTED_BOXES =  20; // number of boxes selected
+const CONFIDENT_THRESHOLD = parseInt(process.env.CONFIDENT_THRESHOLD); // define threshold that we accept a prediction
+const IOU_THRESHOLD = parseInt(process.env.IOU_THRESHOLD); // define threshold that we suppress other predictions
+const MAX_SELECTED_BOXES = parseInt(process.env.MAX_SELECTED_BOXES); // number of boxes selected
 // read data of classes that the model support
 const classesDir = JSON.parse(fs.readFileSync('public/labels.json')); 
 // END CONFIG 

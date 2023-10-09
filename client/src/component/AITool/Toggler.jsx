@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { PreviewCampaign } from './PreviewCampaign';
 import axios from 'axios';
+import { Space } from "antd";
 
 
 const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT
@@ -35,7 +36,9 @@ export default function Toggler({ data, title, isInfo }) {
                 setTrashInfo({
                     ...trashInfo,
                     [tagID]: {
-                      description: response.data.description
+                      description: response.data.description.split("<>")[0],
+                      recycling_methods: response.data.description.split("<>")[1],
+                      
                     }
                 }) // end fetching data
             });
@@ -60,6 +63,7 @@ export default function Toggler({ data, title, isInfo }) {
         } // end if
         console.log(trashLocations)
     } // end getLocations
+    
 
 
     return (
@@ -80,7 +84,27 @@ export default function Toggler({ data, title, isInfo }) {
                 </button>
                 { 
                     isInfo 
-                    ? <>{ isOpen[d.id] && trashInfo[d.id] && <p>{trashInfo[d.id].description}</p> }</> 
+                    ? <>{ isOpen[d.id] && trashInfo[d.id] &&
+                      <div>                        
+                        <h2 style={{color:"#33bbc5", textAlign: "left", fontWeight: "bolder", fontSize: "20pt", display: "flex", flexDirection: "column"}}>Description: <span> {" "}</span></h2>
+                        <Space direction="vertical" size={20}></Space>
+                        {trashInfo[d.id].description.split("\n").map((details, index)=>(
+                          <p style={{ margin: "10px", textAlign:"justify", display:"flex", flexDirection: "column"}}>{trashInfo[d.id].description.split('\n')[index]} </p>
+                        ))}
+                        
+                        <p style={{margin: "10px",textAlign:"justify", display:"flex", flexDirection: "column", fontSize: "12pt"}}>{trashInfo[d.id].description} </p>
+                        <h2 style={{color:"#33bbc5", textAlign: "left", fontWeight: "bolder", fontSize: "20pt", display: "flex", flexDirection: "column"}}>Recycling methods: <span> {" "}</span></h2>
+                        <Space direction="vertical" size={20}></Space>
+                        
+                        {trashInfo[d.id].recycling_methods.split("\n").map((details, index)=> (
+                          <p style={{ margin: "10px", textAlign:"justify", display:"flex", flexDirection: "column"}}>{trashInfo[d.id].recycling_methods.split('\n')[index]} </p>
+
+                        ))}
+
+                      </div>
+                         
+                        
+                    }</> 
                     :
                     <>
                         {isOpen[d.id] && (

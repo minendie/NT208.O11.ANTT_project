@@ -8,7 +8,7 @@ import { useCampaign } from '../../../contexts/CampaignContext';
 import dayjs from 'dayjs';
 import './styles.css'
 
-interface campaign {
+interface Campaign {
     startDate: string,
     endDate: string,
     openHour: string,
@@ -39,7 +39,7 @@ const EditCampaignForm = ({
     campaignName,
     address,
     receiveItems,
-    receiveGifts,} : campaign) => {
+    receiveGifts,} : Campaign) => {
 
     // Edit campaign modal
     const {showEditCampaignForm, setShowEditCampaignForm} = useCampaign();

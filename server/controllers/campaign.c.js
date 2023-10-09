@@ -6,13 +6,53 @@ const user = require('../models/user.m');
 
 module.exports = {
     searchCampaign: async (req, res) => {
+        try {
+            const {targetLat, targetLong, startDate, endDate} = req.body;
+            if (!targetLat || !targetLong) {
+                var campaigns = await campaign.getCampaignsByDateRange(startDate, endDate)
+                var campaignInfos = await Promise.all(
+                    campaigns.map(async (c) => {
+                        const [result] = await campaign.getCampaignByID(c.campaignID);
+                        const receiveItems = await trash.getTrashNameByCampaignID(result.campaignID)
+                        result.receiveItems = receiveItems.map((val, ) => val['ItemName']);
+                        return result;
+                    })
+                );
+                res.send({
+                    success: true,
+                    campaigns: JSON.stringify(campaignInfos)
+                })
+                return;
+            }
 
+            var campaigns = await campaign.getCampaignsByDistance(
+                                                targetLat, 
+                                                targetLong, 
+                                                startDate, 
+                                                endDate);
+            var campaignInfos = await Promise.all(
+                campaigns.map(async (c) => {
+                    const [result] = await campaign.getCampaignByID(c.campaignID);
+                    const receiveItems = await trash.getTrashNameByCampaignID(result.campaignID)
+                    result.receiveItems = receiveItems.map((val, ) => val['ItemName']);
+                    return result;
+                })
+            );
+            res.send({
+                success: true,
+                campaigns: JSON.stringify(campaignInfos)
+            })
+        } catch (err) {
+            res.send({
+                success: false,
+                message: err.message,
+            })
+        }
     },
 
     searchCampaignByID: async (req, res) => {
         try {
             var [result] = await campaign.getCampaignByID(req.params.id)
-            console.log(result)
             if (!result) {
                 res.send({
                     success: false,
@@ -23,11 +63,11 @@ module.exports = {
 
             const receiveItems = await trash.getTrashNameByCampaignID(result.campaignID)
             result.receiveItems = receiveItems.map((val, ) => val['ItemName']);
-            console.log(result)
             res.send({
                 success: true,
                 result: JSON.stringify(result)
             })
+            return result;
         }
         catch (err) {
             res.send({
@@ -39,9 +79,27 @@ module.exports = {
 
     // read all campaigns
     readAll: async (req, res) => {
-        campaign.getAllCampaigns()
-                .then(result => res.send(JSON.stringify(result)))
-                .catch(err => res.send({message: err.message}))
+        try {
+            var results = await campaign.getAllCampaigns();
+    
+            var processedResults = await Promise.all(
+                results.map(async (result, index) => {
+                    const receiveItems = await trash.getTrashNameByCampaignID(result.campaignID)
+                    result.receiveItems = receiveItems.map((val, ) => val['ItemName']);
+                    const [description, receiveGifts] = result.description.split('\n Gifts: ')
+                    result = {
+                        ...result,
+                        description, receiveGifts
+                    }
+                    return result;
+                })
+            );
+    
+            res.send(JSON.stringify(processedResults))
+        }
+        catch (err) {
+            res.send({message: err.message})
+        }
     },
 
     // create a new campaign

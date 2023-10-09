@@ -21,9 +21,8 @@ const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 const DetailProfile = () => {
     const [user, setUser] = useState<User|null>(null);
     const { targetUsername } = useParams();
-    const isLoggedIn = useAuth().isLoggedIn;
-    const currentUsername = localStorage.getItem('username');
-    const canEdit = isLoggedIn && currentUsername === targetUsername;
+    const auth = useAuth();
+    const canEdit = auth.isLoggedIn && auth.username === targetUsername;
 
     useEffect(() => {
         // fetch target user's data from the database based on their username

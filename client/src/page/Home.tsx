@@ -3,31 +3,28 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { useAuth } from '../auth/AuthContext'
+import { useOrgan } from "../contexts/OrganizerContext";
 import icon from "../constant/constants";
-import { DatePicker, Input, Space } from "antd";
+import { DatePicker, Input, Modal, Space } from "antd";
 import CustomButton from "../component/ui/CustomButton";
 import SlideCampaign from "../component/SlideCampaign/SlideCampaign";
 import Search from "react-leaflet-search"
 import NewCampaignForm from "../component/form/CampaignForm/NewCampaignForm";
 import { useCampaign } from "../contexts/CampaignContext";
-const slides = [
-  {
-    title: "Slide 1",
-    description: "Description for Slide 1",
-  },
-  // {
-  //   title: "Slide 1",
-  //   description: "Description for Slide 1",
-  // },
-  // {
-  //   title: "Slide 1",
-  //   description: "Description for Slide 1",
-  // },
-];
+import OrganizerSignupForm from "../component/form/OrganizerSignupForm/OganizerSignupForm";
+import axios from 'axios';
+
+
+
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+
 
 export default function Home() {
   
   const auth = useAuth();
+  const organizer = useOrgan();
+  const {campaigns, setCampaigns} = useCampaign()
+  
 
   function LocationMarker() {
     const [position, setPosition] = useState(null);
@@ -62,22 +59,60 @@ export default function Home() {
     );
   }
   const [showComponent, setShowComponent] = useState(false)
+  // const [campaigns, setCampaigns] = useState([])
   const handleSearch = () => {
-    setShowComponent(!showComponent)
-    }
-  const {showNewCampaignForm, setShowNewCampaignForm} = useCampaign()
-    const handleCreateCampaign = () => {
-      setShowNewCampaignForm(true)
+    setShowComponent(!showComponent);
+    axios.get(`${API_ENDPOINT}/campaigns/all`, {
+        headers: {
+            'ngrok-skip-browser-warning': true
+        },
+    })
+    .then(response => {
+      // Assuming the response data is an array of campaigns
+      setCampaigns(response.data);
+    })
+    .catch(error => {
+      // Handle any error that occurred during the request
+      console.error('Error fetching campaigns:', error);
+    });
+  }
+  const { setShowNewCampaignForm } = useCampaign()
+  const handleCreateCampaign = () => {
+      if (organizer.organizerID) {
+          setShowNewCampaignForm(true)
       }
+      else {
+          // message.warning('Only organizer can create a new campaign')
+          showConfirmModal();
+      }
+  }
   const { RangePicker } = DatePicker;
+
+  // Confirm modal
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
+  const showConfirmModal = () => {
+      setIsConfirmModalOpen(true);
+  };
+
+  const handleConfirmOk = () => {
+      organizer.setShowOrganizerSignupForm(true);
+      setIsConfirmModalOpen(false);
+  };
+
+  const handleConfirmCancel = () => {
+      setIsConfirmModalOpen(false);
+  };
+
   return (
+    <>
     <div>
       <div className="text-3xl font-bold p-4">
         <span className="text-black">WELCOME TO</span> GREENDOTS!
       </div>
       <div className="">
         <MapContainer
-          center={[49.1951, 16.6068]}
+          center={[10.8231, 106.6297]}
           zoom={13}
           scrollWheelZoom
           style={{ height: "100vh" }}
@@ -113,14 +148,23 @@ export default function Home() {
                 
                 {auth.isLoggedIn&&<CustomButton title="Create a new campaign" onClick = {handleCreateCampaign}/>}
               </div>
-                {showComponent&&<SlideCampaign slides={slides}/>}
+                {showComponent&&<SlideCampaign slides={campaigns}/>}
                 {auth.isLoggedIn&&<NewCampaignForm />}
+                {organizer.showOrganizerSignupForm && <OrganizerSignupForm />}
             </div>
           </div>
         </MapContainer>
-
-       
       </div>
-  </div>
+    </div>
+    <Modal 
+        centered 
+        title = "Do you want to register as an organizer?"
+        open={isConfirmModalOpen} 
+        onOk={handleConfirmOk} onCancel={handleConfirmCancel}
+        width={480}
+    >
+        <p>Only organizer can create a new campaign.</p>
+    </Modal>
+    </>
   );
 }

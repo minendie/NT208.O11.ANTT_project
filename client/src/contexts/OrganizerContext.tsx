@@ -6,13 +6,14 @@ interface OrganizerContextProps {
   showOrganizerSignupForm: boolean;
   setShowOrganizerSignupForm: (showOrganizerSignupForm: boolean) => void;
   organizerID?: number;
-  setOrganizerID?: (organizerID: number) => void;
+  setOrganizerID: (organizerID: number) => void;
 }
 
 const OrganizerContext = createContext<OrganizerContextProps>({
   showOrganizerSignupForm: false,
   setShowOrganizerSignupForm: () => {},
   organizerID: 0,
+  setOrganizerID: () => {},
 });
 
 interface OrganizerProviderProps {

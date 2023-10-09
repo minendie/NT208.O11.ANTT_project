@@ -51,7 +51,7 @@ const DetailCampaign = (props: DataCampaign) => {
           </div>
           <div className={styles.title}>Accepted trash:{"   "}
             {props.recyclingItems.map((item, index) =>(
-                  <span className={styles.tag}>
+                  <span key={index} className={styles.tag}>
                       <Space size={[0, 8]} wrap>
                       <Tag color="#33BBC5">{item}</Tag>
                       </Space>

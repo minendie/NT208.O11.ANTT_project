@@ -1,37 +1,24 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { ExclamationCircleFilled, InboxOutlined, UploadOutlined } from '@ant-design/icons';
-import { Button, Checkbox, DatePicker, TimePicker, Form, FormInstance, Input, message, Modal, Select, Space, Upload, ConfigProvider } from 'antd';
+import { useState } from 'react';
+import { Form, Input, message, Modal } from 'antd';
 import { useOrgan } from '../../../contexts/OrganizerContext';
+import { useAuth } from '../../../auth/AuthContext'
 import './styles.css'
-
-interface organizer {
-    organizationName: string,
-    description: string,
-    address: string,
-    email: string,
-    phoneNumber: string,
-}
+import axios from 'axios';
 
 const formItemLayout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 14 },
 };
 
-const OrganizerSignupForm = (
-    // {organizationName,
-    // description,
-    // address,
-    // email,
-    // phoneNumber,} : organizer
-    ) => {
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+
+
+const OrganizerSignupForm = () => {
 
     // Create campaign modal
-    const {showOrganizerSignupForm, setShowOrganizerSignupForm} = useOrgan();
-    
-    const showModal = () => {
-        setShowOrganizerSignupForm(true);
-    };
-    
+    const {showOrganizerSignupForm, setShowOrganizerSignupForm, setOrganizerID} = useOrgan();
+    const auth = useAuth();
+
     const handleOk = () => {
         form.submit()
     };
@@ -44,45 +31,13 @@ const OrganizerSignupForm = (
     const [form] = Form.useForm();
 
     const onFinish = (values: any) => {
-
-        // // Time frame
-        // let date = values.timeFrame[0]
-        // let offset = date.$d.getTimezoneOffset()
-        // let customDate = new Date(date.$d.getTime() - (offset*60*1000))
-        // const startDate = customDate.toISOString().replace('T', ' ').substring(0, 10)
-
-        // date = values.timeFrame[1]
-        // offset = date.$d.getTimezoneOffset()
-        // customDate = new Date(date.$d.getTime() - (offset*60*1000))
-        // const endDate = customDate.toISOString().replace('T', ' ').substring(0, 10)
-
-        // // Working time
-        // date = values.workingTime[0]
-        // offset = date.$d.getTimezoneOffset()
-        // customDate = new Date(date.$d.getTime() - (offset*60*1000))
-        // const openHour = customDate.toISOString().replace('T', ' ').substring(11, 19)
-
-        // date = values.workingTime[1]
-        // offset = date.$d.getTimezoneOffset()
-        // customDate = new Date(date.$d.getTime() - (offset*60*1000))
-        // const closeHour = customDate.toISOString().replace('T', ' ').substring(11, 19)
-
-        // // Description and gifts
-        // values.receiveGifts.join(', ')
-        // values.description = values.description + "\nGift(s): " + values.receiveGifts
-
-        // delete values.timeFrame
-        // delete values.workingTime
-        // delete values.receiveGifts
-        // values = {
-        //     ...values,
-        //     startDate,
-        //     endDate,
-        //     openHour,
-        //     closeHour,
-        // }
-
         console.log(values)
+        values = {
+            ...values,
+            userID: auth.userID,
+        }
+        axios.post(`${API_ENDPOINT}/create-organizer`, values)
+            .then((result) => setOrganizerID(result.data.organizerID))
         setShowOrganizerSignupForm(false);
         message.success('You have successfully registered as an organizer!');
     };
@@ -113,14 +68,6 @@ const OrganizerSignupForm = (
                 name="createOrganizer"
                 {...formItemLayout}
                 onFinish={onFinish}
-                // initialValues={{
-                //     // Initial values here
-                //     organizationName,
-                //     description,
-                //     address,
-                //     email,
-                //     phoneNumber,
-                // }}
                 form={form}
                 style={{ maxWidth: 1000 }}
             >
@@ -131,40 +78,6 @@ const OrganizerSignupForm = (
                 >
                     <Input allowClear placeholder="Please input your organization name"/>
                 </Form.Item>
-
-                {/* <Form.Item
-                name="address"
-                label="Address"
-                >
-                <Select
-                    allowClear
-                    showSearch
-                    placeholder="Search to Select address"
-                    // optionFilterProp="children"
-                    filterOption={(input, option) => (option?.children ?? '').toLowerCase().indexOf(input.toLowerCase()) >= 0
-                    || (option?.value ?? '').toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                >
-                    <OptGroup label="Your location">
-                        <Option value="ABcde">Battery</Option>
-                        <Option value="green">Green</Option>
-                        <Option value="blue">Blue</Option>
-                        <Option value="r">Battery</Option>
-                        <Option value="gree">Green</Option>
-                        <Option value="ble">Blue</Option>
-                    </OptGroup>
-                    <OptGroup label="Your address">
-
-                    </OptGroup>
-                    <OptGroup label="Other locations">
-                        <Option value="bttery">Battery</Option>
-                        <Option value="grfefeen">Green</Option>
-                        <Option value="blfefue">Blue</Option>
-                        <Option value="rfef">Battery</Option>
-                        <Option value="grfeffeee">Green</Option>
-                        <Option value="blfefe">Blue</Option>
-                    </OptGroup>
-                </Select>
-                </Form.Item> */}
 
                 <Form.Item
                 name="description"

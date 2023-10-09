@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Dropdown} from "antd";
+import { Avatar, Dropdown, Modal} from "antd";
 import { BellOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth } from '../auth/AuthContext'
@@ -8,15 +7,17 @@ import type { MenuProps } from 'antd';
 import { useOrgan } from '../contexts/OrganizerContext';
 import OrganizerSignupForm from '../component/form/OrganizerSignupForm/OganizerSignupForm';
 import { useNavigate } from 'react-router-dom'; // navigate to another page
+import { useState } from "react";
+import logoGreenDots from "../assets/logo.svg";
 
 
 const styles = {
   container: "h-[4em] border-xl flex justify-between border-2",
   nameApp: "text-4xl text-bold",
   navContainer: "flex items-center",
-
   menuNavbarItem: "flex",
   menuNavbarButton: "px-4 flex space-x-2",
+  navBrand: "flex items-center"
 }; 
 
 const NavbarHeader = () => {
@@ -50,6 +51,7 @@ const NavbarHeader = () => {
     },
     {
       label: (
+        
         <Link to={`/profile/${auth.username}`}>
           Profile
         </Link>
@@ -61,7 +63,7 @@ const NavbarHeader = () => {
         <button 
           onClick={() => { 
             if (!organizerID) {
-              setShowOrganizerSignupForm(true)
+              showConfirmModal();
             }
             else {
               navigator(`/organizer/${organizerID}`)
@@ -76,19 +78,34 @@ const NavbarHeader = () => {
     {
       label: (
         <div style={{color: '#614BC3', fontWeight: '600'}}  onClick={auth.logout}>
-        Log out
+          <Link to ={`/`}>Log out</Link>
         </div>
       ),
       key: '4',
     },
   ];
 
+  // Confirm modal
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
+  const showConfirmModal = () => {
+      setIsConfirmModalOpen(true);
+  };
+
+  const handleConfirmOk = () => {
+      setShowOrganizerSignupForm(true);
+      setIsConfirmModalOpen(false);
+  };
+
+  const handleConfirmCancel = () => {
+      setIsConfirmModalOpen(false);
+  };
 
   return (
     <>
     <div className={styles.container}>
-      <a href="/">
-      <div className={styles.nameApp} >Greendots</div>
+      <a href="/" className={styles.navBrand}>
+      <div className={styles.nameApp} ><img src={logoGreenDots} alt='GreenDots Logo'/></div>
       </a>
       <div className={styles.navContainer}>
         <div className={styles.menuNavbarItem} >
@@ -118,6 +135,15 @@ const NavbarHeader = () => {
       </div>
     </div>
     {showOrganizerSignupForm && <OrganizerSignupForm />}
+    <Modal 
+        centered 
+        title = "Do you want to register as an organizer?"
+        open={isConfirmModalOpen} 
+        onOk={handleConfirmOk} onCancel={handleConfirmCancel}
+        width={480}
+    >
+        <p>You need to be an organizer to perform this action.</p>
+    </Modal>
     </>
   );
 };

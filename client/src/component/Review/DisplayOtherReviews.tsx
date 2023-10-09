@@ -1,7 +1,7 @@
 //src/component/DisplayOtherReviews
 import React from "react";
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Rate, Input, Form, ConfigProvider } from "antd";
+import { Avatar, Rate, Input, Form } from "antd";
 
 import "./style.css"
 interface ReView {
@@ -19,20 +19,10 @@ const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
     return(
     
         <> 
-        <ConfigProvider
-                theme={{
-                token: {
-                    // Seed Token
-                    colorPrimary: '#33BBC5',
-                    borderRadius: 8,
-                    // Alias Token
-                    colorBgContainer: '#FFFFFF',
-                },}}
-        >
-
         {reviews.map((review, index) => (
         <Form
-            name="basic"
+            key={index}
+            name={`review${index}`}
             layout="vertical"         
             initialValues={{
                 comment: review.comment,
@@ -69,7 +59,7 @@ const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
                             style={{ width: "100%" }}
                             autoSize
                             disabled
-                            >          
+                            >
                     </TextArea>
                 </Form.Item>
                 </div>
@@ -85,7 +75,6 @@ const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
         </div>
         </Form>
         ))} 
-    </ConfigProvider>
     </>
     )
 
