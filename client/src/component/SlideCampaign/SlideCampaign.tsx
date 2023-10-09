@@ -1,21 +1,30 @@
 // src/Slider.tsx
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
-import { Button, Dropdown} from "antd";
+import { Button, Dropdown, Tag } from "antd";
 import type { MenuProps } from 'antd';
 import campaignImage from "../../assets/campaign.jpg";
 import CustomButton from "../ui/CustomButton";
 import WhiteButton from "../ui/WhiteButton";
-
-import Handle from "rc-slider/lib/Handles/Handle";
-import DetailCampaign from "../card/CampaignCard";
 import TabsPage from "../card/TabsPage/TabsPage";
 import EditCampaignForm from "../form/CampaignForm/EditCampaignForm";
 import { useCampaign } from "../../contexts/CampaignContext";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../auth/AuthContext";
+
 interface Slide {
-  title: string;
-  description: string;
+  campaignName: string,
+  receiveItems: string[],
+  organizerName: string,
+  address: string,
+  openHour: string,
+  closeHour: string,
+  receiveGifts: string,
+  organizerID: number,
+  campaignID: number,
+  lat: number,
+  long: number,
+  averageRating: number,
 }
 
 interface SliderProps {
@@ -25,11 +34,12 @@ const styles = {
   title: "text-black font-bold ",
   detail: "text-[#33BBC5] ",
 };
-const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
-  
+
+const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {  
   
   const [currentIndex, setCurrentIndex] = useState(0);
-  const campaignID=8;
+  const [selectedOrganizerID, setSelectedOrganizerID] = useState(0);
+  const {isLoggedIn} = useAuth();
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
@@ -40,44 +50,32 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
       prevIndex === 0 ? slides.length - 1 : prevIndex - 1
     );
   };
-  const {showEditCampaignForm, setShowEditCampaignForm,
-    showCampaignDetail, setShowCampaignDetail} = useCampaign()
+  const { showEditCampaignForm, setShowEditCampaignForm } = useCampaign()
 
   const items: MenuProps['items'] = [
     {
-      label: (
-        <Link to={"login"} style={{width: "100%", textAlign: "start"}}>
-          Profile
-        </Link>
-      ),
-      key: '0',
-    },
-    {
-      label: (
+      label: ( isLoggedIn&&
         <button 
-          onClick={
-            () => {
-              setShowEditCampaignForm(true);
-            }
-          }
+          onClick={ () => {setShowEditCampaignForm(true) }}
           style={{width: "100%", textAlign: "start"}}
-        >
-          Edit
+        > Edit
         </button>
       ),
       key: '1',
     },
     {
       label: (
-        <Link to={"login"} style={{width: "100%", textAlign: "start"}}>
+        <Link to={`/profile/${selectedOrganizerID}`} style={{width: "100%", textAlign: "start"}}>
           Contact organizer
         </Link>
       ),
       key: '2',
     },
   ];
-  const handleClick = () =>{
-    setShowCampaignDetail(true);
+  
+  const [showCampaignIndex, setShowCampaignIndex] = useState(-1)
+  const handleClick = (index: number) =>{ 
+    setShowCampaignIndex(index);
   }
 
   return (
@@ -100,42 +98,41 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
                 <div className="flex justify-between">
                   <div className="text-2xl text-center font-bold">
                     {" "}
-                    Greenday
+                    {slide.campaignName}
                   </div>
-                  <div className="flex items-center">⭐ 4.6 / 5.0</div>
+                  <div className="flex items-center">⭐ {slide.averageRating} / 5.0</div>
                 </div>
                 <div className={styles.title}>
                   Address:{" "}
-                  <span className={styles.detail}> ki tuc xa khu A</span>{" "}
+                  <span className={styles.detail}> {slide.address}</span>{" "}
                 </div>
                 <div className={styles.title}>
                   Working hour:{" "}
-                  <span className={styles.detail}> 5am to 9pm everyday</span>
+                  <span className={styles.detail}> {slide.openHour} to {slide.closeHour}</span>
                 </div>
                 <div className={styles.title}>
-                  Gifts: <span className={styles.detail}> Small lotus</span>
+                  Gifts: <span className={styles.detail}> {slide.receiveGifts}</span>
                 </div>
                 <div className={styles.title}>Accepted trash</div>
-                <div className="flex">
-                  <CustomButton title="waste" />
-                </div>
-                <div className="flex justify-between flex-row align-items justify-between">
-                  <CustomButton title="↳ Direction " />
-                  {/* <a href="/campaign">
-                  <WhiteButton title="⭐ Ratings" onClick = {handleClick} />
-                  </a> */}
                   <div>
-                  <WhiteButton title="⭐ Ratings" onClick = {handleClick} />
+                    {
+                      slide.receiveItems.map((item, index) => (
+                        <Tag key={index} color="#33BBC5">{item}</Tag>
+                      ))
+                    }
+                  </div>
+                <div className="flex justify-between flex-row align-items justify-between">
+                    <CustomButton title="↳ Direction " />
+                  <div>
+                    <WhiteButton title="⭐ Ratings" onClick = {() => handleClick(index)} />
                   </div>
                   {
-                    showCampaignDetail&&<TabsPage campaignID={campaignID}/>
-                  }                 
-                  
-                  {/* </a> */}
-                  {/* {showCampaign && <DetailCampaign organizer_name={""} address={""} start_date={""} end_date={""} open_hour={""} close_hour={""} description={""} recycling_items={[]}/>} */}
+                    showCampaignIndex===index&&<TabsPage 
+                                                setShowCampaignIndex={setShowCampaignIndex} 
+                                                campaign={slide}/>
+                  }
                   <Dropdown menu={{ items }} placement="bottom">
-                  {/* <WhiteButton title="  ...  " /> */}
-                  <Button style={{backgroundColor:'white', borderRadius:"12px" ,color:"black", padding:"4px" , margin:"4px"}}> ... </Button>
+                    <Button style={{backgroundColor:'white', borderRadius:"12px", color:"black", padding:"4px" , margin:"4px"}}> ... </Button>
                   </Dropdown>
                 </div>
               </div>

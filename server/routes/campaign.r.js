@@ -8,7 +8,7 @@ const router = app => {
     app.get('/campaign/:id', ControllerCampaign.searchCampaignByID);
 
     // read all campaigns
-    app.get('/campaign/all', ControllerCampaign.readAll);
+    app.get('/campaigns/all', ControllerCampaign.readAll);
 
     // create a new campaign
     app.post('/create-campaign', ControllerCampaign.createCampaign);

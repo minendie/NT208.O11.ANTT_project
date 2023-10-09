@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Modal, Tabs } from 'antd';
 import DetailCampaign from '../CampaignCard';
 import ReviewPage from '../../Review/Review_page';
 import './Tabs.css'
-import axios from 'axios';
-import { useCampaign } from '../../../contexts/CampaignContext';
-
 
 interface Campaign {
   organizerName: string,
+  campaignID: number,
   startDate: string,
   endDate: string,
   openHour: string,
@@ -22,56 +20,12 @@ interface Campaign {
   receiveGifts: string,
 }
 
-const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
+const TabsPage: React.FC<{ campaign: Campaign, setShowCampaignIndex: (idx: number) => void }> = ({ campaign, setShowCampaignIndex }) => {
 
-
-const TabsPage: React.FC<{ campaignID: number }> = ({ campaignID }) => {
-
-  const {showCampaignDetail, setShowCampaignDetail} = useCampaign();
-
-  const [campaign, setCampaign] = useState<Campaign>({
-                              organizerName: '',
-                              startDate: '',
-                              endDate: '',
-                              openHour: '',
-                              closeHour: '',
-                              description: '',
-                              campaignName: '',
-                              address: '',
-                              lat: 0,
-                              long: 0,
-                              receiveItems: [],
-                              receiveGifts: '',
-                            });
-
-  useEffect(() => {
-    const fetchCampaign = async () => {
-      try {
-        const response = await axios.get(`${API_ENDPOINT}/campaign/${campaignID}`, { 
-            headers: {
-                'ngrok-skip-browser-warning': true
-            }
-        }); 
-        console.log(response)
-        if (response.data.success) {
-          var result = JSON.parse(response.data.result);
-          const [description, receiveGifts] = String(result.description).split('\n Gifts: ')
-          result = {
-            ...result,
-            description, receiveGifts
-          }
-          setCampaign(result);
-        }
-      } catch (error) {
-        console.error('Error fetching campaign information:', error);
-      }
-    };
-
-    fetchCampaign();
-  }, []);
-  
+  const [isModalOpen, setIsModalOpen] = useState(true);
   const handleCancel = () => {
-    setShowCampaignDetail(false);
+    setShowCampaignIndex(-1);
+    setIsModalOpen(false);
   };
   
   const Page = [
@@ -92,13 +46,13 @@ const TabsPage: React.FC<{ campaignID: number }> = ({ campaignID }) => {
     },
     {
       label: 'Review',
-      component: <ReviewPage campaignID={campaignID}></ReviewPage>
+      component: <ReviewPage campaignID={campaign.campaignID}></ReviewPage>
     }
   ] 
 
   return (
     <>
-      <Modal title="" open={showCampaignDetail} onCancel={handleCancel}  footer={null}>
+      <Modal title="" open={isModalOpen} onCancel={handleCancel}  footer={null}>
         <Tabs 
           defaultActiveKey="1"
           type="card"

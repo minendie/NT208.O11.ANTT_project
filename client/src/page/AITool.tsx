@@ -42,9 +42,7 @@ export class AITool extends Component<AIToolProps, AIToolState> {
   getPOSTData = (childData: any) => {
     this.setState({
         classNames: [...childData.classNames], // an array of predicted classes
-        // classIDs: [...childData.classIDs],
       }, () => {
-        // console.log(this.state.classNames)
       } // end callback
     ); // end setState for classNames
   }; /// end POST 
@@ -70,7 +68,6 @@ export class AITool extends Component<AIToolProps, AIToolState> {
                   <AIToolResultRight 
                     isInfo={this.state.isInfo} 
                     classNames={this.state.classNames}
-                    // classIDs={this.state.classIDs}
                   />
                 </>
               ) 

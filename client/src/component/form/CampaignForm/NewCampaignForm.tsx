@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DatePicker, TimePicker, Form, Input, message, Modal, Select } from 'antd';
 import { useCampaign } from '../../../contexts/CampaignContext';
 import { useOrgan } from '../../../contexts/OrganizerContext';
@@ -56,7 +56,6 @@ const NewCampaignForm = () => {
         showConfirmModal();
         form.resetFields();
     };
-    
 
     // Create campaign form
     const [form] = Form.useForm();
