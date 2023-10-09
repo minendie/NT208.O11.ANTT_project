@@ -16,7 +16,6 @@ interface ReviewProps {
     campaignID: number;
   }
 
-
 const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{    
     const auth = useAuth();
 
@@ -24,26 +23,31 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
         try {
             values['campaignID'] = campaignID;
             values['userID'] = auth.userID;
+            if (values.comment.length > 190) {
+                return (
+                    message.error('You can only write within 190 characters.')
+                    )
+            }
             const response = await axios.post(`${API_ENDPOINT}/write-review`, values); 
             if (response.data.success) {
-                setReviews((prevReviews: any[]) => [...prevReviews, {
+                setReviews((prevReviews: any[]) => [{
                                                     comment: values.comment,
                                                     rating: values.rating,
                                                     username: auth.username,
-                                                }]);
+                                                }, ...prevReviews]);
             }
             else (
                 message.error('You can only submit one review!')
             )
-          } catch (error) {
+        } catch (error) {
             console.error("Error submitting review:", error);
-          }
+        }
     };
-      
+        
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
-    
+
     return(
     <>       
         {/* <ConfigProvider
@@ -89,7 +93,7 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
                                 Submit
                             </Button>
                         </div>
-                         <div className="review-container"> 
+                            <div className="review-container"> 
                         <Form.Item name="rating" label="" style={{width: "100%"}} rules={[{ required: true, message: 'Please rating for campaign!' }]}>
                             <Rate/>
                         </Form.Item>
