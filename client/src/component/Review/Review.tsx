@@ -2,7 +2,7 @@
 import React from "react";
 import axios from "axios"
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Rate, Input, Form, Button, ConfigProvider, message } from "antd";
+import { Avatar, Rate, Input, Form, Button, message } from "antd";
 import "./style.css";
 import { useAuth } from "../../auth/AuthContext";
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { DatePicker, TimePicker, Form, Input, message, Modal, Select } from 'antd';
 import { useCampaign } from '../../../contexts/CampaignContext';
 import { useOrgan } from '../../../contexts/OrganizerContext';
@@ -182,7 +182,6 @@ const NewCampaignForm = () => {
                     name="address"
                     label="Address"
                     hasFeedback
-                    initialValue={""}
                     rules={[{ required: true, message: 'Please type in your address!' }]}
                 >
                     <Input allowClear placeholder="Please input your campaign address"/>
@@ -207,7 +206,7 @@ const NewCampaignForm = () => {
                     mode="tags" 
                     placeholder="Please select kinds of trash"
                 >
-                    {currentItems.map((val, idx) => (
+                    {currentItems.map((val,) => (
                         <Option key={val['ItemID']} value={val['ItemID']}>
                         {val['ItemName']}
                         </Option>
