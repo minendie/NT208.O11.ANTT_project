@@ -1,4 +1,6 @@
 const express = require('express'); 
+const cluster = require('cluster');
+const { generateKeyPair } = require('crypto');
 const bodyParser = require('body-parser'); // middleware to extract body of a req to convert it to a JSON object
 const app = express();
 const multer = require('./models/ModelMulter');
@@ -37,15 +39,75 @@ app.use('/image', express.static('public/assets/images'));
 // View engine setup
 app.set('view engine', 'ejs');
 
-AIToolrouter(app)
-ProfileRouter(app)
-UserRouter(app)
-TrashRouter(app)
-ReviewRouter(app)
-CampaignRouter(app)
+// LOAD BALANCER 
 
-// Start the server on port 3002
-const server = app.listen(port, (error) => {
-    if (error) return console.log(`Error: ${error}`);
-    console.log(`Server listening on port ${server.address().port}`);
-});
+// Check the number of available CPU.
+const numCPUs = require('os').cpus().length;
+ 
+// // API endpoint 
+// // Send public key as a response
+
+// // // For Master process
+// // if (cluster.isMaster) {
+// //     console.log(`Master ${process.pid} is running`);
+   
+// //     // Fork workers.
+// //     for (let i = 0; i < numCPUs; i++) {
+// //       cluster.fork();
+// //     }
+   
+// //     // This event is first when worker died
+// //     cluster.on('exit', (worker, code, signal) => {
+// //       console.log(`worker ${worker.process.pid} died`);
+// //     });
+// //   }
+   
+// //   // For Worker
+// //   else {
+// //     // Workers can share any TCP connection
+// //     // In this case it is an HTTP server
+// //     app.listen(port, err => {
+// //       err ?
+// //         console.log("Error in server setup") :
+// //         console.log(`Worker ${process.pid} started`);
+// //     });
+// // }
+
+// ProfileRouter(app)
+// UserRouter(app)
+// TrashRouter(app)
+// ReviewRouter(app)
+// CampaignRouter(app)
+// AIToolrouter(app)
+
+// // Start the server on port 3002
+// const server = app.listen(port, (error) => {
+//     if (error) return console.log(`Error: ${error}`);
+//     console.log(`Server listening on port ${server.address().port}`);
+// });
+
+if (cluster.isMaster) {
+    console.log(`Master ${process.pid} is running`);
+  
+    const numCPUs = require('os').cpus().length;
+  
+    for (let i = 0; i < numCPUs; i++) {
+      cluster.fork();
+    }
+  
+    cluster.on('exit', (worker, code, signal) => {
+      console.log(`worker ${worker.process.pid} died`);
+    });
+  } else {
+    AIToolrouter(app);
+    ProfileRouter(app);
+    UserRouter(app);
+    TrashRouter(app);
+    ReviewRouter(app);
+    CampaignRouter(app);
+  
+    const server = app.listen(port, (error) => {
+      if (error) return console.log(`Error: ${error}`);
+      console.log(`Worker ${process.pid} started. Server listening on port ${server.address().port}`);
+    });
+  }
