@@ -1,9 +1,9 @@
-import { useRouteError } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-type Props = {}
 
-const ErrorPage = (props: Props) => {
-  const error = useRouteError();
+const ErrorPage = () => {
+  const location = useLocation();
+  const error = location.state?.error;
   console.error(error);
 
   return (

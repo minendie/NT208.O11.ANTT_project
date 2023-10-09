@@ -53,7 +53,6 @@ const DetailProfile = () => {
             </div> 
             
             {user && <ParticipantProfileForm 
-                classNames="profile-participant"
                 canEdit={canEdit}
                 user={user}
             />}

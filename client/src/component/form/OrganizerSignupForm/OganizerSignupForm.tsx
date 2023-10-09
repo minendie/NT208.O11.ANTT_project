@@ -37,9 +37,18 @@ const OrganizerSignupForm = () => {
             userID: auth.userID,
         }
         axios.post(`${API_ENDPOINT}/create-organizer`, values)
-            .then((result) => setOrganizerID(result.data.organizerID))
-        setShowOrganizerSignupForm(false);
-        message.success('You have successfully registered as an organizer!');
+            .then((result) => {
+                console.log(result);
+                setOrganizerID(result.data.organizerID);
+                if (result.data.success) {
+                    setShowOrganizerSignupForm(false);
+                    message.success('You have successfully registered as an organizer!');
+                    form.resetFields()
+                }
+                else {
+                    message.error('Please try again!')
+                }
+            })
     };
     
     // Confirm modal

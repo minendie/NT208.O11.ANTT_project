@@ -1,10 +1,9 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig, } from "axios";
 
 
 export function createAxiosClient({
       options,
       getCurrentAccessToken,
-      logout
     }: {
       options: AxiosRequestConfig;
       getCurrentAccessToken: () => string | null;
@@ -30,5 +29,3 @@ export function createAxiosClient({
       return client;
   
   }
-
-// export default function AxiosInterceptor(onUnauthenticated: )
