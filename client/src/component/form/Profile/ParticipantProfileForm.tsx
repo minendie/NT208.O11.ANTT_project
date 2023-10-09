@@ -207,15 +207,16 @@ const ParticipantProfileForm: React.FC<{ canEdit: boolean, user: any, classNames
             isReadOnly={readOnly}
           />        
         { canEdit && (<>{
-            readOnly  ?
-            <Button className="custom-button-color" shape='round' type="text" onClick={handleEditing}>Edit</Button>                  
-            : (
-              <div className='row'>
-                <Button className="custom-button-color" shape='round' type="text" onClick={handleSave}>Save</Button>
-                <Space> <Space ><Space></Space></Space></Space>
-                <Button className="custom-button-color" shape='round' type="text" onClick={handleCancelEditing}>Cancel</Button>
-              </div>
-            )
+                readOnly  ?
+                <Button className="custom-button-color" shape='round' type="text" onClick={handleEditing}> Edit</Button>                  
+                : (
+                  <div className='row'>
+                    <Button className="custom-button-color" shape='round' type="text" onClick={handleSave}> Save</Button>
+                    <Space> <Space ><Space></Space></Space></Space>
+                    <Button className="custom-button-color" shape='round' type="text" onClick={handleCancelEditing}> Cancel</Button>
+                    
+                  </div>
+                )
         }</>)}
       </div>
     </div>

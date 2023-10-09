@@ -79,9 +79,27 @@ module.exports = {
 
     // read all campaigns
     readAll: async (req, res) => {
-        campaign.getAllCampaigns()
-                .then(result => res.send(JSON.stringify(result)))
-                .catch(err => res.send({message: err.message}))
+        try {
+            var results = await campaign.getAllCampaigns();
+    
+            var processedResults = await Promise.all(
+                results.map(async (result, index) => {
+                    const receiveItems = await trash.getTrashNameByCampaignID(result.campaignID)
+                    result.receiveItems = receiveItems.map((val, ) => val['ItemName']);
+                    const [description, receiveGifts] = result.description.split('\n Gifts: ')
+                    result = {
+                        ...result,
+                        description, receiveGifts
+                    }
+                    return result;
+                })
+            );
+    
+            res.send(JSON.stringify(processedResults))
+        }
+        catch (err) {
+            res.send({message: err.message})
+        }
     },
 
     // create a new campaign

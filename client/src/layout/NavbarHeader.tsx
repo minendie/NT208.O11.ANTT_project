@@ -8,15 +8,16 @@ import { useOrgan } from '../contexts/OrganizerContext';
 import OrganizerSignupForm from '../component/form/OrganizerSignupForm/OganizerSignupForm';
 import { useNavigate } from 'react-router-dom'; // navigate to another page
 import { useState } from "react";
+import logoGreenDots from "../assets/logo.svg";
 
 
 const styles = {
   container: "h-[4em] border-xl flex justify-between border-2",
   nameApp: "text-4xl text-bold",
   navContainer: "flex items-center",
-
   menuNavbarItem: "flex",
   menuNavbarButton: "px-4 flex space-x-2",
+  navBrand: "flex items-center"
 }; 
 
 const NavbarHeader = () => {
@@ -54,9 +55,6 @@ const NavbarHeader = () => {
         <Link to={`/profile/${auth.username}`}>
           Profile
         </Link>
-
-        
-        
       ),
       key: '2',
     },
@@ -106,8 +104,8 @@ const NavbarHeader = () => {
   return (
     <>
     <div className={styles.container}>
-      <Link to={"/"}>
-        <div className={styles.nameApp} >Greendots</div>
+      <Link to={"/"} className={styles.navBrand}>
+      <div className={styles.nameApp} ><img src={logoGreenDots} alt='GreenDots Logo'/></div>
       </Link>
       <div className={styles.navContainer}>
         <div className={styles.menuNavbarItem} >

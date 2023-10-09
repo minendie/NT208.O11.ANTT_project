@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import './css/styles.css'
 import axios from 'axios';
 import { Button , Space} from 'antd';
+import { useAuth } from '../../../auth/AuthContext'
+
 
 interface FormProps {
     htmlFor: string,
@@ -57,16 +59,15 @@ function validatePhoneNumber(phoneNumber: string) {
 
 const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNames?:string }> 
                                         = ({ canEdit, organizer, classNames }) => {
-  const [orgName, setOrgName] = useState(organizer?.Name  );
+  const [orgName, setOrgName] = useState(organizer?.Name);
   const [email, setEmail] = useState(organizer?.Email );
   const [phoneNumber, setPhoneNumber] = useState(organizer?.PhoneNumber );
-  const [address, setAddress] = useState(organizer?.Address);
   const [description, setDescription] = useState(organizer?.Description);
-  const [fbLink, setFbLink] = useState(organizer?.fbLink )
-  const [linkedInLink, setLinkedInLink] = useState(organizer?.linkedInLink )
-  const [websiteLink, setWebsiteLink] = useState(organizer?.websiteLink )
+  const [fbLink, setFbLink] = useState(organizer?.FB_Link )
+  const [linkedInLink, setLinkedInLink] = useState(organizer?.LinkedIn_Link )
+  const [websiteLink, setWebsiteLink] = useState(organizer?.Website )
   const [readOnly, setReadOnly] = useState(true);
-
+  const {userID} = useAuth();
  
   const handleEditing = () => {
     // Add your editing logic here
@@ -79,30 +80,29 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
     setReadOnly(true)
     // PUT data to database
     if (canEdit) {
-      setPhoneNumber(phoneNumber.trim());
-      setOrgName(orgName.trim());
-      setDescription(description.trim());
-      setAddress(address.trim());
-      setEmail(email.trim())
-      setFbLink(fbLink.trim())
-      setLinkedInLink(linkedInLink.trim())
-      setWebsiteLink(websiteLink.trim())
+      setPhoneNumber(phoneNumber);
+      setOrgName(orgName);
+      setDescription(description);
+      setEmail(email)
+      setFbLink(fbLink)
+      setLinkedInLink(linkedInLink)
+      setWebsiteLink(websiteLink)
       
       // validate password, phone number, email
       var data = {
         'phoneNumber' : '',
-
-        
-        organizerID: localStorage.getItem('organizerID'),
-        description: description.replaceAll("'", "''"),
-        address: address.replaceAll("'", "''"),
+        description: description ? description.replaceAll("'", "''") : '',
+        linkedIn_Link: linkedInLink ? linkedInLink.trim().replaceAll("'", "''") : '',
+        website: websiteLink ? websiteLink.trim() : '',
+        fb_Link: fbLink? fbLink.trim() : '',
+        name: orgName ? orgName.trim() : '',
+        email: email, 
+        userID
       }
       // validate phone number
       if (phoneNumber !== '' && validatePhoneNumber(phoneNumber)) {
         data['phoneNumber'] = phoneNumber;
       } 
-      
-      
 
       axios.put(`${API_ENDPOINT}/update-organizer`, data)
         .then((res) => {
@@ -119,8 +119,6 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
     }
 
   }
-  console.log({organizer});
-  // console.log({org})
 
 
   return (
@@ -133,18 +131,18 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
         htmlFor="orgName"
         labelValue='Organization Name'
         placeholder= 'Type new organizer name'
-        isHidden={false}
+        isHidden={!orgName && readOnly}
         inputType="text"
         value={orgName}
         setValue={setOrgName}
-        isReadOnly={true}
+        isReadOnly={readOnly}
         /> 
         
           <InputForm 
             htmlFor="description"
             labelValue='Description'
-            placeholder= "Email"
-            isHidden={false}
+            placeholder= "Description"
+            isHidden={!description && readOnly}
             inputType="text"
             value={description}
             setValue={setDescription}
@@ -156,7 +154,7 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
             htmlFor="email"
             labelValue='Email'
             placeholder= "Email"
-            isHidden={false}
+            isHidden={!email && readOnly}
             inputType="email"
             value={email}
             setValue={setEmail}
@@ -166,7 +164,7 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
             htmlFor="phone"
             labelValue='Phone number'
             placeholder= "Phone number"
-            isHidden={false}
+            isHidden={!phoneNumber && readOnly}
             inputType="text"
             value={phoneNumber}
             setValue={setPhoneNumber}
@@ -177,7 +175,7 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
             htmlFor="fb-link"
             labelValue='Facebook'
             placeholder= "Type in your Facebook link"
-            isHidden={!canEdit}
+            isHidden={!fbLink && readOnly}
             inputType="text"
             value={fbLink}
             setValue={setFbLink}
@@ -189,7 +187,7 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
             htmlFor="linked-in-link"
             labelValue='Linked In'
             placeholder= "Type your Linked In link"
-            isHidden={!canEdit}
+            isHidden={!linkedInLink && readOnly}
             inputType="text"
             value={linkedInLink}
             setValue={setLinkedInLink}
@@ -200,7 +198,7 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
             htmlFor="website-link"
             labelValue="Website"
             placeholder= "Type your website link"
-            isHidden={!canEdit}
+            isHidden={!websiteLink && readOnly}
             inputType="text"
             value={websiteLink}
             setValue={setWebsiteLink}

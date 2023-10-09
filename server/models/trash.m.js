@@ -4,7 +4,7 @@ const db = require('../config/connectDB')
 function formatDate(dateString) {
     const date = new Date(dateString);
 
-    const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    const formattedDate = `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
     return formattedDate;
 }
 
@@ -32,7 +32,7 @@ module.exports = {
                     StartDate,
                     EndDate,
                     C.Description,
-                    CONCAT(Street, ', ', Ward, ', ', Province, ', ', Country) AS Address,
+                    Address,
                     CONCAT(OpenHour, ' to ', CloseHour) AS WorkingHour
                 FROM 
                     Campaign C 
