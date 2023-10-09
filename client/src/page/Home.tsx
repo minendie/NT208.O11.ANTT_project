@@ -5,14 +5,15 @@ import L from "leaflet";
 import { useAuth } from '../auth/AuthContext'
 import { useOrgan } from "../contexts/OrganizerContext";
 import icon from "../constant/constants";
-import { DatePicker, Input, Modal, Space } from "antd";
+import { DatePicker, Form, Input, Modal, Space } from "antd";
 import CustomButton from "../component/ui/CustomButton";
 import SlideCampaign from "../component/SlideCampaign/SlideCampaign";
-import Search from "react-leaflet-search"
+
 import NewCampaignForm from "../component/form/CampaignForm/NewCampaignForm";
 import { useCampaign } from "../contexts/CampaignContext";
 import OrganizerSignupForm from "../component/form/OrganizerSignupForm/OganizerSignupForm";
 import axios from 'axios';
+import SearchBar from "../component/ui/SearchBar";
 
 
 
@@ -103,7 +104,13 @@ export default function Home() {
   const handleConfirmCancel = () => {
       setIsConfirmModalOpen(false);
   };
-
+  const dayRangeConfig = {
+    rules: [{ 
+        type: 'array' as const, 
+        required: true, 
+        message: 'Please provide the time frame for your campaign!' 
+    }],
+};
   return (
     <>
     <div>
@@ -135,15 +142,17 @@ export default function Home() {
             <div className="flex flex-col align-center justify-between h-full">
               <div className=" flex justify-center items-center p-4 space-x-4 w-full">
                 {/* <SearchBar/> */}
-                <Input
-                  style={{ width: "20%" }}
-                  type="text"
-                  placeholder="Search location"
-                ></Input>
+               <SearchBar onLocationSearch={(location) => console.log(location)}/>
                 
                 <Space direction="vertical" size={12}>
-                  <RangePicker showTime />
+                  <RangePicker />
                 </Space>
+                {/* <Form>
+
+                <Form.Item hasFeedback name="timeFrame" label="Time frame" {...dayRangeConfig}>
+                    <RangePicker allowClear/>
+                </Form.Item>
+                </Form> */}
                 <CustomButton title="Search" onClick= {handleSearch} />
                 
                 {auth.isLoggedIn&&<CustomButton title="Create a new campaign" onClick = {handleCreateCampaign}/>}
@@ -168,3 +177,4 @@ export default function Home() {
     </>
   );
 }
+ 
