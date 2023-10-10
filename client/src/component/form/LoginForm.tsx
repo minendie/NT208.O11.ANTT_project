@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from 'react-router-dom'; // navigate to another page
 import { login } from "../../services/services";
-import * as jwt_decode from "jwt-decode";
+import jwtDecode from "jwt-decode";
 import { useAuth } from '../../auth/AuthContext'
 import { message } from 'antd';
 
@@ -53,10 +53,10 @@ const Login: React.FC = () => {
           // Store the JWT token in local storage
           const accessToken = response.data.accessToken;
           localStorage.setItem('jwtToken', accessToken);
-          const jwtPayload = jwt_decode(accessToken)
+          const jwtPayload = jwtDecode<{ userID: string, username: string, exp: number }>(accessToken)
           localStorage.setItem('userID', jwtPayload['userID'])
           localStorage.setItem('username', jwtPayload['username'])
-          localStorage.setItem('exp', jwtPayload['exp'])
+          localStorage.setItem('exp', String(jwtPayload['exp']))
 
           auth.setLoggedIn(true);
           navigate('/'); // Navigate back to the home page

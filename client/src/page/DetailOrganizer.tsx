@@ -59,8 +59,7 @@ const DetailOrganizer = () => {
             <h1 style={{color:"white"}}>{organizer?.Name || ''}</h1>
             </div>
         </div>                
-            {organizer&& <OrganizerProfileForm
-            // classNames="profile-organizer"           
+            {organizer&& <OrganizerProfileForm         
             canEdit={canEdit}
             organizer={organizer}
             />}

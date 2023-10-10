@@ -57,8 +57,8 @@ function validatePhoneNumber(phoneNumber: string) {
 }
 
 
-const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNames?:string }> 
-                                        = ({ canEdit, organizer, classNames }) => {
+const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any }> 
+                                        = ({ canEdit, organizer, }) => {
   const [orgName, setOrgName] = useState(organizer?.Name);
   const [email, setEmail] = useState(organizer?.Email );
   const [phoneNumber, setPhoneNumber] = useState(organizer?.PhoneNumber );
@@ -105,7 +105,7 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any, classNa
       } 
 
       axios.put(`${API_ENDPOINT}/update-organizer`, data)
-        .then((res) => {
+        .then((_) => {
           alert('Your information is editted successfully.')
         })
         .catch()

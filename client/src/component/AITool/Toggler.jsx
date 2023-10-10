@@ -36,9 +36,9 @@ export default function Toggler({ data, title, isInfo }) {
                 setTrashInfo({
                     ...trashInfo,
                     [tagID]: {
+                      ...trashInfo[tagID],
                       description: response.data.description.split("<>")[0],
                       recycling_methods: response.data.description.split("<>")[1],
-                      
                     }
                 }) // end fetching data
             });
@@ -63,8 +63,6 @@ export default function Toggler({ data, title, isInfo }) {
         } // end if
         console.log(trashLocations)
     } // end getLocations
-    
-
 
     return (
       <div className="Toggler">
@@ -89,21 +87,20 @@ export default function Toggler({ data, title, isInfo }) {
                         <h2 style={{color:"#33bbc5", textAlign: "left", fontWeight: "bolder", fontSize: "20pt", display: "flex", flexDirection: "column"}}>Description: <span> {" "}</span></h2>
                         <Space direction="vertical" size={20}></Space>
                         {trashInfo[d.id].description.split("\n").map((details, index)=>(
-                          <p style={{ margin: "10px", textAlign:"justify", display:"flex", flexDirection: "column"}}>{trashInfo[d.id].description.split('\n')[index]} </p>
+                          <p key={index} 
+                            style={{ margin: "10px", textAlign:"justify", display:"flex", flexDirection: "column"}}>
+                              {details} 
+                          </p>
                         ))}
-                        
-                        <p style={{margin: "10px",textAlign:"justify", display:"flex", flexDirection: "column", fontSize: "12pt"}}>{trashInfo[d.id].description} </p>
-                        <h2 style={{color:"#33bbc5", textAlign: "left", fontWeight: "bolder", fontSize: "20pt", display: "flex", flexDirection: "column"}}>Recycling methods: <span> {" "}</span></h2>
-                        <Space direction="vertical" size={20}></Space>
-                        
+                        <h2 style={{color:"#33bbc5", textAlign: "left", fontWeight: "bolder", fontSize: "20pt", display: "flex", flexDirection: "column"}}>
+                          Recycling methods: <span> {" "}</span></h2>
+                        <Space direction="vertical" size={20}></Space>                        
                         {trashInfo[d.id].recycling_methods.split("\n").map((details, index)=> (
-                          <p style={{ margin: "10px", textAlign:"justify", display:"flex", flexDirection: "column"}}>{trashInfo[d.id].recycling_methods.split('\n')[index]} </p>
-
+                          <p key={index} style={{ margin: "10px", textAlign:"justify", display:"flex", flexDirection: "column"}}>
+                            {details} 
+                          </p>
                         ))}
-
                       </div>
-                         
-                        
                     }</> 
                     :
                     <>

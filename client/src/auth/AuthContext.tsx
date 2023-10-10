@@ -39,12 +39,11 @@ export const AuthProvider: React.FC<React.PropsWithChildren<AuthProviderProps>> 
           setUsername(currUsername);
           var currUserID: any = localStorage.getItem('userID');
           currUserID = parseInt(String(userID));
-          console.log(userID)
           setUserID(currUserID)
         } else {
           logout()
         }
-      }, [isLoggedIn]);
+      });
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, setLoggedIn, username, userID, logout }}>

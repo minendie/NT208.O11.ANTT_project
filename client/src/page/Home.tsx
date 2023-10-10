@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap, ZoomControl,
+  useMapEvent,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { useAuth } from '../auth/AuthContext'
+
+import { useAuth } from "../auth/AuthContext";
 import { useOrgan } from "../contexts/OrganizerContext";
-import icon from "../constant/constants";
-import { DatePicker, Input, Modal, Space, message, Form, Button } from "antd";
+import GreenIcon from "../constant/GreenIcon";
+
+import { DatePicker, Form, Input, Modal, Space, message, Button } from "antd";
 import CustomButton from "../component/ui/CustomButton";
 import SlideCampaign from "../component/SlideCampaign/SlideCampaign";
 
@@ -13,13 +22,20 @@ import NewCampaignForm from "../component/form/CampaignForm/NewCampaignForm";
 import { useCampaign } from "../contexts/CampaignContext";
 import OrganizerSignupForm from "../component/form/OrganizerSignupForm/OganizerSignupForm";
 import { CloseOutlined } from "@ant-design/icons";
-import axios from 'axios';
+import axios from "axios";
 import SearchBar from "../component/ui/SearchBar";
-
-
+import RedIcon from "../constant/RedIcon";
+import OrangeIcon from "../constant/OrangeIcon";
 
 const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
+const RecenterAutomatically = ({ lat, lng }) => {
+  const map = useMap();
+  useEffect(() => {
+    map.setView([lat, lng]);
+  }, [lat, lng]);
+  return null;
+};
 
 export default function Home() {
   const positions = [
@@ -34,15 +50,15 @@ export default function Home() {
   const handleClick = () => {
     setIsHidden(true);
   };
-  const {campaigns, setCampaigns} = useCampaign()
-  
+  const { campaigns, setCampaigns } = useCampaign();
+  const [lat, setLat] = useState(10.8231);
+  const [long, setLong] = useState(106.6297);
 
   function LocationMarker() {
     const [position, setPosition] = useState(null);
     const [bbox, setBbox] = useState([]);
     const map = useMap();
-    
-  
+
     useEffect(() => {
       map.locate().on("locationfound", function (e) {
         setPosition(e.latlng);
@@ -50,78 +66,82 @@ export default function Home() {
         map.flyTo(e.latlng, map.getZoom());
         const radius = e.accuracy;
         const circle = L.circle(e.latlng, radius);
+        const popup = L.popup()
+          .setLatLng(e.latlng)
+          .setContent("<p>You are here</p>")
+          .openOn(map);
         circle.addTo(map);
-        setBbox(e.bounds.toBBoxString().split(","));
+        popup.addTo(map);
+        // setBbox(e.bounds.toBBoxString().split(","));
       });
     }, [/*map*/]);
 
     return position === null ? null : (
       <div className="div">
-        <Marker position={position} icon={icon}>
-          <Popup>
-            You are here. <br />
-            Map bbox: <br />
-            <b>Southwest lng</b>: {bbox[0]} <br />
-            <b>Southwest lat</b>: {bbox[1]} <br />
-            <b>Northeast lng</b>: {bbox[2]} <br />
-            <b>Northeast lat</b>: {bbox[3]}
-          </Popup>
-        </Marker>
+        <Marker position={position}></Marker>
       </div>
     );
   }
-  const [showComponent, setShowComponent] = useState(false)
+
+  const [showComponent, setShowComponent] = useState(false);
   // const [campaigns, setCampaigns] = useState([])
+  const handleInputSearch = (location) => {
+    setLat(location.lat);
+    setLong(location.lon);
+    console.log(location.lat, location.lon);
+  };
   const handleSearch = () => {
     setShowComponent(!showComponent);
-    axios.get(`${API_ENDPOINT}/campaigns/all`, {
+    axios
+      .get(`${API_ENDPOINT}/campaigns/all`, {
         headers: {
-            'ngrok-skip-browser-warning': true
+          "ngrok-skip-browser-warning": true,
         },
-    })
-    .then(response => {
-      // Assuming the response data is an array of campaigns
-      setCampaigns(response.data);
-    })
-    .catch(error => {
-      // Handle any error that occurred during the request
-      console.error('Error fetching campaigns:', error);
-    });
-  }
-  const { setShowNewCampaignForm } = useCampaign()
+      })
+      .then((response) => {
+        // Assuming the response data is an array of campaigns
+        setCampaigns(response.data);
+      })
+      .catch((error) => {
+        // Handle any error that occurred during the request
+        console.error("Error fetching campaigns:", error);
+      });
+  };
+  const { setShowNewCampaignForm } = useCampaign();
   const handleCreateCampaign = () => {
-      if (organizer.organizerID) {
-          setShowNewCampaignForm(true)
-      }
-      else {
-          // message.warning('Only organizer can create a new campaign')
-          showConfirmModal();
-      }
-  }
+    if (organizer.organizerID) {
+      setShowNewCampaignForm(true);
+    } else {
+      // message.warning('Only organizer can create a new campaign')
+      showConfirmModal();
+    }
+  };
   const { RangePicker } = DatePicker;
 
   // Confirm modal
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const showConfirmModal = () => {
-      setIsConfirmModalOpen(true);
+    setIsConfirmModalOpen(true);
   };
 
   const handleConfirmOk = () => {
-      organizer.setShowOrganizerSignupForm(true);
-      setIsConfirmModalOpen(false);
+    organizer.setShowOrganizerSignupForm(true);
+    setIsConfirmModalOpen(false);
   };
 
   const handleConfirmCancel = () => {
-      setIsConfirmModalOpen(false);
+    setIsConfirmModalOpen(false);
   };
   const dayRangeConfig = {
-    rules: [{ 
-        type: 'array' as const, 
-        required: true, 
-        message: 'Please provide the time frame for your campaign!' 
-    }],
-};
+    rules: [
+      {
+        type: "array" as const,
+        required: true,
+        message: "Please provide the time frame for your campaign!",
+      },
+    ],
+  };
   return (
     <>
     <div>
@@ -139,6 +159,10 @@ export default function Home() {
           />
           <ZoomControl position="bottomright" />
           <LocationMarker />
+          <div>
+              <Marker position={[lat, long]}></Marker>
+              <RecenterAutomatically lat={lat} lng={long} />
+            </div>
           {positions.map((item, index) => {
             return (
               <Marker position={[item.lat, item.long]} key={index}>
@@ -213,10 +237,9 @@ export default function Home() {
         open={isConfirmModalOpen} 
         onOk={handleConfirmOk} onCancel={handleConfirmCancel}
         width={480}
-    >
+      >
         <p>Only organizer can create a new campaign.</p>
-    </Modal>
+      </Modal>
     </>
   );
 }
- 

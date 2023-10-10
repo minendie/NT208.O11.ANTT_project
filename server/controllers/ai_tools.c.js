@@ -108,6 +108,11 @@ module.exports = {
             // all classes that are predicted with no duplicates
             var filteredClasses = new Set(acceptedClasses);
         
+            // Clean up variables
+            // Dispose of tensors
+            img.dispose();
+            output.forEach((tensor) => tensor.dispose());
+
             // return everything needed
             return {
                 filename: filename, // the image's filename

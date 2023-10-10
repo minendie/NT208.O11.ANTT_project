@@ -68,8 +68,8 @@ function validatePassword(password: string) {
 }
 
 
-const ParticipantProfileForm: React.FC<{ canEdit: boolean, user: any, classNames?:string }> 
-                    = ({ canEdit, user, classNames }) => {
+const ParticipantProfileForm: React.FC<{ canEdit: boolean, user: any }> 
+                    = ({ canEdit, user }) => {
   const [username, setUsername] = useState(user.Username);
   const [email, setEmail] = useState(user.Email);
   const [phoneNumber, setPhoneNumber] = useState(user?.PhoneNumber || '');
@@ -117,7 +117,7 @@ const ParticipantProfileForm: React.FC<{ canEdit: boolean, user: any, classNames
       }
 
       axios.put(`${API_ENDPOINT}/update-user`, data)
-        .then((res) => {
+        .then((_) => {
           alert('Your information is editted successfully.')
         })
         .catch()

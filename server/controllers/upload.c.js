@@ -36,14 +36,14 @@ module.exports = {
 
     deleteUploadedFile: async(req, res) => {
         try {
-            // const imagePath = path.join(__dirname, '../public/images/', req.params.filename)
-            // fs.unlink(imagePath, (unlinkErr) => {
-            //     if (unlinkErr) {
-            //       console.error(unlinkErr);
-            //       return;
-            //     }
-            //     console.log(`Image ${imagePath} has been sent and deleted.`);
-            // });
+            const imagePath = path.join(__dirname, '../public/images/', req.params.filename)
+            fs.unlink(imagePath, (unlinkErr) => {
+                if (unlinkErr) {
+                  console.error(unlinkErr);
+                  return;
+                }
+                console.log(`Image ${imagePath} has been sent and deleted.`);
+            });
             res.send({success: true})
         } catch (err) {
              console.log(err)
