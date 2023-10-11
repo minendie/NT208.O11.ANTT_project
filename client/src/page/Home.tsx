@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   MapContainer,
   TileLayer,
   Marker,
-  Popup,
   useMap, ZoomControl,
-  useMapEvent,
+  Tooltip,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import dayjs, { Dayjs } from 'dayjs';
 
 import { useAuth } from "../auth/AuthContext";
 import { useOrgan } from "../contexts/OrganizerContext";
 import GreenIcon from "../constant/GreenIcon";
 
-import { DatePicker, Form, Input, Modal, Space, message, Button } from "antd";
+import { DatePicker, Modal, Space, Button } from "antd";
 import CustomButton from "../component/ui/CustomButton";
 import SlideCampaign from "../component/SlideCampaign/SlideCampaign";
 
@@ -24,45 +24,80 @@ import OrganizerSignupForm from "../component/form/OrganizerSignupForm/OganizerS
 import { CloseOutlined } from "@ant-design/icons";
 import axios from "axios";
 import SearchBar from "../component/ui/SearchBar";
-import RedIcon from "../constant/RedIcon";
-import OrangeIcon from "../constant/OrangeIcon";
+import { useMapItems } from "../contexts/MapItemsContext";
+import GreenMarker from "../constant/GreenMarker";
+import YellowMarker from "../constant/YellowMarker";
+import RoutingMachine from "../component/RoutineMachine/RoutineMachine.js";
+
 
 const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
-const RecenterAutomatically = ({ lat, lng }) => {
-  const map = useMap();
-  useEffect(() => {
-    map.setView([lat, lng]);
-  }, [lat, lng]);
-  return null;
-};
+interface LatLng {
+  lat: number;
+  lng: number;
+}
+
+interface LatLon {
+  lat: number;
+  lon: number;
+}
+
+interface CampaignProps {
+  campaignName: string,
+  receiveItems: string[],
+  organizerName: string,
+  address: string,
+  openHour: string,
+  closeHour: string,
+  startDate: string,
+  endDate: string,
+  receiveGifts: string,
+  organizerID: number,
+  campaignID: number,
+  lat: number,
+  long: number,
+  averageRating: number,
+  icon?: any,
+  description: string
+}
+
+function calculateEuclideanDistance(pos1: LatLng, pos2: LatLng) {
+  const latDiff = pos2.lat - pos1.lat;
+  const lngDiff = pos2.lng - pos1.lng;
+  return Math.sqrt(latDiff ** 2 + lngDiff ** 2);
+}
+
+declare type EventValue<DateType> = DateType | null;
+declare type RangeValue<DateType> = [EventValue<DateType>, EventValue<DateType>] | null;
+
+type DateResult = RangeValue<Dayjs> | null;
 
 export default function Home() {
-  const positions = [
-    {lat: 10.88, long: 107.660172},
-    {lat: 11.762622, long: 108.660172},
-    {lat: 10.22, long: 108.660172},
-  ]
   const auth = useAuth();
   const organizer = useOrgan();
-  const [isHidden, setIsHidden] = useState(false);
+  const [isMounted, setIsMounted] = useState(true);
+  const { myPosition, setMyPosition, setCenterPosition, 
+    zoomValue, setZoomValue, centerValue, setCenterValue, searchResult, setSearchResult,
+    showDirection, showWelcomeToWhatEver, setShowWelcomeToWhatEver, setHiddenClass} = useMapItems();
+  const [dateResult, setDateResult] = useState<DateResult>(null);
+  const mapRef = useRef<any>(null);
 
   const handleClick = () => {
-    setIsHidden(true);
+    setShowWelcomeToWhatEver(true);
   };
-  const { campaigns, setCampaigns } = useCampaign();
-  const [lat, setLat] = useState(10.8231);
-  const [long, setLong] = useState(106.6297);
+
+  const {campaigns, setCampaigns, newCampaign, changedCampaigns, setChangedCampaigns} = useCampaign();
 
   function LocationMarker() {
-    const [position, setPosition] = useState(null);
-    const [bbox, setBbox] = useState([]);
     const map = useMap();
+    const {mapInitialized, setMapInitialized} = useMapItems();
 
     useEffect(() => {
+      if (!mapInitialized) {
       map.locate().on("locationfound", function (e) {
-        setPosition(e.latlng);
-        console.log(e.latlng);
+        setMyPosition(e.latlng);
+        setCenterPosition({lat: e.latlng.lat, lng: e.latlng.lng});
+        setCenterValue({lat: e.latlng.lat, lng: e.latlng.lng});
         map.flyTo(e.latlng, map.getZoom());
         const radius = e.accuracy;
         const circle = L.circle(e.latlng, radius);
@@ -74,24 +109,30 @@ export default function Home() {
         popup.addTo(map);
         // setBbox(e.bounds.toBBoxString().split(","));
       });
-    }, [/*map*/]);
+      setMapInitialized(true);
+    }}, [myPosition]);
 
-    return position === null ? null : (
-      <div className="div">
-        <Marker position={position}></Marker>
-      </div>
-    );
+    return null;
   }
 
-  const [showComponent, setShowComponent] = useState(false);
+  // const RecenterAutomatically = () => {
+  //   const map = useMap();
+  //   const {centerPosition} = useMapItems();
+    
+  //   useEffect(() => {
+  //     map.flyTo([centerPosition.lat, centerPosition.lng], 13);
+  //   }, [centerPosition]);
+    
+  //   return null;
+  // };
+
   // const [campaigns, setCampaigns] = useState([])
-  const handleInputSearch = (location) => {
-    setLat(location.lat);
-    setLong(location.lon);
-    console.log(location.lat, location.lon);
-  };
-  const handleSearch = () => {
-    setShowComponent(!showComponent);
+  // const handleInputSearch = (location) => {
+  //   setLat(location.lat);
+  //   setLong(location.lon);
+  //   console.log(location.lat, location.lon);
+  // };
+  const handleSearch = (searchResult: LatLon, dateResult: RangeValue<Dayjs>) => {
     axios
       .get(`${API_ENDPOINT}/campaigns/all`, {
         headers: {
@@ -100,13 +141,53 @@ export default function Home() {
       })
       .then((response) => {
         // Assuming the response data is an array of campaigns
+        response.data.map((campaign: CampaignProps) =>{
+          campaign.icon = GreenMarker;
+        });
+        // Format results
+        var customChangedCampaigns = [... response.data];
+
+        if (dateResult) {
+        // Format Date
+        let date = dateResult[0] as any;
+        let offset = date?.$d.getTimezoneOffset()
+        let customDate = new Date(date?.$d.getTime() - (offset*60*1000))
+        const startDate = customDate.toISOString().replace('T', ' ').substring(0, 10)
+
+        date = dateResult[1]
+        offset = date?.$d.getTimezoneOffset()
+        customDate = new Date(date?.$d.getTime() - (offset*60*1000))
+        const endDate = customDate.toISOString().replace('T', ' ').substring(0, 10)
+
+        // Filter the campaigns
+        customChangedCampaigns = customChangedCampaigns.filter(campaign => 
+          dayjs(startDate).isAfter(campaign.startDate)
+          && dayjs(endDate).isBefore(campaign.endDate)
+        );
+        }
+
+        if (searchResult) {
+          const customSearchResult = {lat: searchResult.lat, lng: searchResult.lon};
+          customChangedCampaigns.sort((a, b) => 
+            calculateEuclideanDistance({lat: a.lat, lng: a.long}, customSearchResult) - calculateEuclideanDistance({lat: b.lat, lng: b.long}, customSearchResult));
+          customChangedCampaigns = customChangedCampaigns.slice(0, 5)
+        }
+        // 
         setCampaigns(response.data);
+        setChangedCampaigns(customChangedCampaigns);
+        setSearchResult(null);
+        setHiddenClass("");
       })
       .catch((error) => {
         // Handle any error that occurred during the request
         console.error("Error fetching campaigns:", error);
       });
   };
+
+  // useLayoutEffect(() => {
+
+  // }, [hiddenClass]);
+
   const { setShowNewCampaignForm } = useCampaign();
   const handleCreateCampaign = () => {
     if (organizer.organizerID) {
@@ -117,7 +198,6 @@ export default function Home() {
     }
   };
   const { RangePicker } = DatePicker;
-
   // Confirm modal
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
@@ -133,22 +213,83 @@ export default function Home() {
   const handleConfirmCancel = () => {
     setIsConfirmModalOpen(false);
   };
-  const dayRangeConfig = {
-    rules: [
-      {
-        type: "array" as const,
-        required: true,
-        message: "Please provide the time frame for your campaign!",
-      },
-    ],
-  };
+
+  useEffect(() => {
+    axios
+      .get(`${API_ENDPOINT}/campaigns/all`, {
+        headers: {
+          "ngrok-skip-browser-warning": true,
+        },
+      })
+      .then((response) => {
+        // Assuming the response data is an array of campaigns
+        response.data.map((campaign: CampaignProps) =>{
+          campaign.icon = GreenMarker;
+        });
+        setCampaigns(response.data);
+      })
+      .catch((error) => {
+        // Handle any error that occurred during the request
+        console.error("Error fetching campaigns:", error);
+      });
+  }, [newCampaign]);
+
+    useEffect(() => {
+    if (changedCampaigns && changedCampaigns.length > 0 && !isMounted) {
+      // let centerLat = 0;
+      // let centerLng = 0;
+      campaigns.map((campaign) =>{
+        if (changedCampaigns.find(item => item.campaignID === campaign.campaignID)) {
+        campaign.icon = YellowMarker;
+        // centerLat += campaign.lat;
+        // centerLng += campaign.long;
+        }
+      });
+      const latLngs = changedCampaigns.map(point => L.latLng(point.lat, point.long));
+      const bounds = L.latLngBounds(latLngs);
+      if (mapRef.current) {
+        mapRef.current.fitBounds(bounds);
+      // centerLat /= changedCampaigns.length;
+      // centerLng /= changedCampaigns.length;
+      setCenterPosition(mapRef.current.getCenter());
+      setCenterValue(mapRef.current.getCenter());
+      setZoomValue(mapRef.current.getZoom());
+      }
+    }
+    setIsMounted(false);
+    return () => {
+      campaigns.map((campaign) => {
+        campaign.icon = GreenIcon;
+      })
+    }
+  }, [changedCampaigns]);
+
+  useEffect(() => {
+    const handleMapMoveEnd = () => {
+      if (mapRef.current) {
+      setCenterValue(mapRef.current.getCenter());
+      setZoomValue(mapRef.current.getZoom());
+      }
+      };
+      if (mapRef.current) {
+        mapRef.current.on('moveend', handleMapMoveEnd);
+    }
+
+    return () => {
+      if (mapRef.current) {
+      mapRef.current.off('moveend', handleMapMoveEnd);
+      }
+    };
+  }, [isMounted]);
+
   return (
     <>
     <div>
       <div className="">
         <MapContainer
-          center={[10.8231, 106.6297]}
-          zoom={13}
+          center={centerValue}
+          ref={mapRef}
+          zoom={zoomValue}
           scrollWheelZoom
           zoomControl={false}
           style={{ height: "100vh" }}
@@ -159,18 +300,21 @@ export default function Home() {
           />
           <ZoomControl position="bottomright" />
           <LocationMarker />
-          <div>
-              <Marker position={[lat, long]}></Marker>
-              <RecenterAutomatically lat={lat} lng={long} />
-            </div>
-          {positions.map((item, index) => {
+          {showDirection && <RoutingMachine />}
+          {myPosition && <Marker position={myPosition} icon={GreenIcon}><Tooltip direction="top">Your Position</Tooltip></Marker>}
+          {/* <div> */}
+              {/* <Marker position={[lat, long]}></Marker> */}
+          {/* <RecenterAutomatically /> */}
+          {/* </div> */}
+          {campaigns.map((campaign, index) => {
             return (
-              <Marker position={[item.lat, item.long]} key={index}>
-                <Popup>
-                  <b>
-                  You are here
-                  </b>
-                </Popup>
+              <Marker position={[campaign.lat, campaign.long]} key={index} icon={campaign.icon}>
+                <Tooltip direction="top" className="text-left">
+                  <b style={{color: "#33BBC5"}}>{campaign.campaignName}</b> <br />
+                  <b>Address:</b> {campaign.address} <br />
+                  <b>From:</b> {campaign.startDate.substring(0,10)} <br />
+                  <b>To:</b> {campaign.endDate.substring(0,10)}
+                </Tooltip>
               </Marker>
             )
           })}
@@ -186,7 +330,7 @@ export default function Home() {
           >
             <div className="flex flex-col align-center justify-between h-full">
               <div>
-              {!isHidden && <div className="flex flex-row align-center justify-between text-3xl font-bold p-4 bg-white bg-opacity-80">
+              {!showWelcomeToWhatEver && <div className="flex flex-row align-center justify-between text-3xl font-bold p-4 bg-white bg-opacity-80">
                 <div></div>
                 <div><span className="flex-auto text-black">WELCOME TO</span> GREENDOTS!</div>
                 <Button onClick={handleClick} className="flex-none" style={{border: "none", padding:"0", height:"fit-content"}}>
@@ -195,10 +339,10 @@ export default function Home() {
               </div>}
               <div className=" flex justify-center items-center pt-4 pl-4 pr-4 space-x-4 w-full">
                 {/* <SearchBar/> */}
-               <SearchBar onLocationSearch={(location) => console.log(location)}/>
+               <SearchBar onLocationSearch={(location: any) => {setSearchResult({...location})}}/>
                 
                 <Space direction="vertical" size={12}>
-                  <RangePicker />
+                  <RangePicker onChange={(value)=>{setDateResult(value)}}/>
                 </Space>
                 {/* <Form>
 
@@ -206,7 +350,7 @@ export default function Home() {
                     <RangePicker allowClear/>
                 </Form.Item>
                 </Form> */}
-                <CustomButton title="Search" onClick= {handleSearch} />
+                <CustomButton title="Search" onClick= {() => handleSearch(searchResult, dateResult)} />
                 
                 {auth.isLoggedIn&&<CustomButton title="Create a new campaign" onClick = {handleCreateCampaign}/>}
               </div>
@@ -217,14 +361,14 @@ export default function Home() {
             style={{
               position: "absolute",
               zIndex: 500,
-              left: "50%",
-              transform: "translateX(-50%)",
+              // left: "50%",
+              // transform: "translateX(-50%)",
               bottom: 0,
-              width: "60%",
+              width: "80%",
               height: "fit-content",
             }}
           >
-            {showComponent&&<SlideCampaign slides={slides}/>}
+            <SlideCampaign slides={changedCampaigns}/>
           </div>
         </MapContainer>
       </div>
@@ -243,3 +387,4 @@ export default function Home() {
     </>
   );
 }
+
