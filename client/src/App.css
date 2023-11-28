@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+ 
+body {
+  font-family: 'Kiwi Maru', serif;
+  font-size: 30px;
+  color:#33BBC5;
+  font-weight: 30px;
+}

@@ -1,0 +1,694 @@
+/* CSS for AI Tool */
+
+
+/* APP CSS */
+
+html, body, #root {
+    height: 100%;
+}
+  
+#root {
+  width: 100%;
+  margin: 0 ;
+  padding: 0;
+  text-align: center;
+  font-family: 'Inter-Regular', Helvetica, sans-serif;
+}
+
+  
+/* FILE UPLOAD */
+
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  height: 90%;
+  width: 100%;
+  border: 5px dashed rgb(117, 112, 112);
+  padding: 2rem;
+  background-color: rgba(51, 187, 197, 0.4);
+}
+
+.dropzone:hover {
+  cursor: pointer;
+}
+
+/* AI TOOL CSS */
+.AITool {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 94vh;
+  padding: 2 1rem;
+  color: black;
+}
+
+.AITool-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; 
+  width: 50%;
+}
+  
+.AITool-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center; 
+  margin: 0.4rem 2rem;
+}
+
+.AITool-header-logo {
+  max-width: 80px;
+  width: 20%;
+}
+
+.AITool-header-title {
+  font-size: 25px;
+  font-weight: bold;
+  text-align: left;
+  line-height: 1.2;
+}
+
+.AITool-desc {
+  margin: 0 5rem;
+  font-size: 18px;
+}
+
+/* AI TOOL RESULT CSS */
+
+.AITool-result-left {
+  /* height: 95vh; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50%;
+  background-color: rgb(51, 187, 197);
+  padding: 20px 0 50px 0;
+  min-width: 50vw;
+  object-fit: contain;
+}
+
+.AITool-result-left-title {
+  font-weight: bold;
+  color: white;
+  font-size: xx-large;
+}
+
+.AITool-result-right-title {
+  font-weight: bold;
+  color: black;
+  font-size: x-large;
+  margin-top: 20px;
+}
+
+.AITool-result-right {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center; 
+  width: 50%;
+  object-fit: contain;
+}
+
+.AITool-result-image {
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center; 
+  margin: 0.4rem 2rem;
+}
+
+.AITool-result-button {
+  margin: 20px 10px;
+  padding: 5px 20px;
+  border-radius: 25px;
+  background-color: white;
+  color: #33BBC5;
+  width: max-content;
+}
+
+.AITool-result-right-toggle-item {
+  margin: 15px;
+
+}
+
+.AITool-result-toggle-title {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 5px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #333333;
+  background-color: #33BBC5;
+}
+
+.AITool-result-button:hover {
+  box-shadow: inset 0 0 10px #333333;
+}
+
+.AITool-result-image img {
+  min-width: 10vw;
+  max-height: 50vh;
+  border-radius: 15px;
+  max-width: 50vw;
+}
+  
+/* RESPONSIVE AI TOOL  */
+
+@media screen and (max-width: 840px) {
+  .AITool {
+    display: block;
+    font-size: 12px;
+  }
+
+  .dropzone {
+    width: 100%;
+  }
+
+  .AITool-content{
+    display: None;
+  }
+}
+  
+
+.AITool-result-recommended-list {
+  justify-content: center;
+  align-items: center;
+  margin: 20px 30px;
+  overflow: auto; /* scroll inside this component*/
+  height: 70vh;
+}
+
+.AITool-result-right-info {
+  display: flex;
+  flex-direction: column;
+  object-fit: contain;
+  overflow: auto;
+  padding: 20px;
+  width: 100%;
+  text-align: left;
+}
+
+.AITool-result-right-info-image-list {
+  overflow: auto;
+}
+
+.AITool-result-right-info-h2 {
+  font-size: large;
+  font-weight: bold;
+}
+
+.AITool-result-content {
+  display: flex;
+  /* height: 100%; */
+  flex-direction: column;
+  align-items: center;
+}
+
+.AITool-result-newimg {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  color: white;
+  margin-bottom: 40px;
+  width: fit-content;
+  margin: 4px 15px;
+  padding: 0 10px;
+  border: 1px #33bbc5 solid;
+}
+
+
+.AITool-result-newimg:hover {
+  cursor: pointer;
+  border: 1px #ffffff solid;
+  border-radius: 8px;
+}
+
+.AITool-result-newimg img { 
+  width: 12px;
+  margin: 5px 15px 5px 0;
+}
+
+
+/* RESPONSIVE AI TOOL RESULT */
+
+@media screen and (max-width: 840px) {
+  .AITool-result-left, 
+  .AITool-result-right {
+    display: block;
+    width: 100%;
+  }
+
+  .AITool-result-right-viewall-btn {
+    margin: 20px;
+  }
+  .AITool-result-left-title {
+    font-size: large;
+  }
+
+  .AITool-result-button {
+    margin: 4px 10px;
+    padding: 3px 13px;
+    border-radius: 25px;
+    background-color: white;
+    color: #33BBC5;
+    width: max-content;
+  }
+
+  .AITool-result-recommended-list {
+      overflow: visible;
+      height: fit-content;
+  }
+
+  .AITool-result-right-info {
+      overflow: visible;
+  }
+
+  .AITool-result-right-info-h2 {
+      font-size: 16px;
+  }
+
+  .AITool-result-left {
+    /* max-height: 50vh; */
+    /* width: 50%; */
+    background-color: #33BBC5;
+    padding: 20px 0 30px 0;
+    min-width: 100vw;
+    object-fit: contain;
+  }
+
+  .AITool-result-image img {
+    /* max-height: 30vh; */
+    border-radius: 15px;
+    /* max-width: 50vw; */
+    object-fit: contain;
+  }
+
+  .AITool-result-newimg {
+    margin: 4px 20px;
+  }
+
+  .AITool-result-newimg img {
+    margin: 5px 5px 5px 0;
+  }
+
+  h1 .AITool-result-right-title {
+    font-size: 20px,
+  }
+}
+
+/* ADDITIONAL COMPONENTS CSS (exported from Figma) */
+
+.button-primary {
+  align-items: center;
+  background-color: #33bbc5;
+  border-radius: 8px;
+  display: inline-flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 5px 16px;
+  position: relative;
+}
+
+.button-primary .label {
+  color: #ffffff;
+  font-family: "Inter-Regular", Helvetica;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1px;
+  position: relative;
+  width: fit-content;
+}
+
+.button-primary:hover {
+  background-color: #ffffffcc;
+  border: 1px solid;
+  border-color: #33bbc5;
+}
+
+.button-primary:hover .label {
+  color: #33bbc5;
+}
+
+.property-more {
+  align-items: flex-start;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  position: relative;
+}
+
+.property-more .primary {
+  flex: 0 0 auto;
+  position: relative;
+}
+  
+.element-trash-tag {
+  align-items: center;
+  background-color: #33bbc5;
+  border-radius: 100px;
+  display: inline-flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 5px 8px;
+  position: relative;
+}
+
+.element-trash-tag .text-wrapper {
+  color: #ffffff;
+  font-family: "Inter-Regular", Helvetica;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1px;
+  position: relative;
+  width: fit-content;
+}
+
+.preview-campaign {
+  align-items: center;
+  background-color: #ffffff;
+  display: flex;
+  gap: 10px;
+  position: relative;
+  object-fit: contain;
+  font-size: 13px;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+  margin: 15px;
+}
+
+.preview-campaign .campaign-avatar {
+  align-self: stretch;
+  background-color: #d9d9d9;
+  border-radius: 8px;
+  position: relative;
+  width: 189px;
+}
+
+.preview-campaign .preview-campaign-component {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 6px;
+  justify-content: center;
+  padding: 5px 0px;
+  position: relative;
+}
+
+.preview-campaign .header {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  position: relative;
+  width: 100%;
+}
+
+.preview-campaign .div {
+  align-items: flex-start;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 3px;
+  position: relative;
+}
+
+.preview-campaign .text-wrapper {
+  color: #000000;
+  font-family: "Inter-Bold", Helvetica;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1px;
+  position: relative;
+  width: fit-content;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.preview-campaign .text-wrapper-2 {
+  color: #00000066;
+  font-family: "Inter-Regular", Helvetica;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  width: fit-content;
+}
+
+.preview-campaign .buttons {
+  align-items: center;
+  align-self: stretch;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  position: relative;
+  margin-left: auto;
+}
+
+.preview-campaign .button-primary-instance {
+  border-radius: 125px !important;
+  display: flex !important;
+  height: 32px !important;
+  width: 32px !important;
+}
+
+.preview-campaign .design-preview-campaign-component-instance-node {
+  font-family: "Inter-Bold", Helvetica !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  margin-left: -8px !important;
+  margin-right: -8px !important;
+  margin-top: -2px !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+}
+
+
+.preview-campaign .button-primary-2 {
+  border-radius: 125px !important;
+  display: flex !important;
+  width: 32px !important;
+}
+
+.preview-campaign .button-primary-3 {
+  font-size: 15px !important;
+  margin-left: -7.5px !important;
+  margin-right: -7.5px !important;
+  white-space: nowrap !important;
+}
+
+.preview-campaign .button-more {
+  flex: 0 0 auto !important;
+  position: relative !important;
+}
+
+.preview-campaign .button-more {
+  font-size:12px;
+}
+
+.preview-campaign .frame {
+  align-items: flex-start;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 10px;
+  position: relative;
+  width: 100%;
+}
+
+.preview-campaign .p {
+  color: #000000;
+  /* flex: 1; */
+  font-family: "Inter-Bold", Helvetica;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1px;
+  position: relative;
+}
+
+.preview-campaign .span {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.preview-campaign .text-wrapper-3 {
+  font-size: 13px;
+  font-family: "Inter-Regular", Helvetica;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.preview-campaign .time {
+  align-self: stretch;
+  color: #000000;
+  font-family: "Inter-Bold", Helvetica;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+}
+
+.preview-campaign .gift-s {
+  color: #000000;
+  font-family: "Inter-Bold", Helvetica;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1px;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.preview-campaign .accepted-trash {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 4px 4px;
+  position: relative;
+  width: 100%;
+}
+
+.preview-campaign .accepted-trash-2 {
+  color: #000000;
+  font-family: "Inter-Bold", Helvetica;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  position: relative;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.preview-campaign .tags {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  gap: 10px 10px;
+  position: relative;
+}
+
+.preview-campaign .element-trash-tag-instance {
+  flex: 0 0 auto !important;
+}
+
+
+.element-trash-tag {
+  align-items: center;
+  background-color: #33bbc5;
+  border-radius: 100px;
+  display: inline-flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 5px 8px;
+  position: relative;
+}
+
+.element-trash-tag .trash-type {
+  color: #ffffff;
+  font-family: "Inter-Regular", Helvetica;
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -1px;
+  position: relative;
+  width: fit-content;
+}
+
+
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  height: 849px;
+  position: relative;
+}
+
+.container .title {
+  align-items: center;
+  align-self: stretch;
+  background-color: #c8ffe0;
+  box-shadow: 0px 4px 20px #00000040;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 16px;
+  padding: 11px 28px;
+  position: relative;
+  width: 100%;
+}
+
+.container .carbon-result {
+  height: 57.69px;
+  position: relative;
+  width: 53px;
+}
+
+.container .text-wrapper-3 {
+  color: #33bbc5;
+  font-family: "Inter-Bold", Helvetica;
+  font-size: 54px;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: normal;
+  margin-top: -2px;
+  position: relative;
+  text-align: center;
+  text-shadow: 0px 4px 4px #00000040;
+  width: fit-content;
+}
+
+.container .recommended {
+  align-items: center;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 528px;
+  overflow: hidden;
+  overflow-y: scroll;
+  position: relative;
+  width: 100%;
+}
+
+.container .div-2 {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 20px;
+  overflow-x: scroll;
+  position: relative;
+}
+
+.container .component-6 {
+  display: flex !important;
+  width: 267px !important;
+}

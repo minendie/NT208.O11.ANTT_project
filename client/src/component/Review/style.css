@@ -1,0 +1,21 @@
+.review-container{
+    display: flex;
+    text-align: left;
+    height: fit-content;
+    
+
+}
+.container{
+    height: 0px;
+    /* flex */
+}
+.ant-btn-primary{
+    background-color: #33BBC5;
+}
+.ant-form-item{
+    margin-bottom: 0%;
+}
+
+.ant-input-disabled, .ant-input[disabled]{
+    color: rgba(0, 0, 0, 1)
+}

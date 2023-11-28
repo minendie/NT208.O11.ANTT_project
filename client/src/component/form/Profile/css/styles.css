@@ -1,0 +1,98 @@
+.bg-green{
+    width: 100%;
+    background-color: #33BBC5;
+    min-height: calc(100px+15vw);    
+    height: 50%;
+}
+
+.ava__container{
+    width: 120px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    box-shadow: 1px 3px 12px rgba(red, green, blue, alpha);
+
+}
+.mb-4 .align-left{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.align-right{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.profile-cover{
+    width: 100%;
+    height: 110px;    
+}
+
+.avatar{
+    text-align: left;
+    padding: auto;
+    display: flex-start;
+    padding-left: 50px;
+    justify-content: center;
+    z-index: -1;
+    background-color: rgb(245, 245, 245);
+}
+
+.custom-button-color {
+    background-color: #33BBC5;
+    border-radius: 5px;
+    border-style: none;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    width: 90px; 
+    height: 40px;
+    line-height: 40px; 
+    list-style: none;
+    margin: 0;
+    outline: none;
+    padding: 0; 
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    transition: color 100ms;
+    vertical-align: baseline;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+  }
+  
+.custom-button-color:hover,
+.custom-button-color:focus {
+    background-color: #43d7dc;
+}
+
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+  
+  /* Control the left side */
+  .left {
+    left: 0;
+    background-color: #111;
+  }
+  
+  /* Control the right side */
+  .right {
+    right: 0;
+    background-color: red;
+  }
+  
+
