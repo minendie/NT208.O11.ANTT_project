@@ -5,7 +5,9 @@ import '../component/form/Profile/css/styles.css'
 import OrganizerProfileForm from '../component/form/Profile/OrganizerProfileForm'
 import {useAuth} from '../auth/AuthContext'
 import { useOrgan } from "../contexts/OrganizerContext";
-
+import { useNavigate } from 'react-router-dom';
+// import { BrowserRouter, Route } from 'react-router-dom';
+// import CampaignStatistic from "../component/CampaignStatistic/CampaignStatistic";
 
 
 
@@ -14,7 +16,7 @@ interface Organizer {
     Name: string,
     Email: string,
     PhoneNumber: string,
-    Description: string,
+    Address: string,
     FB_Link: string,
     Website: string,
     LinkedIn_Link: string,
@@ -29,6 +31,7 @@ const DetailOrganizer = () => {
     const organ = useOrgan();
     const auth = useAuth();
     const [canEdit, setcanEdit] = useState(false)
+    const navigator = useNavigate();
 
     useEffect(() => {
         // fetch target organizer's data from the database based on their ID
@@ -42,6 +45,7 @@ const DetailOrganizer = () => {
             setcanEdit(auth.isLoggedIn && organ.organizerID == organizerID)
             
             const userInfo = result.data[0];
+            console.log(result.data[0]);
             setOrganizer({
                 ...userInfo,
             })
@@ -52,11 +56,21 @@ const DetailOrganizer = () => {
     })
 
     return (
+        
         <div>
-        <div className="bg-cyan-500 z-10">             
-            <div className="flex gap-5 items-center mx-7 pt-15 flex-row text-white">
-            <img className="w-32 rounded-full border-2 border-black " src="https://img-qn.51miz.com/preview/element/00/01/15/69/E-1156995-FB1729B5.jpg" alt="" />
-            <h1 style={{color:"white"}}>{organizer?.Name || ''}</h1>
+            <div className="bg-cyan-500 z-10">             
+                <div className="flex gap-5 items-center mx-7 pt-15 flex-row text-white">
+                <img className="w-32 rounded-full border-2 border-black " src="https://img-qn.51miz.com/preview/element/00/01/15/69/E-1156995-FB1729B5.jpg" alt="" />
+                <h1 style={{color:"white"}}>{organizer?.Name || ''}</h1>
+            </div>
+            <div className="flex justify-end mx-7 mb-5">
+                <button
+                className="text-blue-500 bg-white py-2 px-4 rounded-md"
+                onClick={() => { 
+                    navigator(`/campaign-statistic/${organizerID}`)
+                  }}
+                >Campaign Statistic
+                </button>
             </div>
         </div>                
             {organizer&& <OrganizerProfileForm         
