@@ -1,5 +1,5 @@
 //src/component/Review
-import React from "react";
+import React, { useRef } from "react";
 import axios from "axios"
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Rate, Input, Form, Button, message } from "antd";
@@ -18,6 +18,7 @@ interface ReviewProps {
 
 const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{    
     const auth = useAuth();
+    const formRef = useRef<any>(null);
 
     const onFinish = async (values: any) => {
         try {
@@ -28,19 +29,22 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
                     message.error('You can only write within 190 characters.')
                     )
             }
-            const response = await axios.post(`${API_ENDPOINT}/write-review`, values); 
+            const response = await axios.post(`${API_ENDPOINT}/write-review`, values);
+            console.log(values); 
             if (response.data.success) {
-                setReviews((prevReviews: any[]) => [{
+                setReviews((prevReviews: any[]) => [...prevReviews, {
                                                     comment: values.comment,
                                                     rating: values.rating,
                                                     username: auth.username,
-                                                }, ...prevReviews]);
+                                                },]);
+                                                formRef.current?.resetFields(); 
             }
             else (
                 message.error('You can only submit one review!')
             )
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error submitting review:", error);
+            console.log('Server error response:', error.response);
         }
     };
         
@@ -68,6 +72,7 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                     autoComplete="off"
+                    ref={formRef}
             >
                 <div className="flex flex-row w-full items-scretch  text-transparent gap-2">    
                     <Avatar className="flex-none"icon={<UserOutlined />} />

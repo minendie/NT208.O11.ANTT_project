@@ -5,22 +5,22 @@ import ReviewPage from '../../Review/Review_page';
 import './Tabs.css'
 
 interface Campaign {
-  organizerName: string,
-  campaignID: number,
-  startDate: string,
-  endDate: string,
-  openHour: string,
-  closeHour: string,
-  description: string,
-  campaignName: string,
-  address: string,
-  lat: number,
-  long: number,
-  receiveItems: string[],
-  receiveGifts: string,
+  organizerName: string;
+  campaignID: number;
+  startDate: string;
+  endDate: string;
+  openHour: string;
+  closeHour: string;
+  description?: string;
+  campaignName: string;
+  address: string;
+  lat: number;
+  long: number;
+  receiveItems: string[];
+  receiveGifts: string;
 }
 
-const TabsPage: React.FC<{ campaign: Campaign, setShowCampaignIndex: (idx: number) => void }> = ({ campaign, setShowCampaignIndex }) => {
+const TabsPage: React.FC<{ campaign: Campaign; setShowCampaignIndex: (idx: number) => void }> = ({ campaign, setShowCampaignIndex }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(true);
   const handleCancel = () => {
@@ -52,7 +52,7 @@ const TabsPage: React.FC<{ campaign: Campaign, setShowCampaignIndex: (idx: numbe
 
   return (
     <>
-      <Modal title="" open={isModalOpen} onCancel={handleCancel}  footer={null}>
+      <Modal title="" open={isModalOpen} width="60vw" onCancel={handleCancel}  footer={null}>
         <Tabs 
           defaultActiveKey="1"
           type="card"

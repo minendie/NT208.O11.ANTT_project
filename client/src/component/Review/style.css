@@ -16,3 +16,6 @@
     margin-bottom: 0%;
 }
 
+.ant-input-disabled, .ant-input[disabled]{
+    color: rgba(0, 0, 0, 1)
+}

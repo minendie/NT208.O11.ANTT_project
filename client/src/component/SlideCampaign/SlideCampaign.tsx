@@ -1,7 +1,7 @@
 // src/Slider.tsx
-import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
+import { CloseOutlined, LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
-import { Button, Dropdown, Tag } from "antd";
+import { Button, Dropdown, Form, Modal, Tag } from "antd";
 import type { MenuProps } from 'antd';
 import campaignImage from "../../assets/campaign.jpg";
 import CustomButton from "../ui/CustomButton";
@@ -10,7 +10,9 @@ import TabsPage from "../card/TabsPage/TabsPage";
 import EditCampaignForm from "../form/CampaignForm/EditCampaignForm";
 import { useCampaign } from "../../contexts/CampaignContext";
 import { Link } from "react-router-dom";
-import { useAuth } from "../../auth/AuthContext";
+import { useMapItems } from "../../contexts/MapItemsContext";
+import SearchBar from "../ui/SearchBar";
+import "./SlideCampaign.css"
 
 interface Slide {
   campaignName: string,
@@ -25,6 +27,9 @@ interface Slide {
   lat: number,
   long: number,
   averageRating: number,
+  startDate: string, 
+  endDate: string, 
+  description?: string,
 }
 
 interface SliderProps {
@@ -35,11 +40,17 @@ const styles = {
   detail: "text-[#33BBC5] ",
 };
 
+const formItemLayout = {
+  labelCol: { span: 6 },
+  wrapperCol: { span: 14 },
+};
+
 const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {  
   
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedOrganizerID, setSelectedOrganizerID] = useState(0);
-  const {isLoggedIn} = useAuth();
+  const [selectedOrganizerID, _] = useState(0);
+  const {myPosition, startPoint, setStartPoint, endPoint, setEndPoint, 
+    setShowDirection, hiddenClass, setHiddenClass} = useMapItems();
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
@@ -50,19 +61,19 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
       prevIndex === 0 ? slides.length - 1 : prevIndex - 1
     );
   };
-  const { showEditCampaignForm, setShowEditCampaignForm } = useCampaign()
+  const { showEditCampaignForm } = useCampaign()
 
   const items: MenuProps['items'] = [
-    {
-      label: ( isLoggedIn&&
-        <button 
-          onClick={ () => {setShowEditCampaignForm(true) }}
-          style={{width: "100%", textAlign: "start"}}
-        > Edit
-        </button>
-      ),
-      key: '1',
-    },
+    // {
+    //   label: ( isLoggedIn&&
+    //     <button 
+    //       onClick={ () => {setShowEditCampaignForm(true) }}
+    //       style={{width: "100%", textAlign: "start"}}
+    //     > Edit
+    //     </button>
+    //   ),
+    //   key: '1',
+    // },
     {
       label: (
         <Link to={`/profile/${selectedOrganizerID}`} style={{width: "100%", textAlign: "start"}}>
@@ -78,9 +89,56 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
     setShowCampaignIndex(index);
   }
 
+  // Handle find direction
+  const handleFindDirection = ({ lat, lon }: { lat: number, lon: number }) => {
+    setEndPoint({lat: lat, lng: lon});
+    setShowDirection(false);
+    if (myPosition === null){
+      setShowFindDirectionModal(true);
+    }
+    else {
+      setIsConfirmModalOpen(true);
+    }
+  }
+  // Confirm modal
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+
+  const handleConfirmOk = () => {
+      setStartPoint({lat: myPosition.lat, lng: myPosition.lng});
+      setIsConfirmModalOpen(false);
+      setShowDirection(true);
+  };
+
+  const handleConfirmCancel = () => {
+    setIsConfirmModalOpen(false);
+    setShowFindDirectionModal(true);
+};
+
+  // Input direction modal
+  const [showFindDirectionModal, setShowFindDirectionModal] = useState(false);
+  const [form] = Form.useForm();
+
+  const handleOk = () => {
+    form.submit()
+  };
+
+  const handleCancel = () => {
+    setShowFindDirectionModal(false);
+  };
+
+  const onFinish = () => {
+
+    // for temporarily use
+    // POST to database
+    console.log("start end", startPoint, endPoint);
+    setShowDirection(true);
+    setShowFindDirectionModal(false);
+    form.resetFields();  
+};
+
   return (
     <>
-    <div className="flex justify-center border-2 h-64 overflow-hidden bg-gray-200 rounded-lg shadow-md relative">
+    <div className={`flex justify-center border-2 h-64 overflow-hidden bg-gray-200 rounded-lg shadow-md relative ${hiddenClass}`}>
   
         {slides.map((slide, index) => (
           <div
@@ -90,7 +148,11 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
             }`}
           >
             <div className=" h-full border-2 p-4 bg-white rounded-lg shadow-md flex justify-center gap-x-4">
-           
+              <Button 
+                className="absolute top-2 right-2 flex-none"
+                onClick={() => {setHiddenClass("hidden")}}style={{border: "none", padding:"0", height:"fit-content"}}>
+                  <CloseOutlined style={{display:"block"}}/>
+                </Button>
               <div className="">
                 <img src={campaignImage} alt="image" className="h-60" />
               </div>
@@ -122,7 +184,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
                     }
                   </div>
                 <div className="flex justify-between flex-row align-items justify-between">
-                    <CustomButton title="↳ Direction " />
+                    <CustomButton title="↳ Direction " onClick={() => handleFindDirection({lat: slide.lat, lon: slide.long})} />
                   <div>
                     <WhiteButton title="⭐ Ratings" onClick = {() => handleClick(index)} />
                   </div>
@@ -160,6 +222,35 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
       address="somewhere on Earth"
       receiveItems={[]}  
     />}
+    <Modal title="Find direction" open={showFindDirectionModal} onOk={handleOk} onCancel={handleCancel} centered
+            okText="Find"
+            cancelText="Cancel"
+        >
+            <Form
+                name="findDirection"
+                {...formItemLayout}
+                onFinish={onFinish}
+                form={form}
+                style={{ maxWidth: 1000 }}
+            >
+                <Form.Item
+                    name="from"
+                    label="From"
+                    // rules={[{ required: true, message: 'Please type in your address!' }]}
+                >
+                    <SearchBar onLocationSearch={(location:any) => setStartPoint({lat: location.lat, lng:location.lon})}/>
+                </Form.Item>
+            </Form>          
+        </Modal>
+    <Modal 
+            centered 
+            title = "Do you want to use your current location for directions?"
+            open={isConfirmModalOpen} 
+            onOk={handleConfirmOk} onCancel={handleConfirmCancel}
+            width={480}
+        >
+            <p>If not, you need to enter your starting point.</p>
+    </Modal>
     </>
   );
 };
