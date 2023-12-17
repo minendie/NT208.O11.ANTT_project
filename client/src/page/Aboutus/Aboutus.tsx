@@ -209,7 +209,7 @@ const Aboutus = (): JSX.Element => {
                   <div className="logo-wrapper"><img className="logo-2" src={logo_7} /></div>
                 </div>
                 <div className="details">
-                  <div className="team-name-wrapper"><div className="team-name">Thanh Hương</div></div>
+                  <div className="team-name-wrapper"><div className="team-name">Huy Cường</div></div>
                   <div className="brief-description-wrapper">
                       <p className="brief-description">
                           Studying at the University of Information Technology.
@@ -223,7 +223,7 @@ const Aboutus = (): JSX.Element => {
                   <div className="logo-wrapper"><img className="logo-2" src={logo_7} /></div>
                 </div>
                 <div className="details">
-                  <div className="team-name-wrapper"><div className="team-name">Kim Uyên</div></div>
+                  <div className="team-name-wrapper"><div className="team-name">Ngọc Thiện</div></div>
                   <div className="brief-description-wrapper">
                       <p className="brief-description">
                           Studying at the University of Information Technology.
@@ -251,7 +251,7 @@ const Aboutus = (): JSX.Element => {
                   <div className="logo-wrapper"><img className="logo-2" src={logo_7} /></div>
                 </div>
                 <div className="details">
-                  <div className="team-name-wrapper"><div className="team-name">Thanh Mai</div></div>
+                  <div className="team-name-wrapper"><div className="team-name">Gia Khánh</div></div>
                   <div className="brief-description-wrapper">
                       <p className="brief-description">
                           Studying at the University of Information Technology.
