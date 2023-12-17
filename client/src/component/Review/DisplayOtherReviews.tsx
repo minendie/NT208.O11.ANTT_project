@@ -1,7 +1,7 @@
 //src/component/DisplayOtherReviews
 import React from "react";
-import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Rate, Input, Form } from "antd";
+import { UserOutlined, EditOutlined, DeleteOutlined} from "@ant-design/icons";
+import { Avatar, Rate, Input, Form, Button } from "antd";
 
 import "./style.css"
 interface ReView {
@@ -14,8 +14,18 @@ interface ReviewProps{
     reviews: ReView[]
 }
 const { TextArea } = Input;
-  
+
 const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
+    const handleEdit = (reviewIndex: number) => {
+        // Thực hiện các bước để mở giao diện chỉnh sửa đánh giá
+        // Ví dụ: setShowEditForm(true);
+        console.log(`Editing review at index ${reviewIndex}`);
+    };
+    const handleDelete = (reviewIndex: number) => {
+        // Thực hiện các bước để xác nhận việc xóa đánh giá
+        // Ví dụ: setShowDeleteConfirmation(true);
+        console.log(`Deleting review at index ${reviewIndex}`);
+      };
     return(
     
         <> 
@@ -63,6 +73,8 @@ const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
                     </TextArea>
                 </Form.Item>
                 </div>
+                <Button type="link" onClick={() => handleEdit(index)} icon={<EditOutlined />} />
+                <Button type="link" onClick={() => handleDelete(index)} icon={<DeleteOutlined />} />
                 <div className="review-container"> 
                 <Form.Item name="rating" 
                         label="" 
