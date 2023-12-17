@@ -42,7 +42,7 @@ const OrganizerSignupForm = () => {
                 setOrganizerID(result.data.organizerID);
                 if (result.data.success) {
                     setShowOrganizerSignupForm(false);
-                    message.success('You have successfully registered as an organizer!');
+                    message.success('We have received your information. We will verify within 36 hours. Results will be sent via the email you registered with. Thank you!');
                     form.resetFields()
                 }
                 else {
@@ -76,7 +76,7 @@ const OrganizerSignupForm = () => {
             <Form
                 name="createOrganizer"
                 {...formItemLayout}
-                onFinish={onFinish}
+                onFinish={onFinish}     
                 form={form}
                 style={{ maxWidth: 1000 }}
             >

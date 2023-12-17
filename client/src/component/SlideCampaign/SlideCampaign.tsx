@@ -49,6 +49,8 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
   
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOrganizerID, _] = useState(0);
+  const [joined, setJoined] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const {myPosition, startPoint, setStartPoint, endPoint, setEndPoint, 
     setShowDirection, hiddenClass, setHiddenClass} = useMapItems();
 
@@ -134,7 +136,21 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
     setShowDirection(true);
     setShowFindDirectionModal(false);
     form.resetFields();  
-};
+  };
+  const handleJoin = () => {
+    setJoined(true);
+    setShowConfirmModal(true);
+  };  
+  
+  const handleConfirmCancelUnJoin = () => {
+    setShowConfirmModal(false);
+  };
+  
+  const handleConfirmOkUnJoin = () => {
+    // Xử lý logic huỷ đăng kí ở đây
+    setJoined(false);
+    setShowConfirmModal(false);
+  };
 
   return (
     <>
@@ -156,13 +172,44 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
               <div className="">
                 <img src={campaignImage} alt="image" className="h-60" />
               </div>
-              <div className = " flex flex-col h-full items-start flex-start">
-                <div className="flex justify-between">
-                  <div className="text-2xl text-center font-bold">
-                    {" "}
-                    {slide.campaignName}
+             git  <div className = " flex flex-col h-full items-start flex-start">
+                <div>
+                  <div className="flex justify-between">
+                    <div className="text-2xl text-center font-bold">
+                      {" "}
+                      {slide.campaignName}
+                    </div>
+                    <div className="flex items-center">⭐ {slide.averageRating} / 5.0</div>
+                    <div>
+                    <Button className="ml-2" type="primary" onClick={handleJoin}>
+                      Join
+                    </Button>
+                    </div>
+                    <div>
+                      <Button
+                          className="ml-2"
+                          type={joined ? "default" : "primary"}
+                          onClick={() => setJoined(!joined)}
+                        >
+                          {joined ? "Joined" : "Join"}
+                      </Button>
+                      <Modal
+                        title="Confirmation"
+                        visible={showConfirmModal}
+                        onCancel={handleConfirmCancelUnJoin}
+                        footer={[
+                          <Button key="cancel" onClick={handleConfirmCancelUnJoin}>
+                            Cancel
+                          </Button>,
+                          <Button key="yes" type="primary" onClick={handleConfirmOkUnJoin}>
+                            Yes
+                          </Button>,
+                        ]}
+                      >
+                        <p>Are you sure you want to cancel your registration?</p>
+                      </Modal>
+                    </div>
                   </div>
-                  <div className="flex items-center">⭐ {slide.averageRating} / 5.0</div>
                 </div>
                 <div className={styles.title}>
                   Address:{" "}
