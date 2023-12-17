@@ -1,5 +1,5 @@
-import {Space, Tag } from 'antd'
-
+import {Button, Space, Tag } from 'antd'
+// import { AlignCenterOutlined } from "@ant-design/icons";
 interface DataCampaign {
     organizerName: string,
     campaignName: string,
@@ -23,7 +23,8 @@ const DetailCampaign = (props: DataCampaign) => {
   const end_date = props.endDate.split("T")[0].toString();
 
     return(
-      <div className = " flex flex-col h-full items-start flex-start p-12 gap-2.5 margin">
+      <>
+      <div className = " flex flex-col h-full items-start flex-start p-12 pb-5 gap-2.5 margin">
           <div className="text-2xl text-center font-bold text-[#33BBC5] ">
                     {" "}
                     {props.campaignName}
@@ -61,7 +62,16 @@ const DetailCampaign = (props: DataCampaign) => {
             Description: <span className={styles.detail}> {props.description}</span>
           </div>
           
-      </div>    
+          
+          
+      </div>  
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <Button type="primary" >
+          {/* <AlignCenterOutlined /> */}
+          Follow
+        </Button>
+      </div>  
+    </>
     )
 
 } 

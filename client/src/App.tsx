@@ -8,6 +8,7 @@ import ErrorPage from "./ErrorPage";
 import  AITool  from "./page/AITool";
 import  DetailOrganizer  from "./page/DetailOrganizer";
 import  DetailProfile  from "./page/DetailProfile";
+import CampaignStatistic from "./component/CampaignStatistic/CampaignStatistic";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             <Route path="/tool" element={<AITool />} />
             <Route path="/profile/:targetUsername" element={<DetailProfile />} />
             <Route path="/organizer/:organizerID" element={<DetailOrganizer />} />
+            <Route path="/statistic-organizer/:organizerID" element={<CampaignStatistic />} />
 
             <Route path="login" element={<LogIn />} />
             <Route path="signup" element={<Signup />} />
