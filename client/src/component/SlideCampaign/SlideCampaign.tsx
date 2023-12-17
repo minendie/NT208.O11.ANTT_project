@@ -12,6 +12,7 @@ import { useCampaign } from "../../contexts/CampaignContext";
 import { Link } from "react-router-dom";
 import { useMapItems } from "../../contexts/MapItemsContext";
 import SearchBar from "../ui/SearchBar";
+import { useAuth } from "../../auth/AuthContext";
 import "./SlideCampaign.css"
 
 interface Slide {
@@ -51,6 +52,8 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
   const [selectedOrganizerID, _] = useState(0);
   const {myPosition, startPoint, setStartPoint, endPoint, setEndPoint, 
     setShowDirection, hiddenClass, setHiddenClass} = useMapItems();
+  const { isLoggedIn, userID } = useAuth();
+
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
@@ -61,16 +64,32 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
       prevIndex === 0 ? slides.length - 1 : prevIndex - 1
     );
   };
-  const { showEditCampaignForm } = useCampaign()
-
+  const { showEditCampaignForm, setShowEditCampaignForm } = useCampaign()
+  
   const items: MenuProps['items'] = [
+    {
+      label: ( isLoggedIn&&slides[currentIndex]&&slides[currentIndex].organizerID&&
+        <button 
+          onClick={ () => {setShowEditCampaignForm(true) }}
+          style={{width: "100%", textAlign: "start"}}
+        > Edit
+        </button>
+      ),
+      key: '0',
+    },
+    {
+      label: (
+        <Link to={`/profile/${selectedOrganizerID}`} style={{width: "100%", textAlign: "start"}}>
+          Delete
+        </Link>
+      ),
+      key: '1',
+    },
     // {
-    //   label: ( isLoggedIn&&
-    //     <button 
-    //       onClick={ () => {setShowEditCampaignForm(true) }}
-    //       style={{width: "100%", textAlign: "start"}}
-    //     > Edit
-    //     </button>
+    //   label: (
+    //     <Link to={`/profile/${selectedOrganizerID}`} style={{width: "100%", textAlign: "start"}}>
+    //       Delete
+    //     </Link>
     //   ),
     //   key: '1',
     // },
@@ -193,7 +212,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
                                                 setShowCampaignIndex={setShowCampaignIndex} 
                                                 campaign={slide}/>
                   }
-                  <Dropdown menu={{ items }} placement="bottom">
+                  <Dropdown menu={{ items }} placement="topRight">
                     <Button style={{backgroundColor:'white', borderRadius:"12px", color:"black", padding:"4px" , margin:"4px"}}> ... </Button>
                   </Dropdown>
                 </div>
