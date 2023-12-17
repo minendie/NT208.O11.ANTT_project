@@ -217,8 +217,8 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
       endDate="2023-12-11"
       openHour="06:30:00"
       closeHour="20:00:00"
-      description="We are 4 girls."
-      campaignName="WhatEVER"
+      description="We are 4 passionate students."
+      campaignName="Group5-NT208"
       address="somewhere on Earth"
       receiveItems={[]}  
     />}
