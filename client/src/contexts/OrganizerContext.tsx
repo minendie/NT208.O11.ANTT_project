@@ -38,9 +38,11 @@ export const OrganizerProvider: React.FC<React.PropsWithChildren<OrganizerProvid
                     'ngrok-skip-browser-warning': true,
                 },
             });
-
             if (result.data.success) {
                 setOrganizerID(result.data.organizerID);
+            }
+            else {
+                setOrganizerID(0);
             }
         } catch (err) {
             console.error(err);
@@ -51,7 +53,7 @@ export const OrganizerProvider: React.FC<React.PropsWithChildren<OrganizerProvid
       if (auth.isLoggedIn) {
           verifyOrganizer();
       }
-    },);
+    },[auth.isLoggedIn]);
 
     return (
         <OrganizerContext.Provider value={{ 

@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import { Modal, Tabs } from 'antd';
-import DetailCampaign from '../CampaignCard';
-import ReviewPage from '../../Review/Review_page';
-import './Tabs.css'
+import React, { useState } from "react";
+import { Modal, Tabs } from "antd";
+import DetailCampaign from "../CampaignCard";
+import ReviewPage from "../../Review/Review_page";
+import "./Tabs.css";
 
 interface Campaign {
   organizerName: string;
   campaignID: number;
+  organizerID: number;
   startDate: string;
   endDate: string;
   openHour: string;
@@ -20,40 +21,45 @@ interface Campaign {
   receiveGifts: string;
 }
 
-const TabsPage: React.FC<{ campaign: Campaign; setShowCampaignIndex: (idx: number) => void }> = ({ campaign, setShowCampaignIndex }) => {
-
+const TabsPage: React.FC<{
+  campaign: Campaign;
+  setShowCampaignIndex: (idx: number) => void;
+  isFollow: boolean;
+  userID: string | null;
+}> = ({ campaign, setShowCampaignIndex, isFollow, userID }) => {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const handleCancel = () => {
     setShowCampaignIndex(-1);
     setIsModalOpen(false);
   };
-  
+
   const Page = [
     {
-      label : 'Detail',
-      component: <DetailCampaign 
-                    campaignName={campaign.campaignName}
-                    organizerName={campaign.organizerName}
-                    address={campaign.address}
-                    startDate={campaign.startDate}
-                    endDate={campaign.endDate}
-                    openHour={campaign.openHour}
-                    closeHour={campaign.closeHour}
-                    description={campaign.description}
-                    recyclingItems={campaign.receiveItems} // Mảng các mục tái chế
-                    receiveGifts={campaign.receiveGifts}
-      />
+      label: "Detail",
+      component: (
+        <DetailCampaign
+          campaign={campaign}
+          userID={userID}
+          isFollow={isFollow}
+        />
+      ),
     },
     {
-      label: 'Review',
-      component: <ReviewPage campaignID={campaign.campaignID}></ReviewPage>
-    }
-  ] 
+      label: "Review",
+      component: <ReviewPage campaignID={campaign.campaignID}></ReviewPage>,
+    },
+  ];
 
   return (
     <>
-      <Modal title="" open={isModalOpen} width="60vw" onCancel={handleCancel}  footer={null}>
-        <Tabs 
+      <Modal
+        title=""
+        open={isModalOpen}
+        width="60vw"
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <Tabs
           defaultActiveKey="1"
           type="card"
           items={Page.map((_, i) => {

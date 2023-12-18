@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Form, Input, message, Modal } from 'antd';
-import { useOrgan } from '../../../contexts/OrganizerContext';
-import './styles.css'
-import axios from 'axios';
+import { useState } from "react";
+import { Form, Input, message, Modal } from "antd";
+import { useOrgan } from "../../../contexts/OrganizerContext";
+import "./styles.css";
+import axios from "axios";
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -11,97 +11,112 @@ const formItemLayout = {
 
 const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
-
 const OrganizerSignupForm = () => {
+  // Create organizer modal
+  const {
+    showOrganizerSignupForm,
+    setShowOrganizerSignupForm,
+    setOrganizerID,
+  } = useOrgan();
 
-    // Create organizer modal
-    const {showOrganizerSignupForm, setShowOrganizerSignupForm, setOrganizerID} = useOrgan();
+  const handleOk = () => {
+    form.submit();
+  };
 
-    const handleOk = () => {
-        form.submit()
+  const handleCancel = () => {
+    showConfirmModal();
+  };
+
+  // Create organizer form
+  const [form] = Form.useForm();
+
+  const onFinish = (values: any) => {
+    console.log(values);
+    values = {
+      ...values,
+      userID: localStorage.getItem("userID"),
     };
-    
-    const handleCancel = () => {
-        showConfirmModal();
-    };
-
-    // Create organizer form
-    const [form] = Form.useForm();
-
-    const onFinish = (values: any) => {
-        console.log(values)
-        values = {
-            ...values,
-            userID: localStorage.getItem('userID'),
+    axios
+      .post(`${API_ENDPOINT}/create-organizer`, values)
+      .then((result) => {
+        console.log(result);
+        setOrganizerID(result.data.organizerID);
+        if (result.data.success) {
+          setShowOrganizerSignupForm(false);
+          message.info(
+            "You need to wait for the admin’s approval to become an organizer."
+          );
+          form.resetFields();
+        } else {
+          message.error("Please try again!");
         }
-        axios.post(`${API_ENDPOINT}/create-organizer`, values)
-            .then((result) => {
-                console.log(result);
-                setOrganizerID(result.data.organizerID);
-                if (result.data.success) {
-                    setShowOrganizerSignupForm(false);
-                    message.success('You have successfully registered as an organizer!');
-                    form.resetFields()
-                }
-                else {
-                    message.error('Please try again!')
-                    
-                }
-            })
-            
-            .catch((error) => {
-                console.error('Error during organizer creation:', error);
-                console.log('Server error response:', error.response);
-                // Xử lý lỗi, hiển thị thông báo hoặc thực hiện các thao tác cần thiết
-            });
-            
-    };
-    
-    // Confirm modal
-    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+      })
 
-    const showConfirmModal = () => {
-        setIsConfirmModalOpen(true);
-    };
+      .catch((error) => {
+        console.error("Error during organizer creation:", error);
+        console.log("Server error response:", error.response);
+        // Xử lý lỗi, hiển thị thông báo hoặc thực hiện các thao tác cần thiết
+      });
+  };
 
-    const handleConfirmOk = () => {
-        setShowOrganizerSignupForm(false);
-        setIsConfirmModalOpen(false);
-    };
+  // Confirm modal
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
-    const handleConfirmCancel = () => {
-        setIsConfirmModalOpen(false);
-    };
+  const showConfirmModal = () => {
+    setIsConfirmModalOpen(true);
+  };
 
-    return (
-        <>  
-        <Modal title="Organization Information" open={showOrganizerSignupForm} onOk={handleOk} onCancel={handleCancel} centered
-            okText="Confirm"
-            cancelText="Cancel"
+  const handleConfirmOk = () => {
+    setShowOrganizerSignupForm(false);
+    setIsConfirmModalOpen(false);
+  };
+
+  const handleConfirmCancel = () => {
+    setIsConfirmModalOpen(false);
+  };
+
+  return (
+    <>
+      <Modal
+        title="Organization Information"
+        open={showOrganizerSignupForm}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        centered
+        okText="Confirm"
+        cancelText="Cancel"
+      >
+        <Form
+          name="createOrganizer"
+          {...formItemLayout}
+          onFinish={onFinish}
+          form={form}
+          style={{ maxWidth: 1000 }}
         >
-            <Form
-                name="createOrganizer"
-                {...formItemLayout}
-                onFinish={onFinish}
-                form={form}
-                style={{ maxWidth: 1000 }}
-            >
-                <Form.Item
-                name="organizer_name"
-                label="Name"
-                rules={[{ required: true, message: 'Please input your organization name!' }]}
-                >
-                    <Input allowClear placeholder="Please input your organization name"/>
-                </Form.Item>
+          <Form.Item
+            name="organizer_name"
+            label="Name"
+            rules={[
+              {
+                required: true,
+                message: "Please input your organization name!",
+              },
+            ]}
+          >
+            <Input
+              allowClear
+              placeholder="Please input your organization name"
+            />
+          </Form.Item>
 
-                {/* <Form.Item
+          {/* <Form.Item
                 name="description"
                 label="Description"
                 >
                     <Input allowClear placeholder="Please input your description"/>
                 </Form.Item> */}
 
-                {/* <Form.Item name="email" label="Email"
+          {/* <Form.Item name="email" label="Email"
                 rules={[{
                         type: 'email',
                         message: 'The input is not valid email!',
@@ -110,7 +125,7 @@ const OrganizerSignupForm = () => {
                     <Input allowClear placeholder="Please input your email"/>
                 </Form.Item> */}
 
-                {/* <Form.Item name="phoneNumber" label="Phone number"
+          {/* <Form.Item name="phoneNumber" label="Phone number"
                 rules={[
                     () => ({
                         validator(_, value) {
@@ -126,45 +141,58 @@ const OrganizerSignupForm = () => {
                     <Input allowClear placeholder="Please input your phone number"/>
                 </Form.Item> */}
 
-                <Form.Item name="website" label="Website"
-                rules={[{
-                        type: 'url',
-                        message: 'The input is not valid url!',
-                    }]}
-                >
-                    <Input allowClear placeholder="Please input your website"/>
-                </Form.Item>
+          <Form.Item
+            name="website"
+            label="Website"
+            rules={[
+              {
+                type: "url",
+                message: "The input is not valid url!",
+              },
+            ]}
+          >
+            <Input allowClear placeholder="Please input your website" />
+          </Form.Item>
 
-                <Form.Item name="facebook" label="Facebook link"
-                rules={[{
-                        type: 'url',
-                        message: 'The input is not valid url!',
-                    }]}
-                >
-                    <Input allowClear placeholder="Please input your Facebook link"/>
-                </Form.Item>
+          <Form.Item
+            name="facebook"
+            label="Facebook link"
+            rules={[
+              {
+                type: "url",
+                message: "The input is not valid url!",
+              },
+            ]}
+          >
+            <Input allowClear placeholder="Please input your Facebook link" />
+          </Form.Item>
 
-                <Form.Item name="linkedin" label="LinkedIn link"
-                rules={[{
-                        type: 'url',
-                        message: 'The input is not valid url!',
-                    }]}
-                >
-                    <Input allowClear placeholder="Please input your LinkedIn link"/>
-                </Form.Item>
-            </Form>          
-        </Modal>
-        <Modal 
-            centered 
-            title = "Do you want to stop the process and close the form?"
-            open={isConfirmModalOpen} 
-            onOk={handleConfirmOk} onCancel={handleConfirmCancel}
-            width={480}
-        >
-            <p>All information will be discarded.</p>
-        </Modal>
-        </>
-    );
+          <Form.Item
+            name="linkedin"
+            label="LinkedIn link"
+            rules={[
+              {
+                type: "url",
+                message: "The input is not valid url!",
+              },
+            ]}
+          >
+            <Input allowClear placeholder="Please input your LinkedIn link" />
+          </Form.Item>
+        </Form>
+      </Modal>
+      <Modal
+        centered
+        title="Do you want to stop the process and close the form?"
+        open={isConfirmModalOpen}
+        onOk={handleConfirmOk}
+        onCancel={handleConfirmCancel}
+        width={480}
+      >
+        <p>All information will be discarded.</p>
+      </Modal>
+    </>
+  );
 };
 
 export default OrganizerSignupForm;
