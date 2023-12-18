@@ -10,7 +10,7 @@ import  DetailOrganizer  from "./page/DetailOrganizer";
 import  DetailProfile  from "./page/DetailProfile";
 import CampaignStatistic from "./component/CampaignStatistic/CampaignStatistic";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import CampaignStatistic from "./component/CampaignStatistic/CampaignStatistic";
+// import CampaignStatistic from "./component/CampaignStatistic/CampaignStatistic";
 
 function App() {
   return (
