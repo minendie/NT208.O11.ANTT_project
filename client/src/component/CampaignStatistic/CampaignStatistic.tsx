@@ -18,6 +18,7 @@ interface Campaign {
   lat: number;
   long: number;
   avgrating: number;
+  receiveItems: string[];
 }
 
 interface Participant {
@@ -73,29 +74,110 @@ export default function CampaignStatistic() {
       });
   };
 
+  const itemsPerPage = 4;
+  const totalPages = campaigns ? Math.ceil(campaigns.length / itemsPerPage) : 0;
+  const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
+
+  // Tính chỉ mục bắt đầu và kết thúc của các item trên trang hiện tại
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  // Lấy danh sách campaign items cho trang hiện tại
+  const currentCampaigns = campaigns ? campaigns.slice(startIndex, endIndex) : [];
+
+  // Hàm xử lý khi chuyển đến trang mới
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const numCampaigns = campaigns ? campaigns.length : 0;
+  //const averageRating =campaigns?campaigns.reduce((total, campaign) => total + campaign.rating, 0) / numCampaigns:0;
+  
+
+
+
   return (
-    <div className="campaign-statistic">
-      <h2>Campaign Statistic</h2>
-      {campaigns && campaigns.map((campaign) => (
-        <CampaignItem
-          key={campaign.campaignID}
-          campaign={campaign}
-          onViewParticipants={handleViewParticipants}
-        />
-      ))}
+    <div className="campaign-statistic" style={{ padding: "20px" }}>
+      <h2 style={{ marginBottom: "20px" }}>Campaign Statistic</h2>
+      <p style={{textAlign: "left",marginBottom: "10px" }}><strong>No. Campaign:</strong> {numCampaigns}</p>
+      {/* <p><strong>Average rating:</strong> {averageRating.toFixed(1)}</p> */}
+      <div className="campaign-list">
+        {campaigns && currentCampaigns.map((campaign) => (
+          <div className="campaign-item-wrapper" key={campaign.campaignID}>
+          <CampaignItem            
+            campaign={campaign}
+            onViewParticipants={handleViewParticipants}
+          />
+          </div>
+        ))}
+      </div>
+
       {showModal && (
         <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-          <h3>{selectedCampaign?.campaignName} Participants</h3>
-          {participants.map((participant) => (
-           <div key={participant.username}>
-            <p>Username: {participant.username}</p>
-            <p>Email: {participant.email}</p>
-            <p>Address: {participant.address}</p>
-            <p>Phone Number: {participant.phoneNumber}</p>
-         </div>
-          ))}
+            <div className="table-container">
+              <h2 style={{ marginBottom: "20px" }}>{selectedCampaign?.campaignName} Participants</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {participants.map((participant) => (
+                    <tr key={participant.username}>
+                      <td>{participant.username}</td>
+                      <td>{participant.email}</td>
+                      <td>{participant.address}</td>
+                      <td>{participant.phoneNumber}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
         </Modal>
       )}
+
+      <div className="pagination">
+          <button
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(1)}
+          >
+            &lt;&lt;
+          </button>
+          <button
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+          >
+            &lt;
+          </button>
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+            (pageNumber) => (
+              <button
+                key={pageNumber}
+                className={pageNumber === currentPage ? 'active' : ''}
+                onClick={() => handlePageChange(pageNumber)}
+              >
+                {pageNumber}
+              </button>
+            )
+          )}
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => handlePageChange(currentPage + 1)}
+          >
+            &gt;
+          </button>
+          <button
+            disabled={currentPage === totalPages}
+            onClick={() => handlePageChange(totalPages)}
+          >
+            &gt;&gt;
+          </button>
+        </div>
+
     </div>
   );
 }

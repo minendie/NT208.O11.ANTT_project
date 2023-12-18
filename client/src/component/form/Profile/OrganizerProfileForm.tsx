@@ -210,7 +210,7 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any }>
             readOnly  ?
             <Button className="custom-button-color" shape='round' type="text" onClick={handleEditing}>Edit</Button>                  
             : (
-              <div className='row'>
+              <div className="button-container">
                 <Button className="custom-button-color" shape='round' type="text" onClick={handleSave}>Save</Button>
                 <Space> <Space ><Space></Space></Space></Space>
                 <Button className="custom-button-color" shape='round' type="text" onClick={handleCancelEditing}>Cancel</Button>
