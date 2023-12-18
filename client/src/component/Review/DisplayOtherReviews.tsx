@@ -249,28 +249,33 @@
 // };
 
 // export default Reviews;
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect} from "react";
 import { UserOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Avatar, Rate, Input, Form, Button, Modal } from "antd";
 
 import "./style.css";
-
+import axios from "axios";
 interface ReView {
   username: string;
   comment: string;
   rating: number;
+  UserID: number | null
 }
 
 interface ReviewProps {
   reviews: ReView[];
+  campaignID: number;
 }
 
+const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 const { TextArea } = Input;
-
-const Reviews: React.FC<ReviewProps> = ({ reviews }) => {
+const currUserID = localStorage.getItem('userID');
+const Reviews: React.FC<ReviewProps> = ({ reviews, campaignID }) => {
+  // Các state và ref cần thiết
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [deletingIndex, setDeletingIndex] = useState<number | null>(null);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const formRef = useRef<any>(null);
 
   const handleEdit = (reviewIndex: number) => {
     if (editingIndex === reviewIndex) {
@@ -280,28 +285,39 @@ const Reviews: React.FC<ReviewProps> = ({ reviews }) => {
     }
   };
 
+  // Xử lý sự kiện xoá comment
   const handleDelete = (reviewIndex: number) => {
     setDeletingIndex(reviewIndex);
     setShowDeleteConfirmation(true);
   };
 
-  const handleCancelDelete = () => {
-    setShowDeleteConfirmation(false);
-    setDeletingIndex(null);
+  // Xác nhận xoá comment
+  const handleConfirmDelete = async () => {
+    try {
+      const userID = localStorage.getItem("userID");
+      const values = { campaignID, userID };
+      const response = await axios.delete(`${API_ENDPOINT}/delete-reviews`, { data: values });
+      if (response.data.success && deletingIndex !== null) {
+        // Tạo một bản sao của mảng reviews
+        const updatedReviews = [...reviews];
+        // Xóa đánh giá khỏi mảng
+        updatedReviews.splice(deletingIndex, 1);
+        // Cập nhật lại danh sách đánh giá
+        setDeletingIndex(null);
+        setShowDeleteConfirmation(false);
+      }
+
+      console.log(values);
+    } catch (error: any) {
+      console.error("Error deleting review:", error);
+      console.log("Server error response:", error.response);
+    }
   };
 
-  const handleConfirmDelete = () => {
-    if (deletingIndex !== null) {
-      // Tạo một bản sao của mảng reviews
-      const updatedReviews = [...reviews];
-      // Xóa đánh giá khỏi mảng
-      updatedReviews.splice(deletingIndex, 1);
-      // Cập nhật lại danh sách đánh giá
-      // Ví dụ: dispatchUpdateReviews(updatedReviews);
-    }
-    setShowDeleteConfirmation(false);
-    setDeletingIndex(null);
-  };
+   // Sử dụng useEffect để reset form khi deletingIndex thay đổi
+   useEffect(() => {
+    formRef.current?.resetFields();
+  }, [deletingIndex]);
 
   return (
     <>
@@ -312,7 +328,7 @@ const Reviews: React.FC<ReviewProps> = ({ reviews }) => {
           layout="vertical"
           initialValues={{
             comment: review.comment,
-            rating: review.rating
+            rating: review.rating,
           }}
           autoComplete="off"
         >
@@ -353,18 +369,23 @@ const Reviews: React.FC<ReviewProps> = ({ reviews }) => {
                 >
                   <Rate disabled />
                 </Form.Item>
-                <Button
-                  type="link"
-                  style={{ color: "#33bbc5" }}
-                  onClick={() => handleEdit(index)}
-                  icon={<EditOutlined />}
-                />
-                <Button
-                  type="link"
-                  style={{ color: "#33bbc5" }}
-                  onClick={() => handleDelete(index)}
-                  icon={<DeleteOutlined />}
-                />
+                { review.UserID?.toString() === currUserID?.toString() &&(
+                  <>
+                      <Button
+                        type="link"
+                        style={{ color: "#33bbc5" }}
+                        onClick={() => handleEdit(index)}
+                        icon={<EditOutlined />}
+                      />
+                      <Button
+                        type="link"
+                        style={{ color: "#33bbc5" }}
+                        onClick={() => handleDelete(index)}
+                        icon={<DeleteOutlined />}
+                      />
+                  </>
+                ) 
+                }
               </div>
             </div>
           </div>
@@ -372,8 +393,8 @@ const Reviews: React.FC<ReviewProps> = ({ reviews }) => {
       ))}
       <Modal
         title="Confirm Delete"
-        visible={showDeleteConfirmation}
-        onCancel={handleCancelDelete}
+        open={showDeleteConfirmation}
+        // onCancel={handleCancelDelete}
         onOk={handleConfirmDelete}
       >
         <p>Are you sure you want to delete this review?</p>

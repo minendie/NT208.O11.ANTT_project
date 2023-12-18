@@ -92,9 +92,9 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any }>
       var data = {
         'phoneNumber' : '',
         address: address ? address.replaceAll("'", "''") : '',
-        linkedIn_Link: linkedInLink ? linkedInLink.trim().replaceAll("'", "''") : '',
+        linkedin: linkedInLink ? linkedInLink.trim().replaceAll("'", "''") : '',
         website: websiteLink ? websiteLink.trim() : '',
-        fb_Link: fbLink? fbLink.trim() : '',
+        facebook: fbLink? fbLink.trim() : '',
         name: orgName ? orgName.trim() : '',
         email: email, 
         userID
