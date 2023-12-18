@@ -37,7 +37,6 @@ function validate(username: string, password: string, email: string) {
 const SignupForm: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
   const [isChecked, setIsChecked] = useState(false);
   const navigate = useNavigate();
@@ -50,10 +49,6 @@ const SignupForm: React.FC = () => {
     // validate input
     if (validate(username, password, email) === false) {
       return
-    }
-    if (password !== confirmPassword) {
-      message.warning('Password and Confirm Password do not match');
-      return;
     }
     // Add your signup logic here
     const data = { username, password, email }
@@ -102,15 +97,6 @@ const SignupForm: React.FC = () => {
         </div>
         <div className="mb-4">
           <input
-            type="email"
-            placeholder="Email"
-            className="w-full p-2 border rounded"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="mb-4">
-          <input
             type={isChecked ? "text" : "password"}
             placeholder="Password"
             className="w-full p-2 border rounded"
@@ -123,15 +109,10 @@ const SignupForm: React.FC = () => {
             type={isChecked ? "text" : "password"}
             placeholder="Confirm Password"
             className="w-full p-2 border rounded"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div style={{ textAlign: 'left', display: 'flex', justifyContent: 'flex-end' }}>
-          <input type="checkbox" onChange={showPassword} checked={isChecked}/>
-          <label htmlFor='showPass' onClick={showPassword}> Show your password</label>
-        </div>
-        
         <button
           className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
           onClick={handleSignup}
