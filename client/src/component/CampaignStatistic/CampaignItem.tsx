@@ -1,6 +1,8 @@
 import React from 'react';
 import './CampaignItem.css';
 import { Button } from 'antd';
+import { format } from "date-fns";
+import campaignImage from "../../assets/campaign.jpg";
 
 interface Campaign {
   campaignID: number;
@@ -9,11 +11,12 @@ interface Campaign {
   endDate: string;
   openHour: string;
   closeHour: string;
-  description?: string;
+  description?: string | undefined;
   address: string;
   lat: number;
   long: number;
   avgrating: number;
+  receiveItems: string[];
 }
 
 interface CampaignItemProps {
@@ -24,27 +27,35 @@ interface CampaignItemProps {
 const CampaignItem: React.FC<CampaignItemProps> = ({ campaign, onViewParticipants }) => {
   return (
     <div className="campaign-item">
+      <img src={campaignImage} alt={campaign.campaignName} />
       <div className="campaign-details">
         <h3>{campaign.campaignName}</h3>
         <p>
-          <strong>Start Date:</strong> {campaign.startDate}
-        </p>
-        <p>
-          <strong>End Date:</strong> {campaign.endDate}
-        </p>
-        <p>
-          <strong>Open Hour:</strong> {campaign.openHour}
-        </p>
-        <p>
-          <strong>Close Hour:</strong> {campaign.closeHour}
+          <strong>Average Rating:</strong> {campaign.avgrating}
         </p>
         <p>
           <strong>Address:</strong> {campaign.address}
         </p>
         <p>
-          <strong>Average Rating:</strong> {campaign.avgrating}
+          <strong>Time:</strong> Until {format(new Date(campaign.endDate), "dd MMM yyyy")}
         </p>
-        <Button type='link' onClick={() => onViewParticipants(campaign)}>View Participants</Button>
+        <p>
+          <strong>Working Hour:</strong> {campaign.openHour} - {campaign.closeHour} everyday
+        </p>
+        <p>
+          <strong>Gift(s):</strong> {campaign.description ? campaign.description.split(":")[1] : ""}
+        </p>
+        {/* <p>
+            <strong>Accepted Trash: </strong>
+
+                  {campaign.receiveItems.map((item, index) => (
+                    <Tag key={index} color="#33BBC5">
+                      {item}
+                    </Tag>
+                  ))}
+
+          </p> */}
+        <Button style={{color:'#33bbc5'}} type='link' onClick={() => onViewParticipants(campaign)}>View Participants</Button>
       </div>
     </div>
   );
