@@ -19,6 +19,7 @@ const OrganizerSignupForm = () => {
     setOrganizerID,
   } = useOrgan();
 
+<<<<<<< HEAD
   const handleOk = () => {
     form.submit();
   };
@@ -51,6 +52,54 @@ const OrganizerSignupForm = () => {
           message.error("Please try again!");
         }
       })
+=======
+    // Create organizer modal
+    const {showOrganizerSignupForm, setShowOrganizerSignupForm, setOrganizerID} = useOrgan();
+    const auth = useAuth();
+    
+    const handleOk = () => {
+        form.submit()
+    };
+    
+    const handleCancel = () => {
+        showConfirmModal();
+    };
+
+    // Create organizer form
+    const [form] = Form.useForm();
+
+    const onFinish = (values: any) => {
+        console.log(values)
+        values = {
+            ...values,
+            userID: auth.userID,
+        }
+        axios.post(`${API_ENDPOINT}/create-organizer`, values)
+            .then((result) => {
+                console.log(result);
+                setOrganizerID(result.data.organizerID);
+                if (result.data.success) {
+                    setShowOrganizerSignupForm(false);
+                    message.success('We have received your information. We will verify within 36 hours. Results will be sent via the email you registered with. Thank you!');
+                    form.resetFields()
+                }
+                else {
+                    message.error('Please try again!')
+                    
+                }
+            })
+            
+            .catch((error) => {
+                console.error('Error during organizer creation:', error);
+                console.log('Server error response:', error.response);
+                // Xử lý lỗi, hiển thị thông báo hoặc thực hiện các thao tác cần thiết
+            });
+            
+    };
+    
+    // Confirm modal
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+>>>>>>> NgHllC
 
       .catch((error) => {
         console.error("Error during organizer creation:", error);
@@ -93,6 +142,7 @@ const OrganizerSignupForm = () => {
           form={form}
           style={{ maxWidth: 1000 }}
         >
+<<<<<<< HEAD
           <Form.Item
             name="organizer_name"
             label="Name"
@@ -110,13 +160,35 @@ const OrganizerSignupForm = () => {
           </Form.Item>
 
           {/* <Form.Item
+=======
+            <Form
+                name="createOrganizer"
+                {...formItemLayout}
+                onFinish={onFinish}     
+                form={form}
+                style={{ maxWidth: 1000 }}
+            >
+                <Form.Item
+                name="organizer_name"
+                label="Name"
+                rules={[{ required: true, message: 'Please input your organization name!' }]}
+                >
+                    <Input allowClear placeholder="Please input your organization name"/>
+                </Form.Item>
+
+                {/* <Form.Item
+>>>>>>> NgHllC
                 name="description"
                 label="Description"
                 >
                     <Input allowClear placeholder="Please input your description"/>
                 </Form.Item> */}
 
+<<<<<<< HEAD
           {/* <Form.Item name="email" label="Email"
+=======
+                {/* <Form.Item name="email" label="Email"
+>>>>>>> NgHllC
                 rules={[{
                         type: 'email',
                         message: 'The input is not valid email!',
@@ -125,7 +197,11 @@ const OrganizerSignupForm = () => {
                     <Input allowClear placeholder="Please input your email"/>
                 </Form.Item> */}
 
+<<<<<<< HEAD
           {/* <Form.Item name="phoneNumber" label="Phone number"
+=======
+                {/* <Form.Item name="phoneNumber" label="Phone number"
+>>>>>>> NgHllC
                 rules={[
                     () => ({
                         validator(_, value) {
@@ -154,6 +230,7 @@ const OrganizerSignupForm = () => {
             <Input allowClear placeholder="Please input your website" />
           </Form.Item>
 
+<<<<<<< HEAD
           <Form.Item
             name="facebook"
             label="Facebook link"
@@ -193,6 +270,38 @@ const OrganizerSignupForm = () => {
       </Modal>
     </>
   );
+=======
+                <Form.Item name="facebook" label="Facebook link"
+                rules={[{
+                        type: 'url',
+                        message: 'The input is not valid url!',
+                    }]}
+                >
+                    <Input allowClear placeholder="Please input your Facebook link"/>
+                </Form.Item>
+
+                <Form.Item name="linkedin" label="LinkedIn link"
+                rules={[{
+                        type: 'url',
+                        message: 'The input is not valid url!',
+                    }]}
+                >
+                    <Input allowClear placeholder="Please input your LinkedIn link"/>
+                </Form.Item>
+            </Form>          
+        </Modal>
+        <Modal 
+            centered 
+            title = "Do you want to stop the process and close the form?"
+            open={isConfirmModalOpen} 
+            onOk={handleConfirmOk} onCancel={handleConfirmCancel}
+            width={480}
+        >
+            <p>All information will be discarded.</p>
+        </Modal>
+        </>
+    );
+>>>>>>> NgHllC
 };
 
 export default OrganizerSignupForm;

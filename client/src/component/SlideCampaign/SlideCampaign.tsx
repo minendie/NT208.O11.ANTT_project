@@ -157,6 +157,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
     setEndPoint({ lat: lat, lng: lon });
     setShowDirection(false);
     if (myPosition === null) {
+    if (myPosition === null) {
       setShowFindDirectionModal(true);
     } else {
       setIsConfirmModalOpen(true);
@@ -174,6 +175,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
   const handleConfirmCancel = () => {
     setIsConfirmModalOpen(false);
     setShowFindDirectionModal(true);
+  };
   };
 
   // Input direction modal

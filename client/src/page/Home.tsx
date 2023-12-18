@@ -5,7 +5,7 @@ import {
   Marker,
   useMap, ZoomControl,
   Tooltip,
-} from "react-leaflet";
+} from "react-leaflet"; //Thành phần liên quan đến bản đồ
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import dayjs, { Dayjs } from 'dayjs';
