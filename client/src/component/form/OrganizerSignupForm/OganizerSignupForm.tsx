@@ -15,10 +15,10 @@ const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
 const OrganizerSignupForm = () => {
 
-    // Create campaign modal
+    // Create organizer modal
     const {showOrganizerSignupForm, setShowOrganizerSignupForm, setOrganizerID} = useOrgan();
     const auth = useAuth();
-
+    
     const handleOk = () => {
         form.submit()
     };
@@ -27,7 +27,7 @@ const OrganizerSignupForm = () => {
         showConfirmModal();
     };
 
-    // Create campaign form
+    // Create organizer form
     const [form] = Form.useForm();
 
     const onFinish = (values: any) => {
@@ -47,8 +47,16 @@ const OrganizerSignupForm = () => {
                 }
                 else {
                     message.error('Please try again!')
+                    
                 }
             })
+            
+            .catch((error) => {
+                console.error('Error during organizer creation:', error);
+                console.log('Server error response:', error.response);
+                // Xử lý lỗi, hiển thị thông báo hoặc thực hiện các thao tác cần thiết
+            });
+            
     };
     
     // Confirm modal
@@ -81,32 +89,32 @@ const OrganizerSignupForm = () => {
                 style={{ maxWidth: 1000 }}
             >
                 <Form.Item
-                name="name"
+                name="organizer_name"
                 label="Name"
                 rules={[{ required: true, message: 'Please input your organization name!' }]}
                 >
                     <Input allowClear placeholder="Please input your organization name"/>
                 </Form.Item>
 
-                <Form.Item
+                {/* <Form.Item
                 name="description"
                 label="Description"
                 >
                     <Input allowClear placeholder="Please input your description"/>
-                </Form.Item>
+                </Form.Item> */}
 
-                <Form.Item name="email" label="Email"
+                {/* <Form.Item name="email" label="Email"
                 rules={[{
                         type: 'email',
                         message: 'The input is not valid email!',
                     }]}
                 >
                     <Input allowClear placeholder="Please input your email"/>
-                </Form.Item>
+                </Form.Item> */}
 
-                <Form.Item name="phoneNumber" label="Phone number"
+                {/* <Form.Item name="phoneNumber" label="Phone number"
                 rules={[
-                    (/*{ getFieldValue }*/) => ({
+                    () => ({
                         validator(_, value) {
                           const phoneNumberPattern = /^(\+\d{1,3}\s?)?(\(\d{1,3}\)\s?)?\d{10,14}$/
                           if (!value || !phoneNumberPattern.test(value)) {
@@ -118,7 +126,7 @@ const OrganizerSignupForm = () => {
                     ]}
                 >
                     <Input allowClear placeholder="Please input your phone number"/>
-                </Form.Item>
+                </Form.Item> */}
 
                 <Form.Item name="website" label="Website"
                 rules={[{
@@ -129,7 +137,7 @@ const OrganizerSignupForm = () => {
                     <Input allowClear placeholder="Please input your website"/>
                 </Form.Item>
 
-                <Form.Item name="fb_Link" label="Facebook link"
+                <Form.Item name="facebook" label="Facebook link"
                 rules={[{
                         type: 'url',
                         message: 'The input is not valid url!',
@@ -138,7 +146,7 @@ const OrganizerSignupForm = () => {
                     <Input allowClear placeholder="Please input your Facebook link"/>
                 </Form.Item>
 
-                <Form.Item name="linkedIn_Link" label="LinkedIn link"
+                <Form.Item name="linkedin" label="LinkedIn link"
                 rules={[{
                         type: 'url',
                         message: 'The input is not valid url!',

@@ -127,11 +127,10 @@ const SignupForm: React.FC = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
-        <div style={{ textAlign: 'left' }}>
+        <div style={{ textAlign: 'left', display: 'flex', justifyContent: 'flex-end' }}>
           <input type="checkbox" onChange={showPassword} checked={isChecked}/>
           <label htmlFor='showPass' onClick={showPassword}> Show your password</label>
         </div>
-        
         <button
           className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
           onClick={handleSignup}

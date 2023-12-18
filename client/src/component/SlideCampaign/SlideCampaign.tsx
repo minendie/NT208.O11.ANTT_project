@@ -1,4 +1,3 @@
-// src/Slider.tsx
 import { CloseOutlined, LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
 import { Button, Dropdown, Form, Modal, Tag } from "antd";
@@ -27,8 +26,8 @@ interface Slide {
   lat: number,
   long: number,
   averageRating: number,
-  startDate: string, 
-  endDate: string, 
+  startDate: string,
+  endDate: string,
   description?: string,
 }
 
@@ -45,14 +44,14 @@ const formItemLayout = {
   wrapperCol: { span: 14 },
 };
 
-const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {  
-  
+const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOrganizerID, _] = useState(0);
   const [joined, setJoined] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const {myPosition, startPoint, setStartPoint, endPoint, setEndPoint, 
-    setShowDirection, hiddenClass, setHiddenClass} = useMapItems();
+  const { myPosition, startPoint, setStartPoint, endPoint, setEndPoint,
+    setShowDirection, hiddenClass, setHiddenClass } = useMapItems();
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
@@ -68,7 +67,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
   const items: MenuProps['items'] = [
     // {
     //   label: ( isLoggedIn&&
-    //     <button 
+    //     <button
     //       onClick={ () => {setShowEditCampaignForm(true) }}
     //       style={{width: "100%", textAlign: "start"}}
     //     > Edit
@@ -78,24 +77,24 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
     // },
     {
       label: (
-        <Link to={`/profile/${selectedOrganizerID}`} style={{width: "100%", textAlign: "start"}}>
+        <Link to={`/profile/${selectedOrganizerID}`} style={{ width: "100%", textAlign: "start" }}>
           Contact organizer
         </Link>
       ),
       key: '2',
     },
   ];
-  
-  const [showCampaignIndex, setShowCampaignIndex] = useState(-1)
-  const handleClick = (index: number) =>{ 
+
+  const [showCampaignIndex, setShowCampaignIndex] = useState(-1);
+  const handleClick = (index: number) => {
     setShowCampaignIndex(index);
   }
 
   // Handle find direction
   const handleFindDirection = ({ lat, lon }: { lat: number, lon: number }) => {
-    setEndPoint({lat: lat, lng: lon});
+    setEndPoint({ lat: lat, lng: lon });
     setShowDirection(false);
-    if (myPosition === null){
+    if (myPosition === null) {
       setShowFindDirectionModal(true);
     }
     else {
@@ -106,15 +105,15 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const handleConfirmOk = () => {
-      setStartPoint({lat: myPosition.lat, lng: myPosition.lng});
-      setIsConfirmModalOpen(false);
-      setShowDirection(true);
+    setStartPoint({ lat: myPosition.lat, lng: myPosition.lng });
+    setIsConfirmModalOpen(false);
+    setShowDirection(true);
   };
 
   const handleConfirmCancel = () => {
     setIsConfirmModalOpen(false);
     setShowFindDirectionModal(true);
-};
+  };
 
   // Input direction modal
   const [showFindDirectionModal, setShowFindDirectionModal] = useState(false);
@@ -135,17 +134,19 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
     console.log("start end", startPoint, endPoint);
     setShowDirection(true);
     setShowFindDirectionModal(false);
-    form.resetFields();  
+    form.resetFields();
   };
   const handleJoin = () => {
-    setJoined(true);
-    setShowConfirmModal(true);
-  };  
-  
+    if (!joined) {
+      setJoined(true);
+      setShowConfirmModal(false);
+    }
+  };
+
   const handleConfirmCancelUnJoin = () => {
     setShowConfirmModal(false);
   };
-  
+
   const handleConfirmOkUnJoin = () => {
     // Xử lý logic huỷ đăng kí ở đây
     setJoined(false);
@@ -172,7 +173,7 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
               <div className="">
                 <img src={campaignImage} alt="image" className="h-60" />
               </div>
-             git  <div className = " flex flex-col h-full items-start flex-start">
+              <div className = " flex flex-col h-full items-start flex-start">
                 <div>
                   <div className="flex justify-between">
                     <div className="text-2xl text-center font-bold">
@@ -180,22 +181,27 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
                       {slide.campaignName}
                     </div>
                     <div className="flex items-center">⭐ {slide.averageRating} / 5.0</div>
-                    <div>
-                    <Button className="ml-2" type="primary" onClick={handleJoin}>
-                      Join
-                    </Button>
-                    </div>
-                    <div>
-                      <Button
-                          className="ml-2"
-                          type={joined ? "default" : "primary"}
-                          onClick={() => setJoined(!joined)}
-                        >
-                          {joined ? "Joined" : "Join"}
-                      </Button>
+                    <div className="join-button-container">
+                        {joined ? (
+                          <Button
+                            type="primary"
+                            className="joined-button"
+                            onClick={() => setShowConfirmModal(true)}
+                          >
+                            Joined
+                          </Button>
+                        ) : (
+                          <Button
+                            type="primary"
+                            className="join-button"
+                            onClick={handleJoin}
+                          >
+                            Join
+                          </Button>
+                        )}
                       <Modal
                         title="Confirmation"
-                        visible={showConfirmModal}
+                        open= {showConfirmModal}
                         onCancel={handleConfirmCancelUnJoin}
                         footer={[
                           <Button key="cancel" onClick={handleConfirmCancelUnJoin}>
@@ -264,8 +270,8 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
       endDate="2023-12-11"
       openHour="06:30:00"
       closeHour="20:00:00"
-      description="We are 4 girls."
-      campaignName="WhatEVER"
+      description="We are 4 passionate students."
+      campaignName="Group5-NT208"
       address="somewhere on Earth"
       receiveItems={[]}  
     />}

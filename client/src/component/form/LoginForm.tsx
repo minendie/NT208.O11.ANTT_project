@@ -105,8 +105,10 @@ const Login: React.FC = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+        <div style={{ textAlign: 'left', display: 'flex', justifyContent: 'flex-end' }}>
         <input type="checkbox" onChange={showPassword} checked={isChecked}/>
         <label htmlFor='showPass' onClick={showPassword}>Show your password</label>
+        </div>
         <div className="underline py-2">Forgot your password?</div>
         <button
           className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"

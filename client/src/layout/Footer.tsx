@@ -4,11 +4,10 @@ const Footer = () => {
       <div>
         By{" "}
         
-          <a className="underline" href="https://github.com/huong295">whatEver</a>{" "}
-    
-        Team
+          <a className="underline" href="https://github.com/minendie/NT208.O11.ANTT_project">Group5-NT208</a>{" "}   
+        
       </div>
-      <div>Code Like A Girl, Ho Chi Minh city</div>
+      <div>Đồ án cuối kì môn học NT208.O11.ANTT - UIT</div>
     </div>
   );
 };

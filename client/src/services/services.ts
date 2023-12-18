@@ -10,7 +10,7 @@ export function signup({ username, email, password }: { username:string, email:s
 
 export function login({ username, password } : {username:string, password:string}) {
     return client.post(
-      "/auth/login",
+      "auth/login",
       { username, password },
       { headers: { authorization: false }}
     );

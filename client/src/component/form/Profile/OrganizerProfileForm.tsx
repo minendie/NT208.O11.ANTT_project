@@ -62,7 +62,7 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any }>
   const [orgName, setOrgName] = useState(organizer?.Name);
   const [email, setEmail] = useState(organizer?.Email );
   const [phoneNumber, setPhoneNumber] = useState(organizer?.PhoneNumber );
-  const [description, setDescription] = useState(organizer?.Description);
+  const [address, setAddress] = useState(organizer?.Address);
   const [fbLink, setFbLink] = useState(organizer?.FB_Link )
   const [linkedInLink, setLinkedInLink] = useState(organizer?.LinkedIn_Link )
   const [websiteLink, setWebsiteLink] = useState(organizer?.Website )
@@ -82,7 +82,7 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any }>
     if (canEdit) {
       setPhoneNumber(phoneNumber);
       setOrgName(orgName);
-      setDescription(description);
+      setAddress(address);
       setEmail(email)
       setFbLink(fbLink)
       setLinkedInLink(linkedInLink)
@@ -91,7 +91,7 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any }>
       // validate password, phone number, email
       var data = {
         'phoneNumber' : '',
-        description: description ? description.replaceAll("'", "''") : '',
+        address: address ? address.replaceAll("'", "''") : '',
         linkedIn_Link: linkedInLink ? linkedInLink.trim().replaceAll("'", "''") : '',
         website: websiteLink ? websiteLink.trim() : '',
         fb_Link: fbLink? fbLink.trim() : '',
@@ -125,7 +125,7 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any }>
          
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
     <div className="bg-white p-8 rounded shadow-md w-96"> 
-    <h2 className="text-2xl font-semibold mb-4">Profile</h2>
+    <h2 className="text-2xl font-semibold mb-4">Organizer Profile</h2>
     
       <InputForm 
         htmlFor="orgName"
@@ -136,74 +136,74 @@ const OrganizerProfileForm: React.FC<{ canEdit: boolean, organizer: any }>
         value={orgName}
         setValue={setOrgName}
         isReadOnly={readOnly}
-        /> 
+      /> 
         
-          <InputForm 
-            htmlFor="description"
-            labelValue='Description'
-            placeholder= "Description"
-            isHidden={!description && readOnly}
-            inputType="text"
-            value={description}
-            setValue={setDescription}
-            isReadOnly={readOnly}
-          />
+        <InputForm 
+          htmlFor="address"
+          labelValue='Address'
+          placeholder= "Address"
+          isHidden={!address && readOnly}
+          inputType="text"
+          value={address}
+          setValue={setAddress}
+          isReadOnly={readOnly}
+        />
               
        
         <InputForm 
-            htmlFor="email"
-            labelValue='Email'
-            placeholder= "Email"
-            isHidden={!email && readOnly}
-            inputType="email"
-            value={email}
-            setValue={setEmail}
-            isReadOnly={readOnly}
-          />
-          <InputForm 
-            htmlFor="phone"
-            labelValue='Phone number'
-            placeholder= "Phone number"
-            isHidden={!phoneNumber && readOnly}
-            inputType="text"
-            value={phoneNumber}
-            setValue={setPhoneNumber}
-            isReadOnly={readOnly}
-          />
+          htmlFor="email"
+          labelValue='Email'
+          placeholder= "Email"
+          isHidden={!email && readOnly}
+          inputType="email"
+          value={email}
+          setValue={setEmail}
+          isReadOnly={readOnly}
+        />
+        <InputForm 
+          htmlFor="phone"
+          labelValue='Phone number'
+          placeholder= "Phone number"
+          isHidden={!phoneNumber && readOnly}
+          inputType="text"
+          value={phoneNumber}
+          setValue={setPhoneNumber}
+          isReadOnly={readOnly}
+        />
         
-          <InputForm 
-            htmlFor="fb-link"
-            labelValue='Facebook'
-            placeholder= "Type in your Facebook link"
-            isHidden={!fbLink && readOnly}
-            inputType="text"
-            value={fbLink}
-            setValue={setFbLink}
-            isReadOnly={readOnly}
-          />
+        <InputForm 
+          htmlFor="fb-link"
+          labelValue='Facebook'
+          placeholder= "Type in your Facebook link"
+          isHidden={!fbLink && readOnly}
+          inputType="text"
+          value={fbLink}
+          setValue={setFbLink}
+          isReadOnly={readOnly}
+        />
        
         
-          <InputForm 
-            htmlFor="linked-in-link"
-            labelValue='Linked In'
-            placeholder= "Type your Linked In link"
-            isHidden={!linkedInLink && readOnly}
-            inputType="text"
-            value={linkedInLink}
-            setValue={setLinkedInLink}
-            isReadOnly={readOnly}
-          />
+        <InputForm 
+          htmlFor="linked-in-link"
+          labelValue='Linked In'
+          placeholder= "Type your Linked In link"
+          isHidden={!linkedInLink && readOnly}
+          inputType="text"
+          value={linkedInLink}
+          setValue={setLinkedInLink}
+          isReadOnly={readOnly}
+        />
         
-          <InputForm 
-            htmlFor="website-link"
-            labelValue="Website"
-            placeholder= "Type your website link"
-            isHidden={!websiteLink && readOnly}
-            inputType="text"
-            value={websiteLink}
-            setValue={setWebsiteLink}
-            isReadOnly={readOnly}
-          /> 
+        <InputForm 
+          htmlFor="website-link"
+          labelValue="Website"
+          placeholder= "Type your website link"
+          isHidden={!websiteLink && readOnly}
+          inputType="text"
+          value={websiteLink}
+          setValue={setWebsiteLink}
+          isReadOnly={readOnly}
+        /> 
           
        
           { canEdit && (<>{

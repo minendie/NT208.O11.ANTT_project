@@ -29,7 +29,8 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
                     message.error('You can only write within 190 characters.')
                     )
             }
-            const response = await axios.post(`${API_ENDPOINT}/write-review`, values); 
+            const response = await axios.post(`${API_ENDPOINT}/write-review`, values);
+            console.log(values); 
             if (response.data.success) {
                 setReviews((prevReviews: any[]) => [...prevReviews, {
                                                     comment: values.comment,
@@ -41,8 +42,9 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
             else (
                 message.error('You can only submit one review!')
             )
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error submitting review:", error);
+            console.log('Server error response:', error.response);
         }
     };
         
