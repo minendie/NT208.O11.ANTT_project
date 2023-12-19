@@ -302,6 +302,7 @@ const Reviews: React.FC<ReviewProps> = ({ reviews, campaignID }) => {
         // Cập nhật lại danh sách đánh giá
         setDeletingIndex(null);
         setShowDeleteConfirmation(false);
+        window.location.reload();
       }
 
       console.log(values);
