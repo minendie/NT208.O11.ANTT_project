@@ -1,11 +1,10 @@
-
 // src/Slider.tsx
 import {
   CloseOutlined,
   LeftCircleOutlined,
   RightCircleOutlined,
 } from "@ant-design/icons";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button, Dropdown, Form, Modal, Tag, message } from "antd";
 import type { MenuProps } from "antd";
 import campaignImage from "../../assets/campaign.jpg";
@@ -151,7 +150,7 @@ const SlideCampaign = () => {
           message.error(result.data.message);
         }
       })
-      .catch((err) => {
+      .catch(() => {
         message.error("An error occurred while processing your request.");
       });
     setShowCampaignIndex(index);
@@ -206,7 +205,7 @@ const SlideCampaign = () => {
   const [showDeleteCampaignConfirmation, setShowDeleteCampaignConfirmation] =
     useState(false);
 
-  const handleDeleteCampaign = (reviewIndex?: number) => {
+  const handleDeleteCampaign = () => {
     setShowDeleteCampaignConfirmation(true);
   };
 
