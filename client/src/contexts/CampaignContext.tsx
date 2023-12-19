@@ -1,22 +1,23 @@
-import React, { createContext, useContext, useState } from 'react';
-
+import React, { createContext, useContext, useState } from "react";
 
 interface CampaignProps {
-  campaignName: string,
-  receiveItems: string[],
-  organizerName: string,
-  address: string,
-  openHour: string,
-  closeHour: string,
-  startDate: string,
-  endDate: string,
-  receiveGifts: string,
-  organizerID: number,
-  campaignID: number,
-  lat: number,
-  long: number,
-  averageRating: number,
-  icon?: any,
+  userID: any;
+  campaignName: string;
+  receiveItems: string[];
+  organizerName: string;
+  address: string;
+  openHour: string;
+  closeHour: string;
+  startDate: string;
+  endDate: string;
+  receiveGifts: string;
+  organizerID: number;
+  campaignID: number;
+  lat: number;
+  long: number;
+  description: string;
+  averageRating: number;
+  icon?: any;
 }
 
 interface CampaignContextProps {
@@ -46,30 +47,39 @@ const CampaignContext = createContext<CampaignContextProps>({
 });
 
 interface CampaignProviderProps {
-    children: React.ReactNode;
-  }
+  children: React.ReactNode;
+}
 
-export const CampaignProvider: React.FC<React.PropsWithChildren<CampaignProviderProps>> = ({ children }) => {
-    const [showNewCampaignForm, setShowNewCampaignForm] = useState(false);
-    const [showEditCampaignForm, setShowEditCampaignForm] = useState(false);
-    const [campaigns, setCampaigns] = useState<CampaignProps[]>([]);
-    const [changedCampaigns, setChangedCampaigns] = useState<CampaignProps[]>([]);
-    const [newCampaign, setNewCampaign] = useState<CampaignProps>({} as CampaignProps);
+export const CampaignProvider: React.FC<
+  React.PropsWithChildren<CampaignProviderProps>
+> = ({ children }) => {
+  const [showNewCampaignForm, setShowNewCampaignForm] = useState(false);
+  const [showEditCampaignForm, setShowEditCampaignForm] = useState(false);
+  const [campaigns, setCampaigns] = useState<CampaignProps[]>([]);
+  const [changedCampaigns, setChangedCampaigns] = useState<CampaignProps[]>([]);
+  const [newCampaign, setNewCampaign] = useState<CampaignProps>(
+    {} as CampaignProps
+  );
 
-    return (
-        <CampaignContext.Provider value={{ showNewCampaignForm,   
-                                            setShowNewCampaignForm, 
-                                            showEditCampaignForm, 
-                                            setShowEditCampaignForm,
-                                            campaigns,
-                                            setCampaigns,
-                                            changedCampaigns,
-                                            setChangedCampaigns,
-                                            newCampaign,
-                                            setNewCampaign }}>
-          {children}
-        </CampaignContext.Provider>
-    );
+  return (
+    <CampaignContext.Provider
+      value={{
+        showNewCampaignForm,
+        setShowNewCampaignForm,
+        showEditCampaignForm,
+        setShowEditCampaignForm,
+        campaigns,
+        setCampaigns,
+        changedCampaigns,
+        setChangedCampaigns,
+        newCampaign,
+        setNewCampaign,
+      }}
+    >
+      {children}
+    </CampaignContext.Provider>
+  );
 };
 
-export const useCampaign = (): CampaignContextProps => useContext(CampaignContext);
+export const useCampaign = (): CampaignContextProps =>
+  useContext(CampaignContext);

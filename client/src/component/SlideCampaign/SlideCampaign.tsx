@@ -21,27 +21,27 @@ import { useAuth } from "../../auth/AuthContext";
 import "./SlideCampaign.css";
 import axios from "axios";
 
-interface Slide {
-  campaignName: string;
-  receiveItems: string[];
-  organizerName: string;
-  address: string;
-  openHour: string;
-  closeHour: string;
-  receiveGifts: string;
-  organizerID: number;
-  campaignID: number;
-  lat: number;
-  long: number;
-  averageRating: number;
-  startDate: string;
-  endDate: string;
-  description?: string;
-}
+// interface Slide {
+//   campaignName: string;
+//   receiveItems: string[];
+//   organizerName: string;
+//   address: string;
+//   openHour: string;
+//   closeHour: string;
+//   receiveGifts: string;
+//   organizerID: number;
+//   campaignID: number;
+//   lat: number;
+//   long: number;
+//   averageRating: number;
+//   startDate: string;
+//   endDate: string;
+//   description?: string;
+// }
 
-interface SliderProps {
-  slides: Slide[];
-}
+// interface SliderProps {
+//   slides: Slide[];
+// }
 const styles = {
   title: "text-black font-bold ",
   detail: "text-[#33BBC5] ",
@@ -54,8 +54,7 @@ const formItemLayout = {
 
 const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 
-const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
-  const [beforeIndex, setBeforeIndex] = useState(-1);
+const SlideCampaign = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isFollow, setIsFollow] = useState(false);
   const [selectedOrganizerID, _] = useState(0);
@@ -71,14 +70,13 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
   } = useMapItems();
   const { isLoggedIn } = useAuth();
   const userID = localStorage.getItem("userID");
+  const { changedCampaigns: slides, setChangedCampaigns } = useCampaign();
 
   const nextSlide = () => {
-    setBeforeIndex(currentIndex);
     setCurrentIndex((prevIndex) => (prevIndex + 1) % slides.length);
   };
 
   const prevSlide = () => {
-    setBeforeIndex(currentIndex);
     setCurrentIndex((prevIndex) =>
       prevIndex === 0 ? slides.length - 1 : prevIndex - 1
     );
@@ -89,7 +87,8 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
     {
       label: isLoggedIn &&
         slides[currentIndex] &&
-        slides[currentIndex].organizerID && (
+        slides[currentIndex].userID &&
+        slides[currentIndex].userID?.toString() === userID?.toString() && (
           <button
             onClick={() => {
               setShowEditCampaignForm(true);
@@ -103,14 +102,19 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
       key: "0",
     },
     {
-      label: (
-        <Link
-          to={`/profile/${selectedOrganizerID}`}
-          style={{ width: "100%", textAlign: "start" }}
-        >
-          Delete
-        </Link>
-      ),
+      label: isLoggedIn &&
+        slides[currentIndex] &&
+        slides[currentIndex].userID &&
+        slides[currentIndex].userID?.toString() === userID?.toString() && (
+          <button
+            onClick={() => {
+              handleDeleteCampaign();
+            }}
+            style={{ width: "100%", textAlign: "start" }}
+          >
+            Delete
+          </button>
+        ),
       key: "1",
     },
     // {
@@ -135,9 +139,9 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
   ];
 
   const [showCampaignIndex, setShowCampaignIndex] = useState(-1);
-  const handleClick = (index: number) => {
+  const handleClick = async (index: number) => {
     const campaignID = slides[index].campaignID;
-    axios
+    await axios
       .post(`${API_ENDPOINT}/check-follow`, { userID, campaignID })
       .then((result) => {
         console.log(result);
@@ -198,6 +202,42 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
     form.resetFields();
   };
 
+  // Confirm delete campaign modal
+  const [showDeleteCampaignConfirmation, setShowDeleteCampaignConfirmation] =
+    useState(false);
+
+  const handleDeleteCampaign = (reviewIndex?: number) => {
+    setShowDeleteCampaignConfirmation(true);
+  };
+
+  const handleCancelDeleteCampaign = () => {
+    setShowDeleteCampaignConfirmation(false);
+  };
+
+  const handleConfirmDeleteCampaign = async () => {
+    const campaignID = slides[currentIndex].campaignID;
+    await axios
+      .delete(`${API_ENDPOINT}/delete-campaign/${campaignID}`)
+      .then((result) => {
+        console.log(result);
+        if (result.data.success) {
+          message.success("Campaign deleted successfully.");
+          const newSlides = [...slides];
+          newSlides.splice(currentIndex, 1);
+          setChangedCampaigns(newSlides);
+          if (currentIndex == slides.length - 1 && currentIndex != 0)
+            setCurrentIndex(currentIndex - 1);
+        } else {
+          message.error(result.data.message);
+        }
+      })
+      .catch((err) => {
+        message.error(err?.message);
+      });
+
+    setShowDeleteCampaignConfirmation(false);
+  };
+
   return (
     <>
       <div
@@ -216,7 +256,11 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
                 onClick={() => {
                   setHiddenClass("hidden");
                 }}
-                style={{ border: "none", padding: "0", height: "fit-content" }}
+                style={{
+                  border: "none",
+                  padding: "0",
+                  height: "fit-content",
+                }}
               >
                 <CloseOutlined style={{ display: "block" }} />
               </Button>
@@ -291,6 +335,21 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
                       ...{" "}
                     </Button>
                   </Dropdown>
+                  {showEditCampaignForm && index === currentIndex && (
+                    <EditCampaignForm
+                      startDate={slide.startDate}
+                      endDate={slide.endDate}
+                      openHour={slide.openHour}
+                      closeHour={slide.closeHour}
+                      description={slide.description}
+                      receiveGifts={slide.receiveGifts}
+                      campaignName={slide.campaignName}
+                      address={slide.address}
+                      receiveItems={slide.receiveItems}
+                      userID={slide.userID}
+                      campaignID={slide.campaignID}
+                    />
+                  )}
                 </div>
               </div>
             </div>
@@ -307,18 +366,6 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
           className="absolute rounded-full top-1/2 left-4 transform -translate-y-1/2 px-4 py-2 bg-gray-800 text-white rounded-full focus:outline-none"
         />
       </div>
-      {showEditCampaignForm && (
-        <EditCampaignForm
-          startDate="2023-06-09"
-          endDate="2023-12-11"
-          openHour="06:30:00"
-          closeHour="20:00:00"
-          description="We are 4 passionate students."
-          campaignName="Group5-NT208"
-          address="somewhere on Earth"
-          receiveItems={[]}
-        />
-      )}
       <Modal
         title="Find direction"
         open={showFindDirectionModal}
@@ -357,6 +404,14 @@ const SlideCampaign: React.FC<SliderProps> = ({ slides }) => {
         width={480}
       >
         <p>If not, you need to enter your starting point.</p>
+      </Modal>
+      <Modal
+        title="Confirm Delete Campaign"
+        open={showDeleteCampaignConfirmation}
+        onCancel={handleCancelDeleteCampaign}
+        onOk={handleConfirmDeleteCampaign}
+      >
+        <p>Are you sure you want to delete this campaign?</p>
       </Modal>
     </>
   );

@@ -6,7 +6,7 @@
 // import "./style.css"
 // interface ReView {
 //     username: string;
-//     comment: string;        
+//     comment: string;
 //     rating: any   ;
 // }
 
@@ -14,9 +14,6 @@
 //     reviews: ReView[]
 // }
 // const { TextArea } = Input;
-
-
-
 
 // const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
 //     const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -35,45 +32,43 @@
 //         setDeletingIndex(reviewIndex);
 //       };
 //     return(
-    
-//         <> 
+
+//         <>
 //         {reviews.map((review, index) => (
 //         <Form
 //             key={index}
 //             name={`review${index}`}
-//             layout="vertical"         
+//             layout="vertical"
 //             initialValues={{
 //                 comment: review.comment,
 //                 rating: review.rating
 //             }}
 //             autoComplete="off"
 //         >
-        
+
 //        <div className="flex flex-row w-full items-scretch  text-transparent gap-2">
-    
+
 //             <div className="pt-5">
 //             <Avatar className="flex-none"icon={<UserOutlined />} />
 //             </div>
-       
 
 //             <div className="flex-col grow" >
-            
+
 //                 <div key={index} className="review-container">
 //                 <label style={{color:"black"}}> {review.username}</label>
 //                 </div>
-                       
-            
+
 //                 <div className="flex self-center flex-row gap-5">
-//                 <Form.Item 
-//                     name= "comment" 
-//                     label="" 
+//                 <Form.Item
+//                     name= "comment"
+//                     label=""
 //                     rules={[
 //                     {whitespace: true},
 //                     {max:500},
 //                     {min:5},
 //                     ]}
 //                     style={{width:"100%"}}>
-//                     <TextArea name="Comment"className="self-start..."            
+//                     <TextArea name="Comment"className="self-start..."
 //                             style={{ width: "100%" }}
 //                             autoSize={editingIndex === index}
 //                             disabled={editingIndex !== index}
@@ -81,11 +76,11 @@
 //                     </TextArea>
 //                 </Form.Item>
 //                 </div>
-                
-//                 <div className="review-container"> 
-//                 <Form.Item name="rating" 
-//                         label="" 
-//                         style={{width: "100%"}} 
+
+//                 <div className="review-container">
+//                 <Form.Item name="rating"
+//                         label=""
+//                         style={{width: "100%"}}
 //                         rules={[{ required: true, message: 'Please rating for campaign' }]}>
 //                     <Rate disabled/>
 //                 </Form.Item>
@@ -104,11 +99,11 @@
 //                 >
 //                     <p>Are you sure you want to delete this review?</p>
 //                 </Modal>
-//                 </div> 
+//                 </div>
 //             </div>
 //         </div>
 //         </Form>
-//         ))} 
+//         ))}
 //     </>
 //     )
 
@@ -249,7 +244,7 @@
 // };
 
 // export default Reviews;
-import React, { useState, useRef, useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { UserOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Avatar, Rate, Input, Form, Button, Modal } from "antd";
 
@@ -259,7 +254,7 @@ interface ReView {
   username: string;
   comment: string;
   rating: number;
-  UserID: number | null
+  UserID: number | null;
 }
 
 interface ReviewProps {
@@ -269,7 +264,7 @@ interface ReviewProps {
 
 const API_ENDPOINT = import.meta.env.VITE_API_ENDPOINT;
 const { TextArea } = Input;
-const currUserID = localStorage.getItem('userID');
+const currUserID = localStorage.getItem("userID");
 const Reviews: React.FC<ReviewProps> = ({ reviews, campaignID }) => {
   // Các state và ref cần thiết
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -296,7 +291,9 @@ const Reviews: React.FC<ReviewProps> = ({ reviews, campaignID }) => {
     try {
       const userID = localStorage.getItem("userID");
       const values = { campaignID, userID };
-      const response = await axios.delete(`${API_ENDPOINT}/delete-reviews`, { data: values });
+      const response = await axios.delete(`${API_ENDPOINT}/delete-reviews`, {
+        data: values,
+      });
       if (response.data.success && deletingIndex !== null) {
         // Tạo một bản sao của mảng reviews
         const updatedReviews = [...reviews];
@@ -314,8 +311,8 @@ const Reviews: React.FC<ReviewProps> = ({ reviews, campaignID }) => {
     }
   };
 
-   // Sử dụng useEffect để reset form khi deletingIndex thay đổi
-   useEffect(() => {
+  // Sử dụng useEffect để reset form khi deletingIndex thay đổi
+  useEffect(() => {
     formRef.current?.resetFields();
   }, [deletingIndex]);
 
@@ -344,11 +341,7 @@ const Reviews: React.FC<ReviewProps> = ({ reviews, campaignID }) => {
                 <Form.Item
                   name="comment"
                   label=""
-                  rules={[
-                    { whitespace: true },
-                    { max: 500 },
-                    { min: 5 },
-                  ]}
+                  rules={[{ whitespace: true }, { max: 500 }, { min: 5 }]}
                   style={{ width: "100%" }}
                 >
                   <TextArea
@@ -365,27 +358,28 @@ const Reviews: React.FC<ReviewProps> = ({ reviews, campaignID }) => {
                   name="rating"
                   label=""
                   style={{ width: "100%" }}
-                  rules={[{ required: true, message: "Please rating for campaign" }]}
+                  rules={[
+                    { required: true, message: "Please rating for campaign" },
+                  ]}
                 >
                   <Rate disabled />
                 </Form.Item>
-                { review.UserID?.toString() === currUserID?.toString() &&(
+                {review.UserID?.toString() === currUserID?.toString() && (
                   <>
-                      <Button
-                        type="link"
-                        style={{ color: "#33bbc5" }}
-                        onClick={() => handleEdit(index)}
-                        icon={<EditOutlined />}
-                      />
-                      <Button
-                        type="link"
-                        style={{ color: "#33bbc5" }}
-                        onClick={() => handleDelete(index)}
-                        icon={<DeleteOutlined />}
-                      />
+                    <Button
+                      type="link"
+                      style={{ color: "#33bbc5" }}
+                      onClick={() => handleEdit(index)}
+                      icon={<EditOutlined />}
+                    />
+                    <Button
+                      type="link"
+                      style={{ color: "#33bbc5" }}
+                      onClick={() => handleDelete(index)}
+                      icon={<DeleteOutlined />}
+                    />
                   </>
-                ) 
-                }
+                )}
               </div>
             </div>
           </div>
