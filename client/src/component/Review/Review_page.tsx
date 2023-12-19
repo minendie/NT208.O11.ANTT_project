@@ -23,6 +23,7 @@ const ReviewPage: React.FC<{ campaignID: number }> = ({ campaignID }) => {
                     }
                 }); 
                 setReviews(response.data);
+                console.log('Reviews:', response.data)
             } catch (error) {
                 console.error("Error fetching reviews:", error);
             }
@@ -39,7 +40,7 @@ const ReviewPage: React.FC<{ campaignID: number }> = ({ campaignID }) => {
                     : <p>Please log in to write your review!</p>}
                 <Divider style={{ borderTop: "0.3px solid gray"}}></Divider>
 
-                <Reviews reviews={reviews}></Reviews>
+                <Reviews reviews={reviews} campaignID={campaignID}></Reviews>
 
             </Space>
         </div>

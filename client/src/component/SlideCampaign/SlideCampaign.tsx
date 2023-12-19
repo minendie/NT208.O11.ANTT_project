@@ -1,3 +1,4 @@
+
 // src/Slider.tsx
 import {
   CloseOutlined,

@@ -30,7 +30,7 @@ const Review: React.FC<ReviewProps> = ({ setReviews, campaignID }) =>{
                     )
             }
             const response = await axios.post(`${API_ENDPOINT}/write-review`, values);
-            console.log(values); 
+            console.log("write review: ", values); 
             if (response.data.success) {
                 setReviews((prevReviews: any[]) => [...prevReviews, {
                                                     comment: values.comment,

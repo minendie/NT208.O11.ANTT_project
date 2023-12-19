@@ -78,12 +78,14 @@ const ParticipantProfileForm: React.FC<{ canEdit: boolean, user: any }>
   const [password, setPassword] = useState('');
   const [readOnly, setReadOnly] = useState(true);
   const [isChecked, setIsChecked] = useState(false);
+  const [showPasswordField, setShowPasswordField] = useState(false)
 
  
   const handleEditing = () => {
     // Add your editing logic here
     if (canEdit) {
-        setReadOnly(false)
+        setReadOnly(false);
+        setShowPasswordField(true);
     }
   };
 
@@ -150,7 +152,7 @@ const ParticipantProfileForm: React.FC<{ canEdit: boolean, user: any }>
           setValue={setUsername}
           isReadOnly={true}          
         />
-        {canEdit && <div>
+        {showPasswordField && <div>
           <InputForm 
             htmlFor='password'
             labelValue='Password'
@@ -210,7 +212,7 @@ const ParticipantProfileForm: React.FC<{ canEdit: boolean, user: any }>
                 readOnly  ?
                 <Button className="custom-button-color" shape='round' type="text" onClick={handleEditing}> Edit</Button>                  
                 : (
-                  <div className='row'>
+                  <div className="button-container">
                     <Button className="custom-button-color" shape='round' type="text" onClick={handleSave}> Save</Button>
                     <Space> <Space ><Space></Space></Space></Space>
                     <Button className="custom-button-color" shape='round' type="text" onClick={handleCancelEditing}> Cancel</Button>

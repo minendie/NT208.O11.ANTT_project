@@ -1,6 +1,5 @@
 import { client } from "./axiosClient";
 
-
 export function signup({ username, email, password }: { username:string, email:string, password:string }) {
   return client.post(
     "/auth/signup",

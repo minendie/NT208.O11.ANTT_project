@@ -1,6 +1,6 @@
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Dropdown, Modal} from "antd";
-import { BellOutlined } from "@ant-design/icons";
+// import { BellOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAuth } from '../auth/AuthContext'
 import type { MenuProps } from 'antd';
@@ -77,11 +77,28 @@ const NavbarHeader = () => {
     },
     {
       label: (
+        <button 
+          onClick={() => { 
+            if (!organizerID) {
+              showConfirmModal();
+            }
+            else {
+              navigator(`/campaign-statistic/${organizerID}`)
+            } 
+          }}
+        >
+          View Campaign Statistic
+        </button>
+      ),
+      key: '4',
+    },
+    {
+      label: (
         <div style={{color: '#614BC3', fontWeight: '600'}}  onClick={auth.logout}>
           <Link to ={`/`}>Log out</Link>
         </div>
       ),
-      key: '4',
+      key: '5',
     },
   ];
 
@@ -127,9 +144,9 @@ const NavbarHeader = () => {
             <Dropdown menu={{ items }} placement="bottom">
               <Avatar shape="circle" icon={<UserOutlined />}></Avatar>
             </Dropdown>
-            <div className="">
+            {/* <div className="">
               <BellOutlined className="text-3xl" />
-            </div>
+            </div> */}
           </>}
         </div>
       </div>
