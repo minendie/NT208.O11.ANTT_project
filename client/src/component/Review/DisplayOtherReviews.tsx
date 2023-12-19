@@ -6,7 +6,7 @@
 // import "./style.css"
 // interface ReView {
 //     username: string;
-//     comment: string;        
+//     comment: string;
 //     rating: any   ;
 // }
 
@@ -14,9 +14,6 @@
 //     reviews: ReView[]
 // }
 // const { TextArea } = Input;
-
-
-
 
 // const Reviews: React.FC <ReviewProps>= ({reviews}) =>{
 //     const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -35,45 +32,43 @@
 //         setDeletingIndex(reviewIndex);
 //       };
 //     return(
-    
-//         <> 
+
+//         <>
 //         {reviews.map((review, index) => (
 //         <Form
 //             key={index}
 //             name={`review${index}`}
-//             layout="vertical"         
+//             layout="vertical"
 //             initialValues={{
 //                 comment: review.comment,
 //                 rating: review.rating
 //             }}
 //             autoComplete="off"
 //         >
-        
+
 //        <div className="flex flex-row w-full items-scretch  text-transparent gap-2">
-    
+
 //             <div className="pt-5">
 //             <Avatar className="flex-none"icon={<UserOutlined />} />
 //             </div>
-       
 
 //             <div className="flex-col grow" >
-            
+
 //                 <div key={index} className="review-container">
 //                 <label style={{color:"black"}}> {review.username}</label>
 //                 </div>
-                       
-            
+
 //                 <div className="flex self-center flex-row gap-5">
-//                 <Form.Item 
-//                     name= "comment" 
-//                     label="" 
+//                 <Form.Item
+//                     name= "comment"
+//                     label=""
 //                     rules={[
 //                     {whitespace: true},
 //                     {max:500},
 //                     {min:5},
 //                     ]}
 //                     style={{width:"100%"}}>
-//                     <TextArea name="Comment"className="self-start..."            
+//                     <TextArea name="Comment"className="self-start..."
 //                             style={{ width: "100%" }}
 //                             autoSize={editingIndex === index}
 //                             disabled={editingIndex !== index}
@@ -81,11 +76,11 @@
 //                     </TextArea>
 //                 </Form.Item>
 //                 </div>
-                
-//                 <div className="review-container"> 
-//                 <Form.Item name="rating" 
-//                         label="" 
-//                         style={{width: "100%"}} 
+
+//                 <div className="review-container">
+//                 <Form.Item name="rating"
+//                         label=""
+//                         style={{width: "100%"}}
 //                         rules={[{ required: true, message: 'Please rating for campaign' }]}>
 //                     <Rate disabled/>
 //                 </Form.Item>
@@ -104,11 +99,11 @@
 //                 >
 //                     <p>Are you sure you want to delete this review?</p>
 //                 </Modal>
-//                 </div> 
+//                 </div>
 //             </div>
 //         </div>
 //         </Form>
-//         ))} 
+//         ))}
 //     </>
 //     )
 
@@ -178,7 +173,7 @@ const Reviews: React.FC<ReviewProps> = ({ reviews }) => {
           layout="vertical"
           initialValues={{
             comment: review.comment,
-            rating: review.rating
+            rating: review.rating,
           }}
           autoComplete="off"
         >
@@ -194,11 +189,7 @@ const Reviews: React.FC<ReviewProps> = ({ reviews }) => {
                 <Form.Item
                   name="comment"
                   label=""
-                  rules={[
-                    { whitespace: true },
-                    { max: 500 },
-                    { min: 5 },
-                  ]}
+                  rules={[{ whitespace: true }, { max: 500 }, { min: 5 }]}
                   style={{ width: "100%" }}
                 >
                   <TextArea
@@ -215,7 +206,9 @@ const Reviews: React.FC<ReviewProps> = ({ reviews }) => {
                   name="rating"
                   label=""
                   style={{ width: "100%" }}
-                  rules={[{ required: true, message: "Please rating for campaign" }]}
+                  rules={[
+                    { required: true, message: "Please rating for campaign" },
+                  ]}
                 >
                   <Rate disabled />
                 </Form.Item>
@@ -238,7 +231,7 @@ const Reviews: React.FC<ReviewProps> = ({ reviews }) => {
       ))}
       <Modal
         title="Confirm Delete"
-        visible={showDeleteConfirmation}
+        open={showDeleteConfirmation}
         onCancel={handleCancelDelete}
         onOk={handleConfirmDelete}
       >
