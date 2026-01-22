@@ -20,7 +20,7 @@
     "leaflet-geosearch": "^3.10.0",
     "leaflet-routing-machine": "^3.2.12",
     "loader-utils": "3.2.1",
-    "lodash": "4.17.21",
+    "lodash": "4.17.23",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
